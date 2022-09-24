@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rigidbody2d;
 
-    //[SerializeField] private float jumpVelocity = 15f;
-    //[SerializeField] private float characterVelocity = 8.5f;
 
 
     // New movement tryout
@@ -60,6 +58,7 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("Weapon parent is null", gameObject);
             return;
         }
+        weaponController.isAttacking = true;
         weaponController.PerformAnAttack();
     }
 
