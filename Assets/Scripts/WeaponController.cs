@@ -6,7 +6,6 @@ using UnityEngine.UIElements;
 
 public class WeaponController : WeaponBase
 {
-    public SpriteRenderer playerSpriteController;
     private SpriteRenderer WeaponRenderer;
     private float timePassed = 0;
 
@@ -20,17 +19,17 @@ public class WeaponController : WeaponBase
 
     private void Update()
     {
-        Vector2 direction = (pointerPosition - (Vector2)transform.position).normalized;
+        Vector2 direction = (pointerPosition - (Vector2)WeaponController.transform.position).normalized;
         
 
         if (isAttacking && !isEndingAttack)
         {
-            transform.position = Vector3.Lerp(transform.position, attackStartPointerPosition, Time.deltaTime * attackDistancePerFrame);
+            WeaponController.transform.position = Vector3.Lerp(WeaponController.transform.position, attackStartPointerPosition, Time.deltaTime * attackDistancePerFrame);
 
             timePassed += Time.deltaTime;
 
 
-            transform.Rotate(attackDirection, attackAnglePerFrame);
+            WeaponController.transform.Rotate(attackDirection, attackAnglePerFrame);
 
 
             if (timePassed >= attackDurationIn)
@@ -41,9 +40,9 @@ public class WeaponController : WeaponBase
         }
         else if (isAttacking && isEndingAttack)
         {
-            transform.position = Vector3.Lerp(transform.position, playerSpriteController.transform.position, Time.deltaTime * attackDistancePerFrame);
+            WeaponController.transform.position = Vector3.Lerp(WeaponController.transform.position, playerSpriteController.transform.position, Time.deltaTime * attackDistancePerFrame);
             timePassed += Time.deltaTime;
-            transform.Rotate(attackDirection, attackAnglePerFrame);
+            WeaponController.transform.Rotate(attackDirection, attackAnglePerFrame);
 
 
             if (timePassed >= attackDurationOut)
@@ -51,14 +50,14 @@ public class WeaponController : WeaponBase
                 timePassed = 0;
                 isAttacking = false;
                 isEndingAttack = false;
-                transform.position = playerSpriteController.transform.position;
+                WeaponController.transform.position = playerSpriteController.transform.position;
             }
         }
         else
         {
-            transform.right = direction;
+            WeaponController.transform.right = direction;
 
-            Vector2 scale = transform.localScale;
+            Vector2 scale = WeaponController.transform.localScale;
         
             if(direction.x < 0)
             {
@@ -69,9 +68,9 @@ public class WeaponController : WeaponBase
                 scale.y = 1;
             }
 
-            transform.localScale = scale;
+            WeaponController.transform.localScale = scale;
 
-            if(transform.eulerAngles.z > 0 && transform.eulerAngles.z < 180)
+            if(WeaponController.transform.eulerAngles.z > 0 && WeaponController.transform.eulerAngles.z < 180)
             {
                 WeaponRenderer.sortingOrder = playerSpriteController.sortingOrder + 1;
             }

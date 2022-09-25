@@ -6,13 +6,16 @@ using System;
 public class WeaponBase : MonoBehaviour
 {
     // WEAPON CONTROLLERS
-    [SerializeField] public float attackAnglePerFrame = 3f;
-    [SerializeField] public float attackDurationIn = 0.3f;
-    [SerializeField] public float attackDurationOut = 0.3f;
-    [SerializeField] public float attackDistancePerFrame = 5f;
-    [SerializeField] public float knockbackForce = 25f;
-    [SerializeField] public float attackPowerStart = 5f;
-    [SerializeField] public float attackPowerEnd = 5f;
+    public float attackAnglePerFrame = 3f;
+    public float attackDurationIn = 0.3f;
+    public float attackDurationOut = 0.3f;
+    public float attackDistancePerFrame = 5f;
+    public float knockbackForce = 25f;
+    public float attackPowerStart = 5f;
+    public float attackPowerEnd = 5f;
+    public SpriteRenderer playerSpriteController;
+    public GameObject WeaponController;
+
 
 
     // Constants to all Weapons
