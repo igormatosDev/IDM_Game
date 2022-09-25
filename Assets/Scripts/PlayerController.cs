@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 pointerInput, movementInput;
 
     // children controllers
-    private WeaponController weaponController;
+    public WeaponController weaponController;
     private SpriteController spriteController;
     [SerializeField] InputActionReference movement, attack, pointerPosition;
 
@@ -58,7 +58,6 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("Weapon parent is null", gameObject);
             return;
         }
-        weaponController.isAttacking = true;
         weaponController.PerformAnAttack();
     }
 
@@ -86,7 +85,7 @@ public class PlayerController : MonoBehaviour
         rigidbody2d.velocity = oldMovementInput * currentSpeed;
     }
 
-    private Vector2 GetPointerInput()
+    public Vector2 GetPointerInput()
     {
         Vector3 mousePosition = pointerPosition.action.ReadValue<Vector2>();
         mousePosition.z = Camera.main.nearClipPlane;
