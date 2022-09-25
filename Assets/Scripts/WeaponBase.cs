@@ -14,25 +14,24 @@ public class WeaponBase : MonoBehaviour
     public float attackPowerStart = 5f;
     public float attackPowerEnd = 5f;
     public SpriteRenderer playerSpriteController;
-    public GameObject WeaponController;
+    public GameObject weapon;
 
 
 
     // Constants to all Weapons
-    protected bool isAttacking = false;
+    public bool isAttacking = false;
     protected bool isEndingAttack = false;
-    protected Vector3 attackDirection = Vector3.zero;
     protected Vector2 attackStartPointerPosition;
+    protected Vector3 attackDirection = Vector3.forward;
 
     public Vector2 pointerPosition { get; set; }
 
 
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy" && isAttacking)
         {
-            int damage = (int)Math.Round(UnityEngine.Random.Range(attackPowerStart, attackPowerEnd), 0);
+            int damage = (int)Math.Round(UnityEngine.Random.Range(attackPowerStart + 1, attackPowerEnd + 1), 0);
             EnemyBase enemy = collision.gameObject.GetComponentInChildren<EnemyBase>();
             enemy.isHit(damage, knockbackForce, attackStartPointerPosition);
         }
@@ -45,7 +44,6 @@ public class WeaponBase : MonoBehaviour
             isAttacking = true;
             isEndingAttack = false;
             attackStartPointerPosition = pointerPosition;
-            attackDirection = (pointerPosition - (Vector2)transform.position).normalized.x > 0 ? Vector3.forward : Vector3.back;
         }
     }
 }

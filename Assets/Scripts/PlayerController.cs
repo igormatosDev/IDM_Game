@@ -10,9 +10,6 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rigidbody2d;
 
-
-
-    // New movement tryout
     [SerializeField] private float acceleration;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float deacceleration;
@@ -21,24 +18,25 @@ public class PlayerController : MonoBehaviour
     private Vector2 pointerInput, movementInput;
 
     // children controllers
-    public WeaponController weaponController;
+    public BasicWeapon weapon;
     private SpriteController spriteController;
     [SerializeField] InputActionReference movement, attack, pointerPosition;
 
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
-        weaponController = GetComponentInChildren<WeaponController>();
+        weapon = GetComponentInChildren<BasicWeapon>();
         spriteController = GetComponentInChildren<SpriteController>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         Movement();
 
         Vector2 lookDirection = pointerInput - (Vector2)transform.position;
-        spriteController.AnimationController(lookDirection, rigidbody2d.velocity);
+        
+        spriteController.AnimationController(lookDirection, rigidbody2d.velocity, weapon.isAttacking);
+        
     }
 
     private void OnEnable()
@@ -53,19 +51,19 @@ public class PlayerController : MonoBehaviour
 
     private void PerformAttack(InputAction.CallbackContext obj)
     {
-        if (weaponController == null)
+        if (weapon == null)
         {
             Debug.LogError("Weapon parent is null", gameObject);
             return;
         }
-        weaponController.PerformAnAttack();
+        weapon.PerformAnAttack();
     }
 
     void Movement()
     {
         // pointer actions
         pointerInput = GetPointerInput();
-        weaponController.pointerPosition = pointerInput;
+        weapon.pointerPosition = pointerInput;
 
         
         // movement actions
@@ -92,34 +90,6 @@ public class PlayerController : MonoBehaviour
         return Camera.main.ScreenToWorldPoint(mousePosition);
 
     }
-
-    //void Movement()
-    //{
-    //    rigidbody2d.velocity = new Vector2(0, 0);
-    //    float hDirection = Input.GetAxis("Horizontal");
-    //    float vDirection = Input.GetAxis("Vertical");
-    //    if (hDirection < 0)
-    //    {
-    //        rigidbody2d.velocity = new Vector2(-characterVelocity, rigidbody2d.velocity.y);
-    //        transform.localScale = new Vector2(-_scalex, _scaley);
-    //    }
-
-    //    else if (hDirection > 0)
-    //    {
-    //        rigidbody2d.velocity = new Vector2(characterVelocity, rigidbody2d.velocity.y);
-    //        transform.localScale = new Vector2(_scalex, _scaley);
-    //    }
-
-
-    //    if (vDirection < 0)
-    //    {
-    //        rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x, -characterVelocity);
-    //    }
-
-    //    else if (vDirection > 0)
-    //    {
-    //        rigidbody2d.velocity = new Vector2(rigidbody2d.velocity.x, characterVelocity);
-    //    }
 
     
 

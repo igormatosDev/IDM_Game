@@ -13,13 +13,11 @@ public class EnemyBase : MonoBehaviour
     // Enemy variables
     [SerializeField] public float attackPower = 3f;
     [SerializeField] public float enemySpeed = 1.2f;
-    [SerializeField] public float seekDistanceRadius = 4;
     [SerializeField] public string fullname = "Enemy";
     [SerializeField] public int health = 25;
     [SerializeField] public int defense = 1;
 
     public GameObject Player;
-    public GameObject EnemySpriteController;
     private float distanceFromTarget;
     private Vector2 direction;
 
@@ -37,15 +35,15 @@ public class EnemyBase : MonoBehaviour
     private Rigidbody2D enemyRigidBody;
     private SpriteRenderer EnemySpriteRenderer;
     private Vector3 defaultScale;
-    private Vector3 enemyAttackedPosition = Vector3.zero;
+    private Vector2 enemyAttackedPosition;
 
+    private Vector2 movementInput = Vector2.zero;
 
     // Animation Constants
     private string state = IDLE_ANIMATION;
     private const string IDLE_ANIMATION = "Idle";
     private const string RUN_ANIMATION = "Run";
     private const string DEAD_ANIMATION = "Dead";
-
 
     private void Start()
     {
@@ -63,17 +61,29 @@ public class EnemyBase : MonoBehaviour
             Movement();
             AnimationController();
         }
+        else{
+            transform.position = Vector2.MoveTowards(transform.position, enemyAttackedPosition, hitKnockback/5 * Time.deltaTime);
+        }
+    }
+
+    public void MovementInput(Vector2 input)
+    {
+        print(movementInput);
+        movementInput = input;
     }
 
 
     public void Movement()
     {
+
         distanceFromTarget = Vector2.Distance(transform.position, Player.transform.position);
         direction = Player.transform.position - transform.position;
         direction.Normalize();
+
+
+
         if (isEnemyHit)
         {
-            print(enemyAttackedPosition);
             transform.position = Vector2.MoveTowards(transform.position, enemyAttackedPosition, hitKnockback * Time.deltaTime);
             hitPassedTime += Time.deltaTime;
 
@@ -84,13 +94,16 @@ public class EnemyBase : MonoBehaviour
             }
 
         }
-        else if(distanceFromTarget < seekDistanceRadius)
+        else if(movementInput != Vector2.zero)
         {
+
             isChasingPlayer = true;
-            transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, enemySpeed * Time.deltaTime);
+            //transform.position = Vector2.MoveTowards(transform.position, movementInput, enemySpeed * Time.deltaTime);
+            enemyRigidBody.velocity = movementInput * enemySpeed;
         }
         else
         {
+            enemyRigidBody.velocity = Vector2.zero;
             // This makes the enemy Idle
             isChasingPlayer = false;
         }
@@ -155,7 +168,6 @@ public class EnemyBase : MonoBehaviour
     {
         isDead = true;
         isChasingPlayer = false;
-        transform.position = Vector2.MoveTowards(transform.position, -Player.transform.position, 15 * Time.deltaTime);
         StartCoroutine(FlashSprite(EnemySpriteRenderer, "dead", .3f, .3f));
         animator.Play(DEAD_ANIMATION);
     }

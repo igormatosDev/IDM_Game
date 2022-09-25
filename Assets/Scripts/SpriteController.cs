@@ -28,7 +28,7 @@ public class SpriteController : MonoBehaviour
 
     }
 
-    public void AnimationController(Vector2 lookDirection, Vector2 velocity)
+    public void AnimationController(Vector2 lookDirection, Vector2 velocity, bool isAttacking)
     {
 
         if (lookDirection.x > -1 && lookDirection.x < 1)
@@ -48,15 +48,18 @@ public class SpriteController : MonoBehaviour
         {
             // SIDE
             state = AnimationDecider("side", velocity);
-            if (lookDirection.x < 0)
+            if (!isAttacking)
             {
-                // Looking left
-                transform.localScale = new Vector2(-defaultScale.x, defaultScale.y);
-            }
-            else
-            {
-                // Looking right
-                transform.localScale = new Vector2(defaultScale.x, defaultScale.y);
+                if (lookDirection.x < 0)
+                {
+                    // Looking left
+                    transform.localScale = new Vector2(-defaultScale.x, defaultScale.y);
+                }
+                else
+                {
+                    // Looking right
+                    transform.localScale = new Vector2(defaultScale.x, defaultScale.y);
+                }
             }
 
         }
