@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Processors;
 
 public class EnemyBase : MonoBehaviour
@@ -13,21 +14,30 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] public float attackPower = 3f;
     [SerializeField] public float enemySpeed = 1.2f;
     [SerializeField] public float seekDistanceRadius = 4;
-    [SerializeField] public float health = 25;
-    [SerializeField] public float defense = 1;
     [SerializeField] public string fullname = "Enemy";
+    [SerializeField] public int health = 25;
+    [SerializeField] public int defense = 1;
 
     public GameObject Player;
     public GameObject EnemySpriteController;
     private float distanceFromTarget;
     private Vector2 direction;
+
+    // boolean Properties
     private bool isChasingPlayer = false;
-    private bool isDead= false;
+    private bool isDead = false;
+    private bool isEnemyHit = false;
+
+    private float hitKnockback = 0;
+    private float hitDuration = .2f;
+    private float hitPassedTime = 0;
 
     // Function variables
     private Animator animator;
+    private Rigidbody2D enemyRigidBody;
     private SpriteRenderer EnemySpriteRenderer;
     private Vector3 defaultScale;
+    private Vector3 enemyAttackedPosition = Vector3.zero;
 
 
     // Animation Constants
@@ -40,6 +50,7 @@ public class EnemyBase : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
+        enemyRigidBody = GetComponent<Rigidbody2D>();
         EnemySpriteRenderer = GetComponent<SpriteRenderer>();
         defaultScale = transform.localScale;
     }
@@ -58,35 +69,33 @@ public class EnemyBase : MonoBehaviour
     public void Movement()
     {
         distanceFromTarget = Vector2.Distance(transform.position, Player.transform.position);
-        if (distanceFromTarget < seekDistanceRadius)
+        direction = Player.transform.position - transform.position;
+        direction.Normalize();
+        if (isEnemyHit)
+        {
+            print(enemyAttackedPosition);
+            transform.position = Vector2.MoveTowards(transform.position, enemyAttackedPosition, hitKnockback * Time.deltaTime);
+            hitPassedTime += Time.deltaTime;
+
+            if (hitPassedTime >= hitDuration)
+            {
+                isEnemyHit = false;
+                print("no longer hit");
+            }
+
+        }
+        else if(distanceFromTarget < seekDistanceRadius)
         {
             isChasingPlayer = true;
-            direction = Player.transform.position - transform.position;
-            direction.Normalize();
             transform.position = Vector2.MoveTowards(transform.position, Player.transform.position, enemySpeed * Time.deltaTime);
         }
         else
         {
+            // This makes the enemy Idle
             isChasingPlayer = false;
         }
 
-    }
 
-    public void Die()
-    {
-        isDead = true;
-        isChasingPlayer = false;
-        transform.position = Vector2.MoveTowards(transform.position, -Player.transform.position, 15 * Time.deltaTime);
-        Color minColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
-        Color maxColor = new Color(70f / 255f, 70f / 255f, 70f / 255f);
-        Color endColor = new Color(50f / 255f, 50f / 255f, 50f / 255f);
-        StartCoroutine(FlashSprite(EnemySpriteRenderer, minColor, maxColor, endColor, .3f, .3f));
-        animator.Play(DEAD_ANIMATION);
-    }
-
-    public void DestroyEnemy()
-    {
-        Destroy(gameObject);
     }
 
     public void AnimationController()
@@ -118,27 +127,62 @@ public class EnemyBase : MonoBehaviour
     }
 
 
-    public void isHit(float damage, float knockback)
+    public void isHit(int damage, float knockback, Vector3 attackStartPointerPosition)
     {
-        health -= damage - defense;
-        print($"Enemy {fullname} was Hit. (damage: {damage}, left health: {health})");
-
-        if(health > 0) {
-            transform.position = Vector2.MoveTowards(transform.position, -Player.transform.position, knockback * Time.deltaTime);
-            Color minColor = new Color(215f / 255f, 64f / 255f, 64f / 255f);
-            Color maxColor = new Color(255f / 255f, 196f / 255f, 196f / 255f);
-            Color endColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
-            StartCoroutine(FlashSprite(EnemySpriteRenderer, minColor, maxColor, endColor, .3f, .3f));
-        }
-        else
+        // called once per hit
+        if (!isEnemyHit)
         {
-            Die();
+            damage = damage - defense;
+            health -= (damage < 1 ? 1 : damage);
+            print($"Enemy {fullname} was Hit. (damage: {damage}, left health: {health})");
+
+            if (health > 0)
+            {
+                StartCoroutine(FlashSprite(EnemySpriteRenderer, "damage", .3f, .3f));
+                enemyAttackedPosition = attackStartPointerPosition;
+                hitPassedTime = 0;
+                hitKnockback = knockback;
+                isEnemyHit = true;
+            }
+            else
+            {
+                Die();
+            }
         }
     }
 
-    public static IEnumerator FlashSprite(SpriteRenderer renderer, Color minColor, Color maxColor, Color endColor, float interval, float duration)
+    public void Die()
     {
+        isDead = true;
+        isChasingPlayer = false;
+        transform.position = Vector2.MoveTowards(transform.position, -Player.transform.position, 15 * Time.deltaTime);
+        StartCoroutine(FlashSprite(EnemySpriteRenderer, "dead", .3f, .3f));
+        animator.Play(DEAD_ANIMATION);
+    }
 
+    public void DestroyEnemy()
+    {
+        Destroy(gameObject);
+    }
+
+    public static IEnumerator FlashSprite(SpriteRenderer renderer, string colorType, float interval, float duration)
+    {
+        Color minColor = new Color(215f / 255f, 64f / 255f, 64f / 255f);
+        Color maxColor = new Color(255f / 255f, 196f / 255f, 196f / 255f);
+        Color endColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+
+        if (colorType == "damage")
+        {
+            minColor = new Color(215f / 255f, 64f / 255f, 64f / 255f);
+            maxColor = new Color(255f / 255f, 196f / 255f, 196f / 255f);
+            endColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+        }
+        else if(colorType == "dead")
+        {
+            minColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+            maxColor = new Color(70f / 255f, 70f / 255f, 70f / 255f);
+            endColor = new Color(50f / 255f, 50f / 255f, 50f / 255f);
+        }
         float currentInterval = 0;
         while (duration > 0)
         {
