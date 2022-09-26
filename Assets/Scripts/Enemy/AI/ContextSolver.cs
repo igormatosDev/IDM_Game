@@ -5,7 +5,7 @@ using UnityEngine;
 public class ContextSolver : MonoBehaviour
 {
     [SerializeField]
-    private bool showGizmos = true;
+    private bool showGizmos = false;
 
     //gozmo parameters
     float[] interestGizmo = new float[0];

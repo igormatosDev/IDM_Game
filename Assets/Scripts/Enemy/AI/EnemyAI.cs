@@ -73,7 +73,7 @@ public class EnemyAI : MonoBehaviour
         if (aiData.currentTarget == null)
         {
             //Stopping Logic
-            Debug.Log("Stopping");
+            Debug.Log("Enemy stopped chasing Player");
             movementInput = Vector2.zero;
             following = false;
             yield break;

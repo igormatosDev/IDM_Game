@@ -18,11 +18,9 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] public int defense = 1;
 
     public GameObject Player;
-    private float distanceFromTarget;
-    private Vector2 direction;
 
     // boolean Properties
-    private bool isChasingPlayer = false;
+    //private bool isChasingPlayer = false;
     private bool isDead = false;
     private bool isEnemyHit = false;
 
@@ -38,6 +36,7 @@ public class EnemyBase : MonoBehaviour
     private Vector2 enemyAttackedPosition;
 
     private Vector2 movementInput = Vector2.zero;
+    private Vector2 pointerInput = Vector2.zero;
 
     // Animation Constants
     private string state = IDLE_ANIMATION;
@@ -68,20 +67,23 @@ public class EnemyBase : MonoBehaviour
 
     public void MovementInput(Vector2 input)
     {
-        print(movementInput);
-        movementInput = input;
+        movementInput = input != Vector2.zero ? input : Vector2.zero;
+    }
+
+    public void PointerInput(Vector2 input)
+    {
+        pointerInput = input;
+    }
+
+
+    public void AttackInput()
+    {
+        print("Attack action pressed");
     }
 
 
     public void Movement()
     {
-
-        distanceFromTarget = Vector2.Distance(transform.position, Player.transform.position);
-        direction = Player.transform.position - transform.position;
-        direction.Normalize();
-
-
-
         if (isEnemyHit)
         {
             transform.position = Vector2.MoveTowards(transform.position, enemyAttackedPosition, hitKnockback * Time.deltaTime);
@@ -94,38 +96,28 @@ public class EnemyBase : MonoBehaviour
             }
 
         }
-        else if(movementInput != Vector2.zero)
-        {
-
-            isChasingPlayer = true;
-            //transform.position = Vector2.MoveTowards(transform.position, movementInput, enemySpeed * Time.deltaTime);
-            enemyRigidBody.velocity = movementInput * enemySpeed;
-        }
         else
         {
-            enemyRigidBody.velocity = Vector2.zero;
-            // This makes the enemy Idle
-            isChasingPlayer = false;
+            enemyRigidBody.velocity = movementInput != Vector2.zero ? movementInput * enemySpeed : Vector2.zero;
         }
-
 
     }
 
     public void AnimationController()
     {
         // SIDE
-        if (direction.x < 0)
-        {
-            // Looking left
-            transform.localScale = new Vector2(-defaultScale.x, defaultScale.y);
-        }
-        else
+        if (enemyRigidBody.velocity.x > 0)
         {
             // Looking right
             transform.localScale = new Vector2(defaultScale.x, defaultScale.y);
         }
+        else
+        {
+            // Looking left
+            transform.localScale = new Vector2(-defaultScale.x, defaultScale.y);
+        }
 
-        if (isChasingPlayer)
+        if (movementInput != Vector2.zero)
         {
             // Run
             state = RUN_ANIMATION;
@@ -167,7 +159,7 @@ public class EnemyBase : MonoBehaviour
     public void Die()
     {
         isDead = true;
-        isChasingPlayer = false;
+        //isChasingPlayer = false;
         StartCoroutine(FlashSprite(EnemySpriteRenderer, "dead", .3f, .3f));
         animator.Play(DEAD_ANIMATION);
     }
