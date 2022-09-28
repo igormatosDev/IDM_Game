@@ -6,23 +6,30 @@ using System;
 public class WeaponBase : MonoBehaviour
 {
     // WEAPON CONTROLLERS
-    public float attackAnglePerFrame = 3f;
-    public float attackDurationIn = 0.3f;
-    public float attackDurationOut = 0.3f;
-    public float attackDistancePerFrame = 5f;
-    public float knockbackForce = 25f;
-    public float attackPowerStart = 5f;
-    public float attackPowerEnd = 5f;
+    public float attackDistance;
+    public float attackMovePerFrameIn;
+    public float attackMovePerFrameOut;
+    public float attackRotationSpeedIn;
+    public float attackRotationSpeedOut;
+
+
+    public float knockbackForce;
+    public float attackPowerStart;
+    public float attackPowerEnd;
     public SpriteRenderer playerSpriteController;
+    public GameObject player;
     public GameObject weapon;
+    public Animator weaponAnimator;
+
 
 
 
     // Constants to all Weapons
     public bool isAttacking = false;
-    protected bool isEndingAttack = false;
+    public bool isEndingAttack = false;
     protected Vector2 attackStartPointerPosition;
-    protected Vector3 attackDirection = Vector3.forward;
+    protected Vector3 attackAxis = Vector3.forward;
+    protected Vector3 attackDirection;
 
     public Vector2 pointerPosition { get; set; }
 
@@ -44,6 +51,7 @@ public class WeaponBase : MonoBehaviour
             isAttacking = true;
             isEndingAttack = false;
             attackStartPointerPosition = pointerPosition;
+            attackDirection = ((Vector3)attackStartPointerPosition - player.transform.position).normalized;
         }
     }
 }

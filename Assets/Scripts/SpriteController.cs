@@ -53,12 +53,12 @@ public class SpriteController : MonoBehaviour
                 if (lookDirection.x < 0)
                 {
                     // Looking left
-                    transform.localScale = new Vector2(-defaultScale.x, defaultScale.y);
+                    transform.localScale = new Vector2(-1, 1);
                 }
                 else
                 {
                     // Looking right
-                    transform.localScale = new Vector2(defaultScale.x, defaultScale.y);
+                    transform.localScale = new Vector2(1, 1);
                 }
             }
 

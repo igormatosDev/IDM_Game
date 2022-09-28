@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
         Movement();
 
         Vector2 lookDirection = pointerInput - (Vector2)transform.position;
-        
+
         spriteController.AnimationController(lookDirection, rigidbody2d.velocity, weapon.isAttacking);
         
     }
@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
         rigidbody2d.velocity = oldMovementInput * currentSpeed;
     }
 
-    public Vector2 GetPointerInput()
+    public Vector3 GetPointerInput()
     {
         Vector3 mousePosition = pointerPosition.action.ReadValue<Vector2>();
         mousePosition.z = Camera.main.nearClipPlane;

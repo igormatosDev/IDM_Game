@@ -1,74 +1,90 @@
+using Cinemachine.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.UIElements;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class BasicWeapon : WeaponBase
 {
     private SpriteRenderer WeaponRenderer;
-    private float timePassed = 0;
+    float _distance = 0;
+    float travel = 0;
 
     private void Start()
     {
         WeaponRenderer = GetComponent<SpriteRenderer>();
+
     }
 
 
     private void Update()
     {
-        Vector2 direction = (pointerPosition - (Vector2)weapon.transform.position).normalized;
-
-        
-        if (isAttacking && !isEndingAttack)
+        if (isAttacking)
         {
-            weapon.transform.position = Vector3.Lerp(weapon.transform.position, attackStartPointerPosition, Time.deltaTime * attackDistancePerFrame);
-
-            weapon.transform.Rotate(attackDirection, attackAnglePerFrame);
-            if (timePassed >= attackDurationIn)
+            if (!isEndingAttack)
             {
-                timePassed = 0;
-                isEndingAttack = true;
+                if(_distance == 0)
+                {
+                    weaponAnimator.Play("BasicSwordSlash");
+                }
+
+                travel = (attackMovePerFrameIn / 10) * Time.deltaTime;
+                weapon.transform.position = Vector3.Lerp(weapon.transform.position, weapon.transform.position + attackDirection, travel);
+                _distance += travel;
+                weapon.transform.Rotate(attackAxis, attackRotationSpeedIn);
+
+                isEndingAttack = _distance >= attackDistance; // goes back if distance reached
             }
-            timePassed += Time.deltaTime;
 
-        }
-        else if (isAttacking && isEndingAttack)
-        {
-            weapon.transform.position = Vector3.Lerp(weapon.transform.position, playerSpriteController.transform.position, Time.deltaTime * attackDistancePerFrame);
-            weapon.transform.Rotate(attackDirection, attackAnglePerFrame) ;
-
-            if (timePassed >= attackDurationOut)
+            else
             {
-                timePassed = 0;
-                isAttacking = false;
-                isEndingAttack = false;
-                weapon.transform.position = playerSpriteController.transform.position;
-            }
-            timePassed += Time.deltaTime;
+                weaponAnimator.Play("BasicSwordIdle");
+                travel = (attackMovePerFrameOut / 10) * Time.deltaTime;
+                weapon.transform.position = Vector3.Lerp(weapon.transform.position, player.transform.position, travel);
+                _distance -= travel;
+                weapon.transform.Rotate(attackAxis, attackRotationSpeedOut);
 
+                if (_distance <= 0)
+                {
+                    isAttacking = false;
+                    isEndingAttack = false;
+                    _distance = 0;
+                }
+
+            }
         }
         else
         {
-            weapon.transform.right = direction;
+            Vector2 direction = (pointerPosition - (Vector2)player.transform.position);
+            direction = direction.normalized;
+            float rot_z = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-            Vector2 scale = weapon.transform.localScale;
+            weapon.transform.rotation = Quaternion.Euler(0f, 0f, rot_z - 180);
+            weapon.transform.position = player.transform.position;
+
+
+            Vector3 scale = weapon.transform.localScale;
 
             if (direction.x < 0)
             {
-                scale.y = -1;
-                attackDirection = Vector3.forward;
+                scale.y = 1;
+                attackAxis = Vector3.forward;
             }
             else
             {
-                scale.y = 1;
-                attackDirection = Vector3.back;
+                scale.y = -1;
+                attackAxis = Vector3.back;
 
             }
+            weapon.transform.localScale = Vector3.Lerp(weapon.transform.localScale, scale, 0.12f);
 
-            weapon.transform.localScale = scale;
-            
-            if(weapon.transform.eulerAngles.z > 0 && weapon.transform.eulerAngles.z < 240
+
+            if (weapon.transform.eulerAngles.z > 0 && weapon.transform.eulerAngles.z < 240
                || weapon.transform.eulerAngles.z > 330)
             {
                 WeaponRenderer.sortingOrder = playerSpriteController.sortingOrder + 1;
@@ -79,6 +95,7 @@ public class BasicWeapon : WeaponBase
             }
         }
 
-    }
+        }
 
-}
+
+    }

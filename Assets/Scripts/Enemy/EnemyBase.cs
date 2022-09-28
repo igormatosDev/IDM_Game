@@ -92,7 +92,6 @@ public class EnemyBase : MonoBehaviour
             if (hitPassedTime >= hitDuration)
             {
                 isEnemyHit = false;
-                print("no longer hit");
             }
 
         }
