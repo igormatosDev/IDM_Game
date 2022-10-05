@@ -14,10 +14,13 @@ public class BasicWeapon : WeaponBase
     private SpriteRenderer WeaponRenderer;
     float _distance = 0;
     float travel = 0;
+    Vector3 scale;
+
 
     private void Start()
     {
         WeaponRenderer = GetComponent<SpriteRenderer>();
+        scale = weapon.transform.localScale;
 
     }
 
@@ -31,6 +34,7 @@ public class BasicWeapon : WeaponBase
                 if(_distance == 0)
                 {
                     weaponAnimator.Play("BasicSwordSlash");
+                    weapon.transform.localScale = scale;
                 }
 
                 travel = (attackMovePerFrameIn / 10) * Time.deltaTime;
@@ -68,7 +72,6 @@ public class BasicWeapon : WeaponBase
             weapon.transform.position = player.transform.position;
 
 
-            Vector3 scale = weapon.transform.localScale;
 
             if (direction.x < 0)
             {

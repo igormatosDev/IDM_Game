@@ -9,6 +9,8 @@ public class SpriteController : MonoBehaviour
     private Animator animator;
     private Vector3 defaultScale;
 
+    public ParticleSystem dustWalkParticles;
+
     // Animation Constants
     private string state = IDLE_SIDE_ANIMATION;
     // Idle
@@ -30,6 +32,8 @@ public class SpriteController : MonoBehaviour
 
     public void AnimationController(Vector2 lookDirection, Vector2 velocity, bool isAttacking)
     {
+
+
 
         if (lookDirection.x > -1 && lookDirection.x < 1)
         {
@@ -72,6 +76,7 @@ public class SpriteController : MonoBehaviour
 
         if (Mathf.Abs(velocity.x) > 2f || Mathf.Abs(velocity.y) > 2f)
         {
+            dustWalkParticles.enableEmission = true;
             // Run
             switch (direction){
                 case "up":
@@ -94,6 +99,7 @@ public class SpriteController : MonoBehaviour
         }
         else
         {
+            dustWalkParticles.enableEmission = false;
             // Idle
             switch (direction)
             {
