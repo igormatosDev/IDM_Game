@@ -13,9 +13,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float acceleration;
     [SerializeField] private float maxSpeed;
     [SerializeField] private float deacceleration;
+    
     private float currentSpeed = 0;
-
     private Vector2 pointerInput, movementInput;
+
+    [SerializeField] private UI_Inventory uiInventory;
+    private Inventory inventory;
 
     // children controllers
     public BasicWeapon weapon;
@@ -27,6 +30,25 @@ public class PlayerController : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
         weapon = GetComponentInChildren<BasicWeapon>();
         spriteController = GetComponentInChildren<SpriteController>();
+
+        inventory = new Inventory(UseItem);
+        uiInventory.SetInventory(inventory);
+
+    }
+
+    public void UseItem(Item item)
+    {
+        inventory.RemoveItem(item);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        ItemWorld itemWorld = collision.GetComponent<ItemWorld>();
+        if (itemWorld != null)
+        {
+            inventory.AddItem(itemWorld.GetItem());
+            itemWorld.DestroySelf();
+        }
     }
 
     void Update()

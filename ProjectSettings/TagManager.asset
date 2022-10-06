@@ -40,14 +40,14 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Water
     uniqueID: 3789251813
     locked: 0
   - name: Ground
     uniqueID: 1540405923
+    locked: 0
+  - name: Default
+    uniqueID: 0
     locked: 0
   - name: Player
     uniqueID: 217021585

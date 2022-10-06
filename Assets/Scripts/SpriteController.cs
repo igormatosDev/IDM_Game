@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class SpriteController : MonoBehaviour
 {
@@ -73,10 +74,11 @@ public class SpriteController : MonoBehaviour
 
     private string AnimationDecider(string direction, Vector2 velocity)
     {
+        var particleEmission = dustWalkParticles.emission;
 
         if (Mathf.Abs(velocity.x) > 2f || Mathf.Abs(velocity.y) > 2f)
         {
-            dustWalkParticles.enableEmission = true;
+            particleEmission.enabled = true;
             // Run
             switch (direction){
                 case "up":
@@ -99,7 +101,7 @@ public class SpriteController : MonoBehaviour
         }
         else
         {
-            dustWalkParticles.enableEmission = false;
+            particleEmission.enabled = false;
             // Idle
             switch (direction)
             {
