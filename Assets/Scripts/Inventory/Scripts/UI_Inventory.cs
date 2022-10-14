@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using CodeMonkey.Utils;
 
 public class UI_Inventory : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class UI_Inventory : MonoBehaviour
     private Inventory inventory;
     private Transform itemSlotContainer;
     private Transform itemSlotTemplate;
+    private Button itemSlotButton;
     private PlayerController player;
 
     private void Awake()
@@ -53,16 +55,26 @@ public class UI_Inventory : MonoBehaviour
             RectTransform itemSlotRectTransform = Instantiate(itemSlotTemplate, itemSlotContainer).GetComponent<RectTransform>();
             itemSlotRectTransform.gameObject.SetActive(true);
 
-            //itemSlotRectTransform.GetComponent<Button_UI>().ClickFunc = () => {
-            //    // Use item
-            //    inventory.UseItem(item);
-            //};
-            //itemSlotRectTransform.GetComponent<Button_UI>().MouseRightClickFunc = () => {
-            //    // Drop item
-            //    Item duplicateItem = new Item { itemType = item.itemType, amount = item.amount };
-            //    inventory.RemoveItem(item);
-            //    ItemWorld.DropItem(player.GetPosition(), duplicateItem);
-            //};
+            itemSlotRectTransform.GetComponent<Button_UI>().ClickFunc = () =>
+            {
+                // Use item
+                inventory.UseItem(item);
+            };
+
+            itemSlotRectTransform.GetComponent<Button_UI>().MouseRightClickFunc = () =>
+            {
+                // Drop item
+                Item duplicateItem = new Item { itemType = item.itemType, amount = item.amount };
+                inventory.RemoveItem(item);
+
+                Vector2 dropPosition = (Vector2)player.transform.position + (player.GetLookDirection().normalized * 3f);
+                ItemWorld itemWorld = ItemWorld.DropItem(player.transform.position, duplicateItem);
+                
+                itemWorld.isPickable = false;
+                StartCoroutine(itemWorld.setPickableTrue(itemWorld));
+                StartCoroutine(itemWorld.pushItemAway(dropPosition, itemWorld));
+
+            };
 
             itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotCellSize, -y * itemSlotCellSize);
             Image image = itemSlotRectTransform.Find("image").GetComponent<Image>();

@@ -15,10 +15,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float deacceleration;
     
     private float currentSpeed = 0;
-    private Vector2 pointerInput, movementInput;
+    private Vector2 pointerInput, movementInput, lookDirection;
 
-    [SerializeField] private UI_Inventory uiInventory;
-    private Inventory inventory;
 
     // children controllers
     public BasicWeapon weapon;
@@ -31,35 +29,17 @@ public class PlayerController : MonoBehaviour
         weapon = GetComponentInChildren<BasicWeapon>();
         spriteController = GetComponentInChildren<SpriteController>();
 
-        inventory = new Inventory(UseItem);
-        uiInventory.SetInventory(inventory);
-
     }
-
-    public void UseItem(Item item)
-    {
-        inventory.RemoveItem(item);
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        ItemWorld itemWorld = collision.GetComponent<ItemWorld>();
-        if (itemWorld != null)
-        {
-            inventory.AddItem(itemWorld.GetItem());
-            itemWorld.DestroySelf();
-        }
-    }
-
     void Update()
     {
         Movement();
 
-        Vector2 lookDirection = pointerInput - (Vector2)transform.position;
+        lookDirection = pointerInput - (Vector2)transform.position;
 
         spriteController.AnimationController(lookDirection, rigidbody2d.velocity, weapon.isAttacking);
-        
+
     }
+
 
     private void OnEnable()
     {
@@ -110,9 +90,12 @@ public class PlayerController : MonoBehaviour
         Vector3 mousePosition = pointerPosition.action.ReadValue<Vector2>();
         mousePosition.z = Camera.main.nearClipPlane;
         return Camera.main.ScreenToWorldPoint(mousePosition);
-
     }
 
+    public Vector2 GetLookDirection()
+    {
+        return lookDirection;
+    }
     
 
 }

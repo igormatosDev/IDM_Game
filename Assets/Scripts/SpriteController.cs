@@ -33,9 +33,6 @@ public class SpriteController : MonoBehaviour
 
     public void AnimationController(Vector2 lookDirection, Vector2 velocity, bool isAttacking)
     {
-
-
-
         if (lookDirection.x > -1 && lookDirection.x < 1)
         {
             if(lookDirection.y > 0)
