@@ -55,7 +55,46 @@ public class WhiteMaskedMan : EnemyBase
     public override void Die()
     {
         isDead = true;
-        StartCoroutine(FlashSprite(EnemySpriteRenderer, "dead", .3f, .3f));
+        StartCoroutine(FlashSprite(enemySpriteRenderer, "dead", .3f, .3f));
         animator.Play(DEAD_ANIMATION);
+    }
+
+    public override IEnumerator FlashSprite(SpriteRenderer renderer, string colorType, float interval, float duration)
+    {
+        Color minColor = new Color(215f / 255f, 64f / 255f, 64f / 255f);
+        Color maxColor = new Color(255f / 255f, 196f / 255f, 196f / 255f);
+        Color endColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+
+        if (colorType == "damage")
+        {
+            minColor = new Color(215f / 255f, 64f / 255f, 64f / 255f);
+            maxColor = new Color(255f / 255f, 196f / 255f, 196f / 255f);
+            endColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+        }
+        else if (colorType == "dead")
+        {
+            minColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+            maxColor = new Color(70f / 255f, 70f / 255f, 70f / 255f);
+            endColor = new Color(50f / 255f, 50f / 255f, 50f / 255f);
+        }
+        float currentInterval = 0;
+        while (duration > 0)
+        {
+            float tColor = currentInterval / interval;
+            renderer.color = Color.Lerp(minColor, maxColor, tColor);
+            currentInterval += Time.deltaTime;
+
+            if (currentInterval >= interval)
+            {
+                Color temp = minColor;
+                minColor = maxColor;
+                maxColor = temp;
+                currentInterval = currentInterval - interval;
+            }
+            duration -= Time.deltaTime;
+            yield return null;
+        }
+
+        renderer.color = endColor;
     }
 }
