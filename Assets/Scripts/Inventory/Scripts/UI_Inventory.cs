@@ -71,8 +71,8 @@ public class UI_Inventory : MonoBehaviour
                 ItemWorld itemWorld = ItemWorld.DropItem(player.transform.position, duplicateItem);
                 
                 itemWorld.isPickable = false;
-                StartCoroutine(itemWorld.setPickableTrue(itemWorld));
                 StartCoroutine(itemWorld.pushItemAway(dropPosition, itemWorld));
+                StartCoroutine(itemWorld.setPickableTrue(itemWorld, 5));
 
             };
 

@@ -23,8 +23,6 @@ public class Slime : EnemyBase
 
     private void Update()
     {
-        print($"attk: {isAttacking} | isHit: {isEnemyHit}");
-
         if (isAttacking)
         {
             if (state == ATTACK02_ANIMATION)
@@ -40,7 +38,7 @@ public class Slime : EnemyBase
                 enemySpriteRenderer.transform.position = Vector2.Lerp(
                     enemySpriteRenderer.transform.position,
                     enemySpriteRenderer.transform.position + attackDirection,
-                    (attackJumpSpeed/2) * Time.deltaTime
+                    (attackJumpSpeed / 2) * Time.deltaTime
                 );
 
             }
@@ -100,11 +98,17 @@ public class Slime : EnemyBase
         isDead = true;
         enemySpeed = 0;
         animator.Play(DEAD_ANIMATION);
-        CommonAnimations.FadeOut(enemySpriteRenderer, 0.2f, 3f);
-        print("THIS MF DIED");
+        StartCoroutine(CommonAnimations.FadeOut(enemySpriteRenderer, 1.5f, 1.5f, Destroy));
         enemyCollider.enabled = false;
     }
 
+    public void Destroy()
+    {
+        Drop();
+        DestroyEnemy();
+    }
+
+    
     public override void AttackInput()
     {
         if (!isAttacking)

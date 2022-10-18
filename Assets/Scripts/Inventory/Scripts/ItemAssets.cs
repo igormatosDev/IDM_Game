@@ -17,5 +17,6 @@ public class ItemAssets : MonoBehaviour
 
     public Sprite swordSprite;
     public Sprite woodSprite;
+    public Sprite slimeSprite;
 
 }

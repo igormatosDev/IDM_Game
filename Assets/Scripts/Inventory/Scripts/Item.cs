@@ -10,7 +10,8 @@ public class Item
     public enum ItemType
     {
         Sword,
-        Wood
+        Wood,
+        Slime,
     }
 
     public ItemType itemType;
@@ -24,16 +25,7 @@ public class Item
             default:
             case ItemType.Sword: return ItemAssets.Instance.swordSprite;
             case ItemType.Wood: return ItemAssets.Instance.woodSprite;
-        }
-    }
-
-    public Color GetColor()
-    {
-        switch (itemType)
-        {
-            default:
-            case ItemType.Sword: return new Color(1, 1, 1);
-            case ItemType.Wood: return new Color(1, 0, 0);
+            case ItemType.Slime: return ItemAssets.Instance.slimeSprite;
         }
     }
 
@@ -42,7 +34,6 @@ public class Item
         switch (itemType)
         {
             default:
-            case ItemType.Wood:
                 return true;
             case ItemType.Sword:
                 return false;

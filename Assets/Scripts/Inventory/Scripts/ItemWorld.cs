@@ -27,6 +27,7 @@ public class ItemWorld : MonoBehaviour
     public static ItemWorld DropItem(Vector3 playerPosition, Item item)
     {
         ItemWorld itemWorld = SpawnItemWorld(playerPosition, item);
+
         return itemWorld;
     }
 
@@ -34,7 +35,7 @@ public class ItemWorld : MonoBehaviour
     {
         float distance = Vector3.Distance(itemWorld.transform.position, dropPosition);
         float speed = 3f;
-        while (distance > 0.5)
+        while (distance > 0.5f)
         {
 
             itemWorld.transform.position = Vector2.Lerp(itemWorld.transform.position, dropPosition, speed * Time.deltaTime);
@@ -45,10 +46,9 @@ public class ItemWorld : MonoBehaviour
         }
     }
 
-    public IEnumerator setPickableTrue(ItemWorld itemWorld)
+    public IEnumerator setPickableTrue(ItemWorld itemWorld, int waitSeconds)
     {
-        yield return new WaitForSeconds(5);
-
+        yield return new WaitForSeconds(waitSeconds);
         itemWorld.isPickable = true;
     }
 
@@ -63,7 +63,6 @@ public class ItemWorld : MonoBehaviour
     {
         this.item = item;
         spriteRenderer.sprite = item.GetSprite();
-        //light2D.color = item.GetColor();
         if (item.amount > 1)
         {
             textMeshPro.SetText(item.amount.ToString());

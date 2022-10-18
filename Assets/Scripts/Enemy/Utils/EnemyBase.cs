@@ -5,19 +5,22 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Processors;
+using static UnityEditor.Progress;
 
 public class EnemyBase : MonoBehaviour
 {
 
     // ENEMY CONTROLLERS
     // Enemy variables
+    [SerializeField] public LootTable lootTable;
+    [SerializeField] public GameObject Player;
+
     [SerializeField] public float attackPower = 3f;
     [SerializeField] public float enemySpeed = 1.2f;
     [SerializeField] public string fullname = "Enemy";
     [SerializeField] public int health = 25;
     [SerializeField] public int defense = 1;
 
-    public GameObject Player;
 
     // boolean Properties
     protected bool isDead = false;
@@ -33,6 +36,7 @@ public class EnemyBase : MonoBehaviour
     protected Rigidbody2D enemyRigidBody;
     protected SpriteRenderer enemySpriteRenderer;
     protected Collider2D enemyCollider;
+
     protected Vector2 enemyAttackedPosition;
     protected Vector3 defaultScale;
 
@@ -124,5 +128,24 @@ public class EnemyBase : MonoBehaviour
     {
         // Flashes sprite if you want to
         yield return null;
+    }
+
+    public void Drop()
+    {
+        // Drop item
+        List<Item> items = lootTable.getLoot();
+        Vector2 currPosition = enemySpriteRenderer.transform.position;
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            Vector2 dropPosition = VectorHelper.getRandomDirection(0.5f);
+            ItemWorld itemWorld = ItemWorld.DropItem(currPosition - dropPosition, items[i]);
+            //StartCoroutine(itemWorld.setPickableTrue(itemWorld, 3));
+            //StartCoroutine(itemWorld.pushItemAway(
+            //    (dropPosition - currPosition).normalized * 2, 
+            //    itemWorld
+            //));
+        }
+
     }
 }
