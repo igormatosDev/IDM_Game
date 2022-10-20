@@ -39,7 +39,10 @@ public class WeaponBase : MonoBehaviour
         if (collision.gameObject.tag == "Enemy" && isAttacking)
         {
             int damage = (int)Math.Round(UnityEngine.Random.Range(attackPowerStart + 1, attackPowerEnd + 1), 0);
-            EnemyBase enemy = collision.gameObject.GetComponentInChildren<EnemyBase>();
+
+            EnemyBase enemy = collision.GetComponentInParent<EnemyBase>();
+            if(!enemy)
+                enemy = collision.GetComponent<EnemyBase>();
             enemy.isHit(damage, knockbackForce, attackStartPointerPosition);
         }
     }

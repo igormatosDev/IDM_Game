@@ -14,19 +14,34 @@ public class ItemWorld : MonoBehaviour
     private TextMeshPro textMeshPro;
     public bool isPickable = true;
 
-    public static ItemWorld SpawnItemWorld(Vector3 position, Item item)
+    public static ItemWorld SpawnItemWorld(Vector3 position, Item item, Vector2 direction)
     {
         Transform transform = Instantiate(ItemAssets.Instance.pfItemWorld, position, Quaternion.identity);
 
         ItemWorld itemWorld = transform.GetComponent<ItemWorld>();
         itemWorld.SetItem(item);
+        float dropDuration = 0.8f;
+        if (direction != Vector2.zero)
+        {
+            itemWorld.StartCoroutine(Helpers.ThrowGameObject(
+                itemWorld.gameObject,
+                (Vector2)position + direction,
+                .5f,
+                5f,
+                dropDuration
+            ));
+        }
+        itemWorld.StartCoroutine(Helpers.CallActionAfterSec(dropDuration, () =>
+        {
+            itemWorld.GetComponent<Collider2D>().enabled = true;
+        }));
 
         return itemWorld;
     }
 
     public static ItemWorld DropItem(Vector3 playerPosition, Item item)
     {
-        ItemWorld itemWorld = SpawnItemWorld(playerPosition, item);
+        ItemWorld itemWorld = SpawnItemWorld(playerPosition, item, Helpers.GetRandomDirection(1));
 
         return itemWorld;
     }
@@ -80,7 +95,10 @@ public class ItemWorld : MonoBehaviour
 
     public void DestroySelf()
     {
-        Destroy(gameObject);
+        if (gameObject)
+        {
+            Destroy(gameObject);
+        }
     }
 
 }

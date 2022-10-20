@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Processors;
+using UnityEngine.SceneManagement;
+using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEditor.Progress;
 
 public class EnemyBase : MonoBehaviour
@@ -13,9 +16,10 @@ public class EnemyBase : MonoBehaviour
     // ENEMY CONTROLLERS
     // Enemy variables
     [SerializeField] public LootTable lootTable;
-    [SerializeField] public GameObject Player;
 
-    [SerializeField] public float attackPower = 3f;
+    [SerializeField] public int attackPower = 3;
+    [SerializeField] public float attackCooldown = 0.5f;
+    [SerializeField] public float attackKnockbackForce = 3f;
     [SerializeField] public float enemySpeed = 1.2f;
     [SerializeField] public string fullname = "Enemy";
     [SerializeField] public int health = 25;
@@ -23,34 +27,50 @@ public class EnemyBase : MonoBehaviour
 
 
     // boolean Properties
-    protected bool isDead = false;
-    protected bool isEnemyHit = false;
-    protected bool isImmune = false;
+    public bool isDead = false;
+    public bool isEnemyHit = false;
+    public bool isImmune = false;
+    public bool isAttacking = false;
+    public bool isInAttackCooldown = false;
 
+    // player weapon
     protected float hitKnockback = 0;
-    private float hitDuration = .2f;
-    private float hitPassedTime = 0;
 
     // Function variables
     protected Animator animator;
-    protected Rigidbody2D enemyRigidBody;
     protected SpriteRenderer enemySpriteRenderer;
     protected Collider2D enemyCollider;
+    protected Rigidbody2D enemyRigidBody;
+    protected GameObject Player;
 
+    public Vector3 defaultScale;
+    public Vector2 movementInput = Vector2.zero;
+
+    protected int maxHealth;
     protected Vector2 enemyAttackedPosition;
-    protected Vector3 defaultScale;
-
-    protected Vector2 movementInput = Vector2.zero;
     protected Vector2 pointerInput = Vector2.zero;
 
 
-    private void Start()
+    protected virtual void Start()
     {
+        maxHealth = health;
         animator = GetComponent<Animator>();
         enemyRigidBody = GetComponent<Rigidbody2D>();
         enemySpriteRenderer = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<Collider2D>();
         defaultScale = transform.localScale;
+        StartCoroutine(SetPlayer(this));
+    }
+
+
+    protected virtual void Update()
+    {
+        // Health Bar controller
+        HealthBarController healthBar = gameObject.GetComponentInChildren<HealthBarController>(true);
+        if (healthBar)
+        {
+            healthBar.manageHealthBar(health, maxHealth);
+        }
     }
 
     public void MovementInput(Vector2 input)
@@ -71,16 +91,9 @@ public class EnemyBase : MonoBehaviour
 
     public void Movement()
     {
-        if (isEnemyHit)
+        if (isEnemyHit && !isAttacking)
         {
-            transform.position = Vector2.MoveTowards(transform.position, enemyAttackedPosition, hitKnockback * Time.deltaTime);
-            hitPassedTime += Time.deltaTime;
-
-            if (hitPassedTime >= hitDuration)
-            {
-                isEnemyHit = false;
-            }
-
+            transform.position = Vector2.MoveTowards(transform.position, enemyAttackedPosition, hitKnockback / 5 * Time.deltaTime);
         }
         else
         {
@@ -101,11 +114,33 @@ public class EnemyBase : MonoBehaviour
 
             if (health > 0)
             {
-                StartCoroutine(FlashSprite(enemySpriteRenderer, "damage", .3f, .3f));
                 enemyAttackedPosition = attackStartPointerPosition;
-                hitPassedTime = 0;
                 hitKnockback = knockback;
                 isEnemyHit = true;
+                isImmune = true;
+
+                float attackDuration = .3f;
+
+                StartCoroutine(FlashSprite(
+                    enemySpriteRenderer,
+                    "damage",
+                    .3f,
+                    attackDuration
+                ));
+                StartCoroutine(Helpers.PushGameObject(
+                    this.gameObject,
+                    attackStartPointerPosition,
+                    knockback,
+                    attackDuration
+                ));
+                StartCoroutine(Helpers.CallActionAfterSec(
+                    attackDuration, () =>
+                    {
+                        isEnemyHit = false;
+                        isImmune = false;
+                    }
+                ));
+
             }
             else
             {
@@ -116,6 +151,7 @@ public class EnemyBase : MonoBehaviour
 
     public virtual void Die()
     {
+        Drop();
         isDead = true;
     }
 
@@ -138,7 +174,7 @@ public class EnemyBase : MonoBehaviour
 
         for (int i = 0; i < items.Count; i++)
         {
-            Vector2 dropPosition = VectorHelper.getRandomDirection(0.5f);
+            Vector2 dropPosition = Helpers.GetRandomDirection(0.5f);
             ItemWorld itemWorld = ItemWorld.DropItem(currPosition - dropPosition, items[i]);
             //StartCoroutine(itemWorld.setPickableTrue(itemWorld, 3));
             //StartCoroutine(itemWorld.pushItemAway(
@@ -148,4 +184,37 @@ public class EnemyBase : MonoBehaviour
         }
 
     }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (this.isAttacking && collision.tag == "PlayerSprite")
+        {
+            PlayerSpriteController playerSprite = collision.GetComponent<PlayerSpriteController>();
+            PlayerController player = playerSprite.GetComponentInParent<PlayerController>();
+            player.isHit(this.attackPower, this.attackKnockbackForce, this.transform.position);
+        }
+    }
+
+
+    public static IEnumerator SetPlayer(EnemyBase enemy)
+    {
+        PlayerController tMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = enemy.transform.position;
+        foreach (PlayerController t in SceneVariables.FindObjectsOfType<PlayerController>())
+        {
+            float dist = Vector3.Distance(t.transform.position, currentPos);
+            if (dist < minDist)
+            {
+                tMin = t;
+                minDist = dist;
+            }
+        }
+        enemy.Player = tMin.gameObject;
+        yield return new WaitForSeconds(10f);
+        SetPlayer(enemy);
+    }
+
 }

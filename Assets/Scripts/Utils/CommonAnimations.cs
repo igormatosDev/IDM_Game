@@ -30,5 +30,40 @@ public static class CommonAnimations
         renderer.color = endColor;
         if(CallbackMethod != null)
             CallbackMethod();
+
+    }
+
+    public static IEnumerator FlashSprite(SpriteRenderer renderer, Color minColor,  Color maxColor,  Color endColor,  
+                                          float interval, float duration)
+    {
+        float currentInterval = 0;
+        while (duration > 0)
+        {
+            float tColor = currentInterval / interval;
+            renderer.color = Color.Lerp(minColor, maxColor, tColor);
+            currentInterval += Time.deltaTime;
+
+            if (currentInterval >= interval)
+            {
+                Color temp = minColor;
+                minColor = maxColor;
+                maxColor = temp;
+                currentInterval = currentInterval - interval;
+            }
+            duration -= Time.deltaTime;
+            yield return null;
+        }
+
+        renderer.color = endColor;
+    }
+
+    public static IEnumerator PerformKnockback(Transform objectTransform, Vector3 direction, float KnockbackForce, float duration)
+    {
+        while(duration > 0)
+        {
+            objectTransform.position = Vector2.MoveTowards(objectTransform.position, objectTransform.position + direction, KnockbackForce * Time.deltaTime);
+            duration -= Time.deltaTime;
+            yield return null;
+        }
     }
 }

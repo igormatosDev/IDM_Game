@@ -25,7 +25,6 @@ public class GridController : MonoBehaviour
             {
                 var spawned_title = Instantiate(ruleTilePrefab, new Vector3(i, j, -10), Quaternion.identity);
                 spawned_title.name = $"Tile ({i},{j})";
-                print(spawned_title.name);
             }
         }
     }

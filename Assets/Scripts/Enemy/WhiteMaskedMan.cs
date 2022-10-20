@@ -10,9 +10,9 @@ public class WhiteMaskedMan : EnemyBase
     private const string RUN_ANIMATION = "Run";
     private const string DEAD_ANIMATION = "Dead";
 
-    private void Update()
+    protected override void Update()
     {
-        
+        base.Update();
         if (!isDead)
         {
             Movement();
