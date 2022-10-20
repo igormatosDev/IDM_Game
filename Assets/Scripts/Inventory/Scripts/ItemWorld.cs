@@ -39,9 +39,13 @@ public class ItemWorld : MonoBehaviour
         return itemWorld;
     }
 
-    public static ItemWorld DropItem(Vector3 playerPosition, Item item)
+    public static ItemWorld DropItem(Vector3 playerPosition, Item item, Vector2 dropDirection)
     {
-        ItemWorld itemWorld = SpawnItemWorld(playerPosition, item, Helpers.GetRandomDirection(1));
+        if(dropDirection == Vector2.zero)
+        {
+            dropDirection = Helpers.GetRandomDirection(1);
+        }
+        ItemWorld itemWorld = SpawnItemWorld(playerPosition, item, dropDirection);
 
         return itemWorld;
     }

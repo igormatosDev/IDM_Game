@@ -175,7 +175,7 @@ public class EnemyBase : MonoBehaviour
         for (int i = 0; i < items.Count; i++)
         {
             Vector2 dropPosition = Helpers.GetRandomDirection(0.5f);
-            ItemWorld itemWorld = ItemWorld.DropItem(currPosition - dropPosition, items[i]);
+            ItemWorld itemWorld = ItemWorld.DropItem(currPosition - dropPosition, items[i], Vector2.zero);
             //StartCoroutine(itemWorld.setPickableTrue(itemWorld, 3));
             //StartCoroutine(itemWorld.pushItemAway(
             //    (dropPosition - currPosition).normalized * 2, 

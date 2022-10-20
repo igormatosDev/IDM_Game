@@ -67,11 +67,11 @@ public class UI_Inventory : MonoBehaviour
                 Item duplicateItem = new Item { itemType = item.itemType, amount = item.amount };
                 inventory.RemoveItem(item);
 
-                Vector2 dropPosition = (Vector2)player.transform.position + (player.GetLookDirection().normalized * 3f);
-                ItemWorld itemWorld = ItemWorld.DropItem(player.transform.position, duplicateItem);
+                Vector2 dropDirection = player.GetLookDirection().normalized;
+                ItemWorld itemWorld = ItemWorld.DropItem(player.transform.position, duplicateItem, dropDirection);
                 
                 itemWorld.isPickable = false;
-                StartCoroutine(itemWorld.pushItemAway(dropPosition, itemWorld));
+                //StartCoroutine(itemWorld.pushItemAway(dropPosition, itemWorld));
                 StartCoroutine(itemWorld.setPickableTrue(itemWorld, 5));
 
             };
