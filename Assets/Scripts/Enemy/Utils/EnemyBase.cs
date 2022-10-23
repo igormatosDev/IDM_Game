@@ -9,6 +9,7 @@ using UnityEngine.InputSystem.Processors;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEditor.Progress;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -24,6 +25,9 @@ public class EnemyBase : MonoBehaviour
     [SerializeField] public string fullname = "Enemy";
     [SerializeField] public int health = 25;
     [SerializeField] public int defense = 1;
+    
+    [SerializeField] public int healthRegen = 1;
+    [SerializeField] public float healthRegenDelay = 5;
 
 
     // boolean Properties
@@ -32,6 +36,8 @@ public class EnemyBase : MonoBehaviour
     public bool isImmune = false;
     public bool isAttacking = false;
     public bool isInAttackCooldown = false;
+    public bool isIdleing = false;
+    public bool isRegeneratingHealth = false;
 
     // player weapon
     protected float hitKnockback = 0;
@@ -45,6 +51,7 @@ public class EnemyBase : MonoBehaviour
 
     public Vector3 defaultScale;
     public Vector2 movementInput = Vector2.zero;
+    public Vector2 idleMovementInput = Vector2.zero;
 
     protected int maxHealth;
     protected Vector2 enemyAttackedPosition;
@@ -141,6 +148,12 @@ public class EnemyBase : MonoBehaviour
                     }
                 ));
 
+                if (!isRegeneratingHealth)
+                {
+                    isRegeneratingHealth = true;
+                    StartCoroutine(RegenerateHealth(this));
+                }
+
             }
             else
             {
@@ -175,12 +188,7 @@ public class EnemyBase : MonoBehaviour
         for (int i = 0; i < items.Count; i++)
         {
             Vector2 dropPosition = Helpers.GetRandomDirection(0.5f);
-            ItemWorld itemWorld = ItemWorld.DropItem(currPosition - dropPosition, items[i], Vector2.zero);
-            //StartCoroutine(itemWorld.setPickableTrue(itemWorld, 3));
-            //StartCoroutine(itemWorld.pushItemAway(
-            //    (dropPosition - currPosition).normalized * 2, 
-            //    itemWorld
-            //));
+            ItemWorld.DropItem(currPosition - dropPosition, items[i], Vector2.zero);
         }
 
     }
@@ -203,7 +211,7 @@ public class EnemyBase : MonoBehaviour
         PlayerController tMin = null;
         float minDist = Mathf.Infinity;
         Vector3 currentPos = enemy.transform.position;
-        foreach (PlayerController t in SceneVariables.FindObjectsOfType<PlayerController>())
+        foreach (PlayerController t in FindObjectsOfType<PlayerController>())
         {
             float dist = Vector3.Distance(t.transform.position, currentPos);
             if (dist < minDist)
@@ -212,9 +220,27 @@ public class EnemyBase : MonoBehaviour
                 minDist = dist;
             }
         }
-        enemy.Player = tMin.gameObject;
+        enemy.Player = tMin ? tMin.gameObject : null;
         yield return new WaitForSeconds(10f);
         SetPlayer(enemy);
     }
 
+    protected static IEnumerator RegenerateHealth(EnemyBase enemy)
+    {
+        int enemyLeftHealthToHeal = enemy.maxHealth - enemy.health;
+        //print($"enemy.healthRegen: {enemy.healthRegen} || enemyLeftHealthToHeal: {enemyLeftHealthToHeal}");
+
+        if (enemyLeftHealthToHeal == 0)
+        {
+            enemy.isRegeneratingHealth = false;
+            yield break;
+        }
+        else
+        {
+            // Regenerates life
+            yield return new WaitForSeconds(enemy.healthRegenDelay);
+            enemy.health += (enemy.healthRegen > enemyLeftHealthToHeal) ? enemyLeftHealthToHeal : enemy.healthRegen; 
+        }
+        yield return RegenerateHealth(enemy);
+    }
 }

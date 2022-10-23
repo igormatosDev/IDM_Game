@@ -2,35 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField]
-    private List<SteeringBehaviour> steeringBehaviours;
+    [SerializeField] private List<SteeringBehaviour> steeringBehaviours;
+    [SerializeField] private List<Detector> detectors;
 
-    [SerializeField]
-    private List<Detector> detectors;
+    [SerializeField] private AIData aiData;
 
-    [SerializeField]
-    private AIData aiData;
+    [SerializeField] private float detectionDelay = 0.05f, aiUpdateDelay = 0.06f, attackDelay = 1f;
+    [SerializeField] private float attackDistance = 0.5f;
+    
+    [SerializeField] private float idleDelay = 5f;
+    [SerializeField] private float idleMovementDuration = .55f;
+    [SerializeField] private int idleVariationPercent = 10;
+    [SerializeField] private int idleMovementVariationPercent = 10;
 
-    [SerializeField]
-    private float detectionDelay = 0.05f, aiUpdateDelay = 0.06f, attackDelay = 1f;
-
-    [SerializeField]
-    private float attackDistance = 0.5f;
+    [SerializeField] private Vector2 movementInput;
+    [SerializeField] private ContextSolver movementDirectionSolver;
 
     //Inputs sent from the Enemy AI to the Enemy controller
     public UnityEvent OnAttackPressed;
     public UnityEvent<Vector2> OnMovementInput, OnPointerInput;
 
-    [SerializeField]
-    private Vector2 movementInput;
 
-    [SerializeField]
-    private ContextSolver movementDirectionSolver;
 
     bool following = false;
+    bool idle = false;
 
     private void Start()
     {
@@ -63,6 +62,25 @@ public class EnemyAI : MonoBehaviour
         {
             //Target acquisition logic
             aiData.currentTarget = aiData.targets[0];
+        }
+        else
+        {
+            if (idle == false)
+            {
+                idle = true;
+                Vector2 aiMovementAvoid = (movementDirectionSolver.GetDirectionToAvoid(steeringBehaviours, aiData) * -1);
+                Vector2 moveDirection = (Helpers.GetRandomDirection().normalized) + aiMovementAvoid;
+                
+                float _idleDelay = Helpers.GetRandomFloat(
+                    idleDelay * (1 - idleVariationPercent / 100), 
+                    idleDelay * (1 + idleVariationPercent / 100)
+                );
+                float _idleMovementDuration = Helpers.GetRandomFloat(
+                    idleMovementDuration * (1 - idleMovementVariationPercent / 100), 
+                    idleMovementDuration * (1 + idleMovementVariationPercent / 100)
+                );
+                StartCoroutine(IdleMovement(_idleDelay, _idleMovementDuration, moveDirection.normalized));
+            }
         }
         //Moving the Agent
         OnMovementInput?.Invoke(movementInput);
@@ -99,6 +117,20 @@ public class EnemyAI : MonoBehaviour
             }
 
         }
+    }
 
+
+    public IEnumerator IdleMovement(float idleDuration, float moveDuration, Vector2 moveDirection)
+    {
+        // MOVEMENT
+        movementInput = moveDirection;
+        //print($"Event movement Started to {moveDirection} for {moveDuration}s");
+        yield return new WaitForSeconds(moveDuration);
+
+        // IDLE
+        //print($"Event Idle Started for {idleDuration}s");
+        movementInput = Vector2.zero;
+        yield return new WaitForSeconds(idleDuration);
+        idle = false;
     }
 }

@@ -17,7 +17,7 @@ public class Helpers
     }
 
 
-    public static Vector2 GetRandomDirection(float length)
+    public static Vector2 GetRandomDirection(float length=1)
     {
         float x = UnityEngine.Random.Range(-1f, 1f);
         float y = UnityEngine.Random.Range(-1f, 1f);

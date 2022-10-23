@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!95 &6093737487850597725
 Animator:
   serializedVersion: 4
@@ -120,7 +120,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.00000019024169, y: -0.5958629}
+  m_Offset: {x: -0.00000019024169, y: -0.09}
   m_Size: {x: 0.96932554, y: 0.80827725}
   m_Direction: 1
 --- !u!114 &6093737487850597728
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 2
-  agentColliderSize: 0.6
+  agentColliderSize: 2
   showGizmo: 0
 --- !u!1 &6093737488283559484
 GameObject:
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   showGizmos: 0
-  rayLength: 20
+  rayLength: 10
 --- !u!1 &6093737488627284299
 GameObject:
   m_ObjectHideFlags: 0
@@ -520,15 +520,20 @@ MonoBehaviour:
   attackKnockbackForce: 6
   enemySpeed: 3
   fullname: Slime
-  health: 10
+  health: 25
   defense: 1
+  healthRegen: 2
+  healthRegenDelay: 3
   isDead: 0
   isEnemyHit: 0
   isImmune: 0
   isAttacking: 0
   isInAttackCooldown: 0
+  isIdleing: 0
+  isRegeneratingHealth: 0
   defaultScale: {x: 0, y: 0, z: 0}
   movementInput: {x: 0, y: 0}
+  idleMovementInput: {x: 0, y: 0}
   attackJumpSpeed: 4.5
   attackFallSpeed: 1.5
 --- !u!114 &6093737489410248565
@@ -569,6 +574,12 @@ MonoBehaviour:
   aiUpdateDelay: 0.06
   attackDelay: 0
   attackDistance: 3
+  idleDelay: 5
+  idleMovementDuration: 0.75
+  idleVariationPercent: 10
+  idleMovementVariationPercent: 10
+  movementInput: {x: 0, y: 0}
+  movementDirectionSolver: {fileID: 6093737488483112139}
   OnAttackPressed:
     m_PersistentCalls:
       m_Calls:
@@ -614,8 +625,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  movementInput: {x: 0, y: 0}
-  movementDirectionSolver: {fileID: 6093737488483112139}
 --- !u!1 &7045873495075878615
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,7 +852,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9178392838451481588}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: 0.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

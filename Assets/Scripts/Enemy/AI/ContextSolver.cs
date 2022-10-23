@@ -16,7 +16,6 @@ public class ContextSolver : MonoBehaviour
     {
         interestGizmo = new float[8];
     }
-
     public Vector2 GetDirectionToMove(List<SteeringBehaviour> behaviours, AIData aiData)
     {
         float[] danger = new float[8];
@@ -32,7 +31,9 @@ public class ContextSolver : MonoBehaviour
         for (int i = 0; i < 8; i++)
         {
             interest[i] = Mathf.Clamp01(interest[i] - danger[i]);
+            //print($"interest[{i}]: {interest[i]} | danger[{i}]: {danger[i]}");
         }
+        
 
         interestGizmo = interest;
 
@@ -42,12 +43,31 @@ public class ContextSolver : MonoBehaviour
         {
             outputDirection += Directions.eightDirections[i] * interest[i];
         }
-
         outputDirection.Normalize();
-
         resultDirection = outputDirection;
 
         //return the selected movement direction
+        return resultDirection;
+    }
+
+    public Vector2 GetDirectionToAvoid(List<SteeringBehaviour> behaviours, AIData aiData)
+    {
+        // I made this other version of GetDirectionToMove but this only finds the DANGER ZONES, so we can calculate direction to avoid moving
+
+        float[] danger = new float[8];
+        float[] interest = new float[8];
+
+        foreach (SteeringBehaviour behaviour in behaviours)
+        {
+            (danger, interest) = behaviour.GetSteering(danger, interest, aiData);
+        }
+        Vector2 outputDirection = Vector2.zero;
+        for (int i = 0; i < 8; i++)
+        {
+            outputDirection += Directions.eightDirections[i] * Mathf.Clamp01(danger[i]);
+        }
+        outputDirection.Normalize();
+        resultDirection = outputDirection;
         return resultDirection;
     }
 
