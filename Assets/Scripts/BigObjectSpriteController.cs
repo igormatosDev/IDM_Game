@@ -17,21 +17,10 @@ public class BigObjectSpriteController : MonoBehaviour
         ObjectSpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    private void Update()
-    {
-        if (PlayerSpriteRenderer.transform.position.y - 0.5f < transform.position.y)
-        {
-            ObjectSpriteRenderer.sortingOrder = -1;
-        }
-        else
-        {
-            ObjectSpriteRenderer.sortingOrder = 3;
-        }
-    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player")
+        if (collision.gameObject.name == "SpriteController")
         {
             StartCoroutine(ToggleSprite(ObjectSpriteRenderer, startColor, endColor, animationDuration));
         }
@@ -40,7 +29,7 @@ public class BigObjectSpriteController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "Player")
+        if (collision.gameObject.name == "SpriteController")
         {
             StartCoroutine(ToggleSprite(ObjectSpriteRenderer, ObjectSpriteRenderer.color, startColor, animationDuration));
         }

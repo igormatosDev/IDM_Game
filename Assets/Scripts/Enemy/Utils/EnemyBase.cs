@@ -239,7 +239,10 @@ public class EnemyBase : MonoBehaviour
         {
             // Regenerates life
             yield return new WaitForSeconds(enemy.healthRegenDelay);
-            enemy.health += (enemy.healthRegen > enemyLeftHealthToHeal) ? enemyLeftHealthToHeal : enemy.healthRegen; 
+            if (!enemy.isDead)
+            {
+                enemy.health += (enemy.healthRegen > enemyLeftHealthToHeal) ? enemyLeftHealthToHeal : enemy.healthRegen; 
+            }
         }
         yield return RegenerateHealth(enemy);
     }
