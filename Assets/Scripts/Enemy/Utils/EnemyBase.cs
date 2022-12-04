@@ -124,7 +124,7 @@ public class EnemyBase : MonoBehaviour
                 enemyAttackedPosition = attackStartPointerPosition;
                 hitKnockback = knockback;
                 isEnemyHit = true;
-                isImmune = true;
+                //isImmune = true;
 
                 float attackDuration = .3f;
 
@@ -144,7 +144,7 @@ public class EnemyBase : MonoBehaviour
                     attackDuration, () =>
                     {
                         isEnemyHit = false;
-                        isImmune = false;
+                        //isImmune = false;
                     }
                 ));
 

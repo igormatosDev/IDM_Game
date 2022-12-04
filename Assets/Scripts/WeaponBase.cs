@@ -3,49 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Unity.IO.LowLevel.Unsafe;
+using System.Data.SqlTypes;
+using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class WeaponBase : MonoBehaviour
 {
+
+
     // WEAPON CONTROLLERS
-    public float attackDistance;
-    public float attackMovePerFrameIn;
-    public float attackMovePerFrameOut;
     public float attackRotationSpeedIn;
-    public float attackRotationSpeedOut;
-
-
     public float knockbackForce;
     public float attackPowerStart;
     public float attackPowerEnd;
     public GameObject player;
     public GameObject weapon;
-    public Animator weaponAnimator;
 
 
 
 
     // Constants to all Weapons
     public bool isAttacking = false;
-    public bool isEndingAttack = false;
-    protected Vector2 attackStartPointerPosition;
+    public Vector2 attackStartPointerPosition;
     protected Vector3 attackAxis = Vector3.forward;
     protected Vector3 attackDirection;
+
+    #nullable enable
+    [SerializeField] private GameObject? prefabProjectile;
+    [SerializeField] private float projectileSpeed = 0;
+    #nullable disable
 
     public Vector2 pointerPosition { get; set; }
 
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Enemy" && isAttacking)
-        {
-            int damage = (int)Math.Round(UnityEngine.Random.Range(attackPowerStart + 1, attackPowerEnd + 1), 0);
-
-            EnemyBase enemy = collision.GetComponentInParent<EnemyBase>();
-            if(!enemy)
-                enemy = collision.GetComponent<EnemyBase>();
-            enemy.isHit(damage, knockbackForce, attackStartPointerPosition);
-        }
-    }
 
     protected virtual void AttackVariables()
     {
@@ -60,10 +50,39 @@ public class WeaponBase : MonoBehaviour
         if (!isAttacking)
         {
             AttackVariables();
+           
             isAttacking = true;
-            isEndingAttack = false;
+            //isEndingAttack = false;
             attackStartPointerPosition = pointerPosition;
             attackDirection = ((Vector3)attackStartPointerPosition - player.transform.position).normalized;
+            if (prefabProjectile != null)
+            {
+                SpawnProjectile(prefabProjectile, player.transform.position, attackDirection, projectileSpeed, this);
+            }
         }
     }
+
+
+
+    public static GameObject SpawnProjectile(GameObject prefabProjectile, Vector3 position, Vector2 direction, float speed, WeaponBase weapon)
+    {
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg ;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        GameObject projectile = Instantiate(prefabProjectile.gameObject, position, rotation);
+
+        
+
+        projectile.transform.rotation = rotation;
+
+
+        SlashAnimation _projectile = projectile.GetComponent<SlashAnimation>();
+        // defining parameters
+        _projectile.projectileSpeed = speed;
+        _projectile.direction = direction;
+        _projectile.weapon = weapon; 
+
+        return projectile;
+    }
+
 }
