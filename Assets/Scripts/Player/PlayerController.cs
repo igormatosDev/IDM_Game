@@ -121,14 +121,14 @@ public class PlayerController : MonoBehaviour
 
                 StartCoroutine(Helpers.CallActionAfterSec(2f, setImmuneFalse));
 
-                StartCoroutine(CommonAnimations.FlashSprite(
-                    spriteController.spriteRenderer,
-                    Helpers.GetColorHex("#FFF0F0"),
-                    Helpers.GetColorHex("#FFC8C8"),
-                    Helpers.GetColorHex("#FFFFFF"),
-                    .15f,
-                    2f
-                ));
+                //StartCoroutine(CommonAnimations.FlashSprite(
+                //    spriteController.spriteRenderer,
+                //    Helpers.GetColorHex("#FFF0F0"),
+                //    Helpers.GetColorHex("#FFC8C8"),
+                //    Helpers.GetColorHex("#FFFFFF"),
+                //    .15f,
+                //    2f
+                //));
 
                 StartCoroutine(CommonAnimations.PerformKnockback(
                     this.transform,

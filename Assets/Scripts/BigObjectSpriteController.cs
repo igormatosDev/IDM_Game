@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class BigObjectSpriteController : MonoBehaviour
 {
-    public SpriteRenderer PlayerSpriteRenderer;
     public float animationDuration;
     public Color startColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
     public Color endColor = new Color(100f / 255f, 100f / 255f, 100f / 255f, 250f / 255f);
-
     private SpriteRenderer ObjectSpriteRenderer;
+    private bool isFaded = false;
 
     private void Start()
     {
@@ -20,8 +19,9 @@ public class BigObjectSpriteController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "SpriteController")
+        if (!isFaded && collision.gameObject.name == "SpriteController" || collision.gameObject.tag == "Enemy") 
         {
+            isFaded=true;
             StartCoroutine(ToggleSprite(ObjectSpriteRenderer, startColor, endColor, animationDuration));
         }
     }
@@ -29,9 +29,10 @@ public class BigObjectSpriteController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.name == "SpriteController")
+        if (isFaded && collision.gameObject.name == "SpriteController" || collision.gameObject.tag == "Enemy")
         {
             StartCoroutine(ToggleSprite(ObjectSpriteRenderer, ObjectSpriteRenderer.color, startColor, animationDuration));
+            isFaded = false;
         }
     }
 

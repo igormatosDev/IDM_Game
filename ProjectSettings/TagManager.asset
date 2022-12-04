@@ -61,3 +61,6 @@ TagManager:
   - name: Objects
     uniqueID: 3295751895
     locked: 0
+  - name: Cursor
+    uniqueID: 2594213275
+    locked: 0

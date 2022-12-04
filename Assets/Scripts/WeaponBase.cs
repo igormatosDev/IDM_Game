@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Unity.IO.LowLevel.Unsafe;
 
 public class WeaponBase : MonoBehaviour
 {
@@ -16,7 +17,6 @@ public class WeaponBase : MonoBehaviour
     public float knockbackForce;
     public float attackPowerStart;
     public float attackPowerEnd;
-    public SpriteRenderer playerSpriteController;
     public GameObject player;
     public GameObject weapon;
     public Animator weaponAnimator;
@@ -47,10 +47,19 @@ public class WeaponBase : MonoBehaviour
         }
     }
 
+    protected virtual void AttackVariables()
+    {
+        // This method is to populate anything based on weapon type
+        // at the moment of the attack
+
+        // override it in the weapon script
+    }
+
     public void PerformAnAttack()
     {
         if (!isAttacking)
         {
+            AttackVariables();
             isAttacking = true;
             isEndingAttack = false;
             attackStartPointerPosition = pointerPosition;

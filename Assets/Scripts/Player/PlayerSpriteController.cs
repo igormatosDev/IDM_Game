@@ -7,113 +7,62 @@ using static UnityEngine.ParticleSystem;
 
 public class PlayerSpriteController : MonoBehaviour
 {
-    private Animator animator;
-    private Vector3 defaultScale;
-
-    public SpriteRenderer spriteRenderer;
     public ParticleSystem dustWalkParticles;
 
-    // Animation Constants
-    private string state = IDLE_SIDE_ANIMATION;
-    // Idle
-    private const string IDLE_SIDE_ANIMATION = "PlayerIdle-X";
-    private const string IDLE_DOWN_ANIMATION = "PlayerIdle-Y0";
-    private const string IDLE_UP_ANIMATION = "PlayerIdle-Y1";
-    // Run
-    private const string RUN_SIDE_ANIMATION = "PlayerRun-X";
-    private const string RUN_DOWN_ANIMATION = "PlayerRun-Y0";
-    private const string RUN_UP_ANIMATION = "PlayerRun-Y1";
+    private Animator faceAnimator;
+    private Animator helmetAnimator;
+    private Animator chestAnimator;
+    private Animator legsAnimator;
+
 
 
     private void Start()
     {
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        defaultScale = transform.localScale;
+        faceAnimator = GameObject.Find("Face").GetComponent<Animator>();
+        helmetAnimator = GameObject.Find("Helmet").GetComponent<Animator>();
+        chestAnimator = GameObject.Find("Chest").GetComponent<Animator>();
+        legsAnimator = GameObject.Find("Legs").GetComponent<Animator>();
+
+        
 
     }
 
     public void AnimationController(Vector2 lookDirection, Vector2 velocity, bool isAttacking)
     {
-        if (lookDirection.x > -1 && lookDirection.x < 1)
+        // SIDE
+        if (!isAttacking)
         {
-            if(lookDirection.y > 0)
+            if (lookDirection.x < 0)
             {
-                // UP
-                state = AnimationDecider("up", velocity);
+                // Looking left
+                transform.localScale = new Vector2(-1, 1);
             }
             else
             {
-                // DOWN
-                state = AnimationDecider("down", velocity);
+                // Looking right
+                transform.localScale = new Vector2(1, 1);
             }
         }
-        else
-        {
-            // SIDE
-            state = AnimationDecider("side", velocity);
-            if (!isAttacking)
-            {
-                if (lookDirection.x < 0)
-                {
-                    // Looking left
-                    transform.localScale = new Vector2(-1, 1);
-                }
-                else
-                {
-                    // Looking right
-                    transform.localScale = new Vector2(1, 1);
-                }
-            }
 
-        }
-
-        animator.Play(state);
-    }
-
-    private string AnimationDecider(string direction, Vector2 velocity)
-    {
         var particleEmission = dustWalkParticles.emission;
-
         if (Mathf.Abs(velocity.x) > 2f || Mathf.Abs(velocity.y) > 2f)
         {
             particleEmission.enabled = true;
-            // Run
-            switch (direction){
-                case "up":
-                    return RUN_UP_ANIMATION;
 
-                case "down":
-                    if(velocity.y < -1f)
-                    {
-                        return RUN_DOWN_ANIMATION;
-                    }
-                    else
-                    {
-                        return RUN_SIDE_ANIMATION;
-                    }
-
-                default:
-                    return RUN_SIDE_ANIMATION;
-            }
+            faceAnimator.SetBool("isRunning", true);
+            helmetAnimator.SetBool("isRunning", true);
+            chestAnimator.SetBool("isRunning", true);
+            legsAnimator.SetBool("isRunning", true);
 
         }
         else
         {
             particleEmission.enabled = false;
-            // Idle
-            switch (direction)
-            {
-                case "up":
-                    return IDLE_UP_ANIMATION;
 
-                case "down":
-                    return IDLE_DOWN_ANIMATION;
-
-                default:
-                    return IDLE_SIDE_ANIMATION;
-            }
-
+            faceAnimator.SetBool("isRunning", false);
+            helmetAnimator.SetBool("isRunning", false);
+            chestAnimator.SetBool("isRunning", false);
+            legsAnimator.SetBool("isRunning", false);
         }
     }
 }

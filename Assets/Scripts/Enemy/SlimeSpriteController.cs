@@ -56,7 +56,6 @@ public class SlimeSpriteController : MonoBehaviour
     {
         slime.isAttacking = false;
         slime.isInAttackCooldown = true;
-        slime.attackCooldown *= Helpers.GetRandomFloat(0.95f, 1.15f);
         StartCoroutine(Helpers.CallActionAfterSec(slime.attackCooldown, () => { slime.isInAttackCooldown = false; }));
         state = IDLE_ANIMATION;
     }
