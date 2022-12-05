@@ -36,7 +36,6 @@ public class WeaponBase : MonoBehaviour
     public Vector2 pointerPosition { get; set; }
 
 
-
     protected virtual void AttackVariables()
     {
         // This method is to populate anything based on weapon type
@@ -47,6 +46,7 @@ public class WeaponBase : MonoBehaviour
 
     public void PerformAnAttack()
     {
+        if (Helpers.isPaused()) { return; };
         if (!isAttacking)
         {
             AttackVariables();
@@ -63,18 +63,13 @@ public class WeaponBase : MonoBehaviour
     }
 
 
-
     public static GameObject SpawnProjectile(GameObject prefabProjectile, Vector3 position, Vector2 direction, float speed, WeaponBase weapon)
     {
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg ;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         GameObject projectile = Instantiate(prefabProjectile.gameObject, position, rotation);
-
-        
-
         projectile.transform.rotation = rotation;
-
 
         SlashAnimation _projectile = projectile.GetComponent<SlashAnimation>();
         // defining parameters

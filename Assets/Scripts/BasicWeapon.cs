@@ -30,12 +30,11 @@ public class BasicWeapon : WeaponBase
     {
         weaponAttackZ = weapon.transform.rotation.z;
         weaponAttackZtraveled = 0;
-
-
     }
 
     private void Update()
     {
+        if (Helpers.isPaused()) { return; };
         if (isAttacking)
         {
             var currZ = weapon.transform.rotation.z;

@@ -4,8 +4,11 @@ using System;
 
 public class Helpers
 {
-
-
+    public static bool isPaused()
+    {
+        return Time.timeScale == 0;
+    }
+    
     public static int GetRandomInt(int start, int end)
     {
         System.Random random = new System.Random();

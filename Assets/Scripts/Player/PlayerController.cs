@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     public BasicWeapon weapon;
     private Vector2 pointerInput, movementInput, lookDirection;
     private PlayerSpriteController spriteController;
-    [SerializeField] InputActionReference movement, attack, pointerPosition;
+    [SerializeField] InputActionReference movement, attack, pause, pointerPosition;
 
 
     void Start()
@@ -40,10 +40,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Helpers.isPaused()) { return; };
         Movement();
         lookDirection = pointerInput - (Vector2)transform.position;
         spriteController.AnimationController(lookDirection, rigidbody2d.velocity, weapon.isAttacking);
-
     }
 
 
@@ -72,7 +72,6 @@ public class PlayerController : MonoBehaviour
         // pointer actions
         pointerInput = GetPointerInput();
         weapon.pointerPosition = pointerInput;
-
         
         // movement actions
         movementInput = movement.action.ReadValue<Vector2>();

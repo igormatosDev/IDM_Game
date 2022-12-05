@@ -73,8 +73,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1314622127
-  m_SortingLayer: 2
+  m_SortingLayerID: 217021585
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: -439348481, guid: df6ff44ed4b36504c8537062199bc2a0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -515,10 +515,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lootTable: {fileID: 11400000, guid: 2aac985a2856c104198dca5bcf3f80b3, type: 2}
-  attackPower: 3
-  attackCooldown: 0.5
+  attackPower: 5
+  attackCooldown: 0.2
   attackKnockbackForce: 6
-  enemySpeed: 3
+  enemySpeed: 6
   fullname: Slime
   health: 25
   defense: 1
@@ -534,8 +534,8 @@ MonoBehaviour:
   defaultScale: {x: 0, y: 0, z: 0}
   movementInput: {x: 0, y: 0}
   idleMovementInput: {x: 0, y: 0}
-  attackJumpSpeed: 4.5
-  attackFallSpeed: 1.5
+  attackJumpSpeed: 6
+  attackFallSpeed: 3
 --- !u!114 &6093737489410248565
 MonoBehaviour:
   m_ObjectHideFlags: 0

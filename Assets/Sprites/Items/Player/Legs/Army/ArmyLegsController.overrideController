@@ -1,0 +1,15 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ArmyLegsController
+  m_Controller: {fileID: 9100000, guid: bb130ed12cd4c6e42a06c7769b706428, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 3ae1360ed1806984b8a1d9f58525432d, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 51bd108a93ee87d44b1d75c4dd03de59, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: bc0d039574e4d864c9695cfcc65d0edc, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: c250f1ba4aa78184591827da486a488d, type: 2}
