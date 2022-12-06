@@ -53,6 +53,15 @@ public partial class @NewControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dash"",
+                    ""type"": ""Button"",
+                    ""id"": ""8d0efdc9-8a02-47df-bd95-4177bfcc2f1a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -132,17 +141,37 @@ public partial class @NewControls : IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3bad18b5-dbf7-49f3-99e1-444ae1aeab8e"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
         {
-            ""name"": ""PauseMenu"",
+            ""name"": ""Menus"",
             ""id"": ""a5b0b3a9-76a4-4d14-a97f-20964a783167"",
             ""actions"": [
                 {
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""2831e4ad-261c-4c50-aae9-a413fbef5427"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""acbe6b36-0454-4498-ad7a-c2eab8599820"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -160,6 +189,17 @@ public partial class @NewControls : IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""79003797-9c11-4c0f-a7c7-ff89f0979d5d"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -171,9 +211,11 @@ public partial class @NewControls : IInputActionCollection2, IDisposable
         m_PlayerInput_Movement = m_PlayerInput.FindAction("Movement", throwIfNotFound: true);
         m_PlayerInput_PointerPosition = m_PlayerInput.FindAction("PointerPosition", throwIfNotFound: true);
         m_PlayerInput_Attack = m_PlayerInput.FindAction("Attack", throwIfNotFound: true);
-        // PauseMenu
-        m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
-        m_PauseMenu_Pause = m_PauseMenu.FindAction("Pause", throwIfNotFound: true);
+        m_PlayerInput_Dash = m_PlayerInput.FindAction("Dash", throwIfNotFound: true);
+        // Menus
+        m_Menus = asset.FindActionMap("Menus", throwIfNotFound: true);
+        m_Menus_Pause = m_Menus.FindAction("Pause", throwIfNotFound: true);
+        m_Menus_Inventory = m_Menus.FindAction("Inventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -236,6 +278,7 @@ public partial class @NewControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerInput_Movement;
     private readonly InputAction m_PlayerInput_PointerPosition;
     private readonly InputAction m_PlayerInput_Attack;
+    private readonly InputAction m_PlayerInput_Dash;
     public struct PlayerInputActions
     {
         private @NewControls m_Wrapper;
@@ -243,6 +286,7 @@ public partial class @NewControls : IInputActionCollection2, IDisposable
         public InputAction @Movement => m_Wrapper.m_PlayerInput_Movement;
         public InputAction @PointerPosition => m_Wrapper.m_PlayerInput_PointerPosition;
         public InputAction @Attack => m_Wrapper.m_PlayerInput_Attack;
+        public InputAction @Dash => m_Wrapper.m_PlayerInput_Dash;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -261,6 +305,9 @@ public partial class @NewControls : IInputActionCollection2, IDisposable
                 @Attack.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnAttack;
+                @Dash.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnDash;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -274,51 +321,64 @@ public partial class @NewControls : IInputActionCollection2, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @Dash.started += instance.OnDash;
+                @Dash.performed += instance.OnDash;
+                @Dash.canceled += instance.OnDash;
             }
         }
     }
     public PlayerInputActions @PlayerInput => new PlayerInputActions(this);
 
-    // PauseMenu
-    private readonly InputActionMap m_PauseMenu;
-    private IPauseMenuActions m_PauseMenuActionsCallbackInterface;
-    private readonly InputAction m_PauseMenu_Pause;
-    public struct PauseMenuActions
+    // Menus
+    private readonly InputActionMap m_Menus;
+    private IMenusActions m_MenusActionsCallbackInterface;
+    private readonly InputAction m_Menus_Pause;
+    private readonly InputAction m_Menus_Inventory;
+    public struct MenusActions
     {
         private @NewControls m_Wrapper;
-        public PauseMenuActions(@NewControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Pause => m_Wrapper.m_PauseMenu_Pause;
-        public InputActionMap Get() { return m_Wrapper.m_PauseMenu; }
+        public MenusActions(@NewControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Pause => m_Wrapper.m_Menus_Pause;
+        public InputAction @Inventory => m_Wrapper.m_Menus_Inventory;
+        public InputActionMap Get() { return m_Wrapper.m_Menus; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PauseMenuActions set) { return set.Get(); }
-        public void SetCallbacks(IPauseMenuActions instance)
+        public static implicit operator InputActionMap(MenusActions set) { return set.Get(); }
+        public void SetCallbacks(IMenusActions instance)
         {
-            if (m_Wrapper.m_PauseMenuActionsCallbackInterface != null)
+            if (m_Wrapper.m_MenusActionsCallbackInterface != null)
             {
-                @Pause.started -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPause;
-                @Pause.performed -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPause;
-                @Pause.canceled -= m_Wrapper.m_PauseMenuActionsCallbackInterface.OnPause;
+                @Pause.started -= m_Wrapper.m_MenusActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_MenusActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_MenusActionsCallbackInterface.OnPause;
+                @Inventory.started -= m_Wrapper.m_MenusActionsCallbackInterface.OnInventory;
+                @Inventory.performed -= m_Wrapper.m_MenusActionsCallbackInterface.OnInventory;
+                @Inventory.canceled -= m_Wrapper.m_MenusActionsCallbackInterface.OnInventory;
             }
-            m_Wrapper.m_PauseMenuActionsCallbackInterface = instance;
+            m_Wrapper.m_MenusActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @Inventory.started += instance.OnInventory;
+                @Inventory.performed += instance.OnInventory;
+                @Inventory.canceled += instance.OnInventory;
             }
         }
     }
-    public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
+    public MenusActions @Menus => new MenusActions(this);
     public interface IPlayerInputActions
     {
         void OnMovement(InputAction.CallbackContext context);
         void OnPointerPosition(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnDash(InputAction.CallbackContext context);
     }
-    public interface IPauseMenuActions
+    public interface IMenusActions
     {
         void OnPause(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
     }
 }

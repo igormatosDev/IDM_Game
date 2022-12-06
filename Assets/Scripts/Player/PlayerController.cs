@@ -18,43 +18,76 @@ public class PlayerController : MonoBehaviour
 
     private bool isPlayerHit = false;
     private bool isImmune = false;
+    private bool isDashing = false;
 
     private float currentSpeed = 0;
     public int health = 100;
     public int defense = 0;
+
+    public float dashSpeed;
+    public float dashTime;
+    private float dashTimePassed = 0;
+    private Vector2 dashDir = Vector2.zero;
 
 
     // children controllers
     public BasicWeapon weapon;
     private Vector2 pointerInput, movementInput, lookDirection;
     private PlayerSpriteController spriteController;
-    [SerializeField] InputActionReference movement, attack, pause, pointerPosition;
-
+    [SerializeField] InputActionReference movement, attack, dash, pointerPosition;
+    public ParticleSystem dustDashParticles;
+    
 
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>();
         weapon = GetComponentInChildren<BasicWeapon>();
         spriteController = GetComponentInChildren<PlayerSpriteController>();
+
     }
 
     void Update()
     {
         if (Helpers.isPaused()) { return; };
-        Movement();
+        if (isDashing)
+        {
+            Dash();
+        }
+        else
+        {
+            Movement();
+        }
         lookDirection = pointerInput - (Vector2)transform.position;
         spriteController.AnimationController(lookDirection, rigidbody2d.velocity, weapon.isAttacking);
     }
 
+    void Dash()
+    {
+        var particleEmission = dustDashParticles.emission;
+        particleEmission.enabled = true;
+        rigidbody2d.velocity = dashDir * dashSpeed;
+
+        dashTimePassed += Time.deltaTime;
+        if (dashTimePassed >= dashTime)
+        {
+            dashTimePassed = 0;
+            isDashing = false;
+            particleEmission.enabled = false;
+        }
+    }
 
     private void OnEnable()
     {
+        print("enable");
         attack.action.performed += PerformAttack;
+        dash.action.performed += PerformDash;
     }
 
     private void OnDisable()
     {
         attack.action.performed -= PerformAttack;
+        dash.action.performed -= PerformDash;
+
     }
 
     private void PerformAttack(InputAction.CallbackContext obj)
@@ -67,12 +100,18 @@ public class PlayerController : MonoBehaviour
         weapon.PerformAnAttack();
     }
 
+    private void PerformDash(InputAction.CallbackContext obj)
+    {
+        dashDir = movement.action.ReadValue<Vector2>();
+        isDashing = true;
+    }
+
     void Movement()
     {
         // pointer actions
         pointerInput = GetPointerInput();
         weapon.pointerPosition = pointerInput;
-        
+
         // movement actions
         movementInput = movement.action.ReadValue<Vector2>();
 

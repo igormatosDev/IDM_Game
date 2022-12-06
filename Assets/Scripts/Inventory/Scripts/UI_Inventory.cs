@@ -14,10 +14,17 @@ public class UI_Inventory : MonoBehaviour
     private Button itemSlotButton;
     private PlayerController player;
 
+
+    private ItemSlot[] itemSlots;
+
+
     private void Awake()
     {
-        itemSlotContainer = transform.Find("itemSlotContainer");
-        itemSlotTemplate = itemSlotContainer.Find("itemSlotTemplate");
+        //itemSlotContainer = transform.Find("itemSlotContainer");
+        //itemSlotTemplate = itemSlotContainer.Find("itemSlotTemplate");
+
+        ItemSlot[] itemSlots = FindObjectsOfType<ItemSlot>();
+        print(itemSlots);
     }
 
     public void SetPlayer(PlayerController player)
@@ -34,6 +41,8 @@ public class UI_Inventory : MonoBehaviour
         RefreshInventoryItems();
     }
 
+    
+
     private void Inventory_OnItemListChanged(object sender, System.EventArgs e)
     {
         RefreshInventoryItems();
@@ -41,62 +50,62 @@ public class UI_Inventory : MonoBehaviour
 
     private void RefreshInventoryItems()
     {
-        foreach (Transform child in itemSlotContainer)
-        {
-            if (child == itemSlotTemplate) continue;
-            Destroy(child.gameObject);
-        }
+        //foreach (Transform child in itemSlotContainer)
+        //{
+        //    if (child == itemSlotTemplate) continue;
+        //    Destroy(child.gameObject);
+        //}
 
-        int x = 0;
-        int y = 0;
-        float itemSlotCellSize = 75f;
-        foreach (Item item in inventory.GetItemList())
-        {
-            RectTransform itemSlotRectTransform = Instantiate(itemSlotTemplate, itemSlotContainer).GetComponent<RectTransform>();
-            itemSlotRectTransform.gameObject.SetActive(true);
+        //int x = 0;
+        //int y = 0;
+        //float itemSlotCellSize = 75f;
+        //foreach (Item item in inventory.GetItemList())
+        //{
+        //    RectTransform itemSlotRectTransform = Instantiate(itemSlotTemplate, itemSlotContainer).GetComponent<RectTransform>();
+        //    itemSlotRectTransform.gameObject.SetActive(true);
 
-            itemSlotRectTransform.GetComponent<Button_UI>().ClickFunc = () =>
-            {
-                // Use item
-                inventory.UseItem(item);
-            };
+        //    itemSlotRectTransform.GetComponent<Button_UI>().ClickFunc = () =>
+        //    {
+        //        // Use item
+        //        inventory.UseItem(item);
+        //    };
 
-            itemSlotRectTransform.GetComponent<Button_UI>().MouseRightClickFunc = () =>
-            {
-                // Drop item
-                Item duplicateItem = new Item { itemType = item.itemType, amount = item.amount };
-                inventory.RemoveItem(item);
+        //    itemSlotRectTransform.GetComponent<Button_UI>().MouseRightClickFunc = () =>
+        //    {
+        //        // Drop item
+        //        Item duplicateItem = new Item { itemType = item.itemType, amount = item.amount };
+        //        inventory.RemoveItem(item);
 
-                Vector2 dropDirection = player.GetLookDirection().normalized;
-                ItemWorld itemWorld = ItemWorld.DropItem(player.transform.position, duplicateItem, dropDirection);
+        //        Vector2 dropDirection = player.GetLookDirection().normalized;
+        //        ItemWorld itemWorld = ItemWorld.DropItem(player.transform.position, duplicateItem, dropDirection);
                 
-                itemWorld.isPickable = false;
-                //StartCoroutine(itemWorld.pushItemAway(dropPosition, itemWorld));
-                StartCoroutine(itemWorld.setPickableTrue(itemWorld, 5));
+        //        itemWorld.isPickable = false;
+        //        //StartCoroutine(itemWorld.pushItemAway(dropPosition, itemWorld));
+        //        StartCoroutine(itemWorld.setPickableTrue(itemWorld, 5));
 
-            };
+        //    };
 
-            itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotCellSize, -y * itemSlotCellSize);
-            Image image = itemSlotRectTransform.Find("image").GetComponent<Image>();
-            image.sprite = item.GetSprite();
+        //    itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotCellSize, -y * itemSlotCellSize);
+        //    Image image = itemSlotRectTransform.Find("itemImage").GetComponent<Image>();
+        //    image.sprite = item.GetSprite();
 
-            TextMeshProUGUI uiText = itemSlotRectTransform.Find("amountText").GetComponent<TextMeshProUGUI>();
-            if (item.amount > 1)
-            {
-                uiText.SetText(item.amount.ToString());
-            }
-            else
-            {
-                uiText.SetText("");
-            }
+        //    TextMeshProUGUI uiText = itemSlotRectTransform.Find("itemAmount").GetComponent<TextMeshProUGUI>();
+        //    if (item.amount > 1)
+        //    {
+        //        uiText.SetText(item.amount.ToString());
+        //    }
+        //    else
+        //    {
+        //        uiText.SetText("");
+        //    }
 
-            x++;
-            if (x >= 4)
-            {
-                x = 0;
-                y++;
-            }
-        }
+        //    x++;
+        //    if (x >= 4)
+        //    {
+        //        x = 0;
+        //        y++;
+        //    }
+        //}
     }
 
 
