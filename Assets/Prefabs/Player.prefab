@@ -386,6 +386,7 @@ MonoBehaviour:
   weapon: {fileID: 1635299631958003563}
   movement: {fileID: 6165077205831301970, guid: 60cdedf07a23d114bb18a1fbceb53606, type: 3}
   attack: {fileID: -7104647225129333243, guid: 60cdedf07a23d114bb18a1fbceb53606, type: 3}
+  pause: {fileID: 0}
   pointerPosition: {fileID: -8833605816566612312, guid: 60cdedf07a23d114bb18a1fbceb53606, type: 3}
 --- !u!114 &1635299630782999783
 MonoBehaviour:
@@ -5280,9 +5281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1635299631958003541}
   - component: {fileID: 1635299631958003561}
-  - component: {fileID: 1635299631958003562}
   - component: {fileID: 1635299631958003563}
-  - component: {fileID: 1635299631958003540}
   m_Layer: 0
   m_Name: BasicWeapon
   m_TagString: Untagged
@@ -5346,7 +5345,7 @@ SpriteRenderer:
   m_SortingLayerID: 217021585
   m_SortingLayer: 1
   m_SortingOrder: 12
-  m_Sprite: {fileID: 21300000, guid: ccd68526a25ebd94d8f217a6de70c2cf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: efd1b6b61deef6d47943196f39d4e0d5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5357,37 +5356,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 1
---- !u!68 &1635299631958003562
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1635299631958003542}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: 0.10995574, y: 0.016902488}
-  - {x: 0.15852101, y: -0.1696135}
-  - {x: 0.011179544, y: -0.14452755}
-  - {x: -0.32776904, y: -0.1180837}
-  - {x: -0.29433507, y: 0.0721483}
-  - {x: -0.8445058, y: 0.6525492}
-  - {x: -0.8532641, y: 0.8659955}
-  - {x: -0.68857026, y: 0.8859238}
-  - {x: -0.06025353, y: 0.29498324}
-  - {x: 0.0963957, y: 0.30642903}
-  - {x: 0.10992846, y: 0.016907165}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
 --- !u!114 &1635299631958003563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5400,40 +5368,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 404932b50634ee94388ea8b8e41817d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackDistance: 1.2
-  attackMovePerFrameIn: 35
-  attackMovePerFrameOut: 50
-  attackRotationSpeedIn: 6
-  attackRotationSpeedOut: -2
+  attackRotationSpeedIn: 12
   knockbackForce: 6
   attackPowerStart: 4
   attackPowerEnd: 6
   player: {fileID: 1635299630782999789}
   weapon: {fileID: 1635299630815634858}
-  weaponAnimator: {fileID: 1635299631958003540}
   isAttacking: 0
-  isEndingAttack: 0
-  attackAngle: 360
---- !u!95 &1635299631958003540
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1635299631958003542}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 290fae7459a07b14eb261ce010605886, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  attackStartPointerPosition: {x: 0, y: 0}
+  prefabProjectile: {fileID: 8987681347029304000, guid: daddfb3bd141e1846bf47fe8c895a82f, type: 3}
+  projectileSpeed: 20
+  attackAngle: 320
 --- !u!1 &1635299632274342412
 GameObject:
   m_ObjectHideFlags: 0
@@ -5630,10 +5575,10 @@ Animator:
   m_GameObject: {fileID: 1696802966470422674}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1f5cb39741f63024d90bca5fc0cb322a, type: 2}
+  m_Controller: {fileID: 22100000, guid: a64e544eb7580e245ba9fd3272b5d31d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -5840,10 +5785,10 @@ Animator:
   m_GameObject: {fileID: 5960195994964209166}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6b62ff9e3afeeeb46b00a668a2342dc9, type: 2}
+  m_Controller: {fileID: 22100000, guid: b750ee414e4b6174dba8cce546bd13f7, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 

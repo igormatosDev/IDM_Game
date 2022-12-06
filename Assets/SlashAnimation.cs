@@ -15,8 +15,8 @@ public class SlashAnimation : MonoBehaviour
     public void Update()
     {
         transform.position = Vector2.MoveTowards(
-            transform.position, 
-            transform.position + (Vector3)direction, 
+            transform.position,
+            transform.position + (Vector3)direction,
             projectileSpeed * Time.deltaTime
         );
     }
@@ -25,13 +25,20 @@ public class SlashAnimation : MonoBehaviour
     {
         if (collision.gameObject.tag == "Enemy" && weapon.isAttacking)
         {
-            int damage = (int)Math.Round(UnityEngine.Random.Range(weapon.attackPowerStart + 1, weapon.attackPowerEnd + 1), 0);
-
             EnemyBase enemy = collision.GetComponentInParent<EnemyBase>();
+            
             if (!enemy)
                 enemy = collision.GetComponent<EnemyBase>();
-            enemy.isHit(damage, weapon.knockbackForce, weapon.attackStartPointerPosition);
+
+            enemy.isHit(weapon.getDamage(), weapon.knockbackForce, weapon.attackStartPointerPosition);
         }
+    
+        if (collision.gameObject.tag == "DestroyableObject" && weapon.isAttacking)
+        {
+            ObjectController destroyableObject = collision.GetComponent<ObjectController>();
+            destroyableObject.isHit(weapon.getDamage());
+        }
+
     }
 
 }

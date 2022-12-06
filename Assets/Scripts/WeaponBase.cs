@@ -44,6 +44,12 @@ public class WeaponBase : MonoBehaviour
         // override it in the weapon script
     }
 
+    public int getDamage()
+    {
+        
+        return (int)Math.Round(UnityEngine.Random.Range(attackPowerStart + 1, attackPowerEnd + 1), 0);
+    }
+
     public void PerformAnAttack()
     {
         if (Helpers.isPaused()) { return; };

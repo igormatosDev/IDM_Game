@@ -13,6 +13,7 @@ public class LootTable : ScriptableObject
     public class Drop
     {
         public Item.ItemType itemType;
+        [Tooltip("Probability must be between 1 and 100")]
         public int probability;
         public int minAmount = 1;
         public int maxAmount = 1;

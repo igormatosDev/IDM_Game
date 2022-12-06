@@ -19,7 +19,15 @@ public class PauseMenuController : MonoBehaviour
 
     private void OnEnable()
     {
-        menu = newControls.PauseMenu.Pause;
+        try
+        {
+            menu = newControls.PauseMenu.Pause;
+        }
+        catch
+        {
+            Awake();
+            menu = newControls.PauseMenu.Pause;
+        }
         menu.Enable();
 
         menu.performed += Pause;

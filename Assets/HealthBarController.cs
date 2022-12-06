@@ -32,10 +32,11 @@ public class HealthBarController : MonoBehaviour
             lifePercentage = lifePercentage > 0 ? lifePercentage : 0;
 
             Color color;
-            if(lifePercentage < 0.33f)
+            if (lifePercentage < 0.33f)
             {
                 color = lowHealthColor;
-            }else if(lifePercentage < 0.66f)
+            }
+            else if (lifePercentage < 0.66f)
             {
                 color = halfHealthColor;
             }
@@ -44,7 +45,7 @@ public class HealthBarController : MonoBehaviour
                 color = fullHealthColor;
             }
 
-            if(healthBarFgSpriteRenderer != null)
+            if (healthBarFgSpriteRenderer != null)
             {
                 healthBarFgSpriteRenderer.color = color;
             }
@@ -52,4 +53,6 @@ public class HealthBarController : MonoBehaviour
             healthBarFg.transform.localScale = Vector3.Lerp(healthBarFg.localScale, newScale, .06f);
         }
     }
+
+
 }

@@ -99,10 +99,10 @@ public class ItemWorld : MonoBehaviour
 
     public void DestroySelf()
     {
-        if (gameObject)
-        {
+        try { 
             Destroy(gameObject);
         }
+        catch { }
     }
 
 }
