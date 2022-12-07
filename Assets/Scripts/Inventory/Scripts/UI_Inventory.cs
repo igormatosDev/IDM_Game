@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using CodeMonkey.Utils;
+using static Inventory;
+using System.Linq;
+using System;
 
 public class UI_Inventory : MonoBehaviour
 {
@@ -14,17 +17,10 @@ public class UI_Inventory : MonoBehaviour
     private Button itemSlotButton;
     private PlayerController player;
 
-
-    private ItemSlot[] itemSlots;
-
-
     private void Awake()
     {
         //itemSlotContainer = transform.Find("itemSlotContainer");
         //itemSlotTemplate = itemSlotContainer.Find("itemSlotTemplate");
-
-        ItemSlot[] itemSlots = FindObjectsOfType<ItemSlot>();
-        print(itemSlots);
     }
 
     public void SetPlayer(PlayerController player)
@@ -35,7 +31,6 @@ public class UI_Inventory : MonoBehaviour
     public void SetInventory(Inventory inventory)
     {
         this.inventory = inventory;
-
         inventory.OnItemListChanged += Inventory_OnItemListChanged;
 
         RefreshInventoryItems();
@@ -56,57 +51,78 @@ public class UI_Inventory : MonoBehaviour
         //    Destroy(child.gameObject);
         //}
 
-        //int x = 0;
-        //int y = 0;
-        //float itemSlotCellSize = 75f;
-        //foreach (Item item in inventory.GetItemList())
-        //{
-        //    RectTransform itemSlotRectTransform = Instantiate(itemSlotTemplate, itemSlotContainer).GetComponent<RectTransform>();
-        //    itemSlotRectTransform.gameObject.SetActive(true);
+        print(inventory.GetItemList());
+        // Instantiating itemSlots and InventoryList
+        GameObject[] itemSlots = GameObject.FindGameObjectsWithTag("ItemSlotContainer");
+        List <itemListSlot> inventoryItemList = inventory.GetItemList();
 
-        //    itemSlotRectTransform.GetComponent<Button_UI>().ClickFunc = () =>
-        //    {
-        //        // Use item
-        //        inventory.UseItem(item);
-        //    };
 
-        //    itemSlotRectTransform.GetComponent<Button_UI>().MouseRightClickFunc = () =>
-        //    {
-        //        // Drop item
-        //        Item duplicateItem = new Item { itemType = item.itemType, amount = item.amount };
-        //        inventory.RemoveItem(item);
+        print(itemSlots);
+        print(itemSlots.Length);
+        foreach (itemListSlot itemSlot in inventoryItemList)
+        {
+            Item item = itemSlot.item;
+            if (item == null) continue;
 
-        //        Vector2 dropDirection = player.GetLookDirection().normalized;
-        //        ItemWorld itemWorld = ItemWorld.DropItem(player.transform.position, duplicateItem, dropDirection);
-                
-        //        itemWorld.isPickable = false;
-        //        //StartCoroutine(itemWorld.pushItemAway(dropPosition, itemWorld));
-        //        StartCoroutine(itemWorld.setPickableTrue(itemWorld, 5));
+            if(itemSlot.slot == -1)
+            {
+                itemSlot.slot = GetFirstClearSlot(itemSlots);
+            }
+            
+            if(itemSlot.slot == -1) continue; // inventory is Full, there is no slots left
 
-        //    };
+            GameObject slotGameObject = itemSlots[itemSlot.slot];
 
-        //    itemSlotRectTransform.anchoredPosition = new Vector2(x * itemSlotCellSize, -y * itemSlotCellSize);
-        //    Image image = itemSlotRectTransform.Find("itemImage").GetComponent<Image>();
-        //    image.sprite = item.GetSprite();
+            slotGameObject.GetComponent<Button_UI>().ClickFunc = () =>
+            {
+                // Use item
+                inventory.UseItem(item);
+            };
 
-        //    TextMeshProUGUI uiText = itemSlotRectTransform.Find("itemAmount").GetComponent<TextMeshProUGUI>();
-        //    if (item.amount > 1)
-        //    {
-        //        uiText.SetText(item.amount.ToString());
-        //    }
-        //    else
-        //    {
-        //        uiText.SetText("");
-        //    }
+            slotGameObject.GetComponent<Button_UI>().MouseRightClickFunc = () =>
+            {
+                // Drop item
+                Item duplicateItem = new Item { itemType = item.itemType, amount = item.amount };
+                inventory.RemoveItem(item);
 
-        //    x++;
-        //    if (x >= 4)
-        //    {
-        //        x = 0;
-        //        y++;
-        //    }
-        //}
+                Vector2 dropDirection = player.GetLookDirection().normalized;
+                ItemWorld itemWorld = ItemWorld.DropItem(player.transform.position, duplicateItem, dropDirection);
+
+                itemWorld.isPickable = false;
+                //StartCoroutine(itemWorld.pushItemAway(dropPosition, itemWorld));
+                StartCoroutine(itemWorld.setPickableTrue(itemWorld, 5));
+
+            };
+
+            Image image = slotGameObject.transform.Find("itemImage").GetComponent<Image>();
+            image.enabled = true;
+            image.sprite = item.GetSprite();
+
+            TextMeshProUGUI uiText = slotGameObject.transform.Find("itemAmount").GetComponent<TextMeshProUGUI>();
+            if (item.amount > 1)
+            {
+                uiText.SetText(item.amount.ToString());
+            }
+            else
+            {
+                uiText.SetText("");
+            }
+        }
     }
 
+    private int GetFirstClearSlot(GameObject[] itemSlotContainers)
+    {
+        for(int i=0; i<itemSlotContainers.Length; i++)
+        {
+            Transform itemImage = itemSlotContainers[i].transform.GetChild(0);
+            //Transform itemAmount = itemSlotContainers[i].transform.GetChild(1);
+            if (!itemImage.GetComponent<Image>().enabled)
+            {
+                print($"SLOT: {i}");
+                return i;
+            }
+        }
 
+        return -1;
+    }
 }

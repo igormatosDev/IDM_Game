@@ -9,7 +9,7 @@ public class InventoryController : MonoBehaviour
     private NewControls newControls;
     private InputAction menu;
 
-    [SerializeField] private GameObject inventoryMenuUI;
+    [SerializeField] private RectTransform inventoryMenuUI;
     [SerializeField] private GameObject inventoryMenuTab;
     [SerializeField] private bool isOpened;
 
@@ -55,14 +55,14 @@ public class InventoryController : MonoBehaviour
 
     void ActivateInventoryMenu()
     {
-        inventoryMenuUI.transform.position = new Vector2(960, 540);
+        inventoryMenuUI.anchoredPosition = new Vector2(0, 0);
         //inventoryMenuUI.transform.position = new Vector2(960, 540);
         inventoryMenuTab.SetActive(true);
     }
 
     public void DeactivateInventoryMenu()
     {
-        inventoryMenuUI.transform.position = new Vector2(960, -83);
+        inventoryMenuUI.anchoredPosition = new Vector2(0, -312);
         //inventoryMenuUI.transform.position = new Vector2(960, -83);
         inventoryMenuTab.SetActive(false);
     }

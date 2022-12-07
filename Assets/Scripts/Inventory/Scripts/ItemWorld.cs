@@ -75,7 +75,7 @@ public class ItemWorld : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         //light2D = transform.Find("Light").GetComponent<Light2D>();
-        textMeshPro = transform.Find("Text").GetComponent<TextMeshPro>();
+        textMeshPro = transform.Find("ItemWorldAmount").GetComponent<TextMeshPro>();
     }
 
     public void SetItem(Item item)

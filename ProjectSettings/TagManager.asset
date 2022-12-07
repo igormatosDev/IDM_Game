@@ -7,6 +7,7 @@ TagManager:
   - Enemy
   - PlayerSprite
   - DestroyableObject
+  - ItemSlotContainer
   layers:
   - Default
   - TransparentFX
