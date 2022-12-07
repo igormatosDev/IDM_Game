@@ -76,14 +76,14 @@ public class UI_Inventory : MonoBehaviour
             slotGameObject.GetComponent<Button_UI>().ClickFunc = () =>
             {
                 // Use item
-                inventory.UseItem(item);
+                inventory.UseItem(itemSlot);
             };
 
             slotGameObject.GetComponent<Button_UI>().MouseRightClickFunc = () =>
             {
                 // Drop item
                 Item duplicateItem = new Item { itemType = item.itemType, amount = item.amount };
-                inventory.RemoveItem(item);
+                inventory.RemoveItem(itemSlot);
 
                 Vector2 dropDirection = player.GetLookDirection().normalized;
                 ItemWorld itemWorld = ItemWorld.DropItem(player.transform.position, duplicateItem, dropDirection);

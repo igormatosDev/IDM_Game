@@ -12,11 +12,13 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private RectTransform inventoryMenuUI;
     [SerializeField] private GameObject inventoryMenuTab;
     [SerializeField] private bool isOpened;
+    private GameObject aim;
 
     void Awake()
     {
         // INVENTORY IN BOTTOM OF SCREEN (ANCHORED) -312PX Y
         newControls = new NewControls();
+        aim = GameObject.Find("Aim");
     }
 
     private void OnEnable()
@@ -40,6 +42,8 @@ public class InventoryController : MonoBehaviour
 
     void Inventory(InputAction.CallbackContext context)
     {
+        if (Helpers.isPaused()) { return; };
+
         isOpened = !isOpened;
 
         if (isOpened)
@@ -55,15 +59,20 @@ public class InventoryController : MonoBehaviour
 
     void ActivateInventoryMenu()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        aim.SetActive(false);
+
         inventoryMenuUI.anchoredPosition = new Vector2(0, 0);
-        //inventoryMenuUI.transform.position = new Vector2(960, 540);
         inventoryMenuTab.SetActive(true);
     }
 
     public void DeactivateInventoryMenu()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Confined;
+        aim.SetActive(true);
         inventoryMenuUI.anchoredPosition = new Vector2(0, -312);
-        //inventoryMenuUI.transform.position = new Vector2(960, -83);
         inventoryMenuTab.SetActive(false);
     }
 

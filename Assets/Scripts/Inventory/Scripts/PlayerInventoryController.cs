@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Inventory;
 
 public class PlayerInventoryController : MonoBehaviour
 {
@@ -16,9 +17,9 @@ public class PlayerInventoryController : MonoBehaviour
         uiInventory.SetInventory(inventory);
     }
 
-    public void UseItem(Item item)
+    public void UseItem(itemListSlot itemSlot)
     {
-        inventory.RemoveItem(item);
+        inventory.RemoveItem(itemSlot);
     }
 
 

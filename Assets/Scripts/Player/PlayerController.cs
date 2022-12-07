@@ -78,7 +78,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        print("enable");
         attack.action.performed += PerformAttack;
         dash.action.performed += PerformDash;
     }
