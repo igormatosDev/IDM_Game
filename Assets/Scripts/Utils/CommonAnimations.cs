@@ -59,11 +59,14 @@ public static class CommonAnimations
 
     public static IEnumerator PerformKnockback(Transform objectTransform, Vector3 direction, float KnockbackForce, float duration)
     {
-        while(duration > 0)
-        {
-            objectTransform.position = Vector2.MoveTowards(objectTransform.position, objectTransform.position + direction, KnockbackForce * Time.deltaTime);
-            duration -= Time.deltaTime;
-            yield return null;
-        }
+        //while (duration > 0)
+        //{
+        //    objectTransform.position = Vector2.MoveTowards(objectTransform.position, objectTransform.position + direction, KnockbackForce * Time.deltaTime);
+        //    duration -= Time.deltaTime;
+        //    yield return null;
+        //}
+
+        objectTransform.position = Vector2.MoveTowards(objectTransform.position, objectTransform.position + direction, KnockbackForce * Time.deltaTime); ;
+        yield return null;
     }
 }

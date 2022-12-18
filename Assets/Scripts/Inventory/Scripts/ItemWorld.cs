@@ -14,24 +14,28 @@ public class ItemWorld : MonoBehaviour
     private TextMeshPro textMeshPro;
     public bool isPickable = true;
 
+    [SerializeField] private float dropYInclination = .5f;
+    [SerializeField] private float dropForce = 5f;
+    [SerializeField] private float dropDuration = 0.8f;
+    [SerializeField] private float cantBePickedForSec = 1f;
+
     public static ItemWorld SpawnItemWorld(Vector3 position, Item item, Vector2 direction)
     {
         Transform transform = Instantiate(ItemAssets.Instance.pfItemWorld, position, Quaternion.identity);
 
         ItemWorld itemWorld = transform.GetComponent<ItemWorld>();
         itemWorld.SetItem(item);
-        float dropDuration = 0.8f;
         if (direction != Vector2.zero)
         {
             itemWorld.StartCoroutine(Helpers.ThrowGameObject(
                 itemWorld.gameObject,
                 (Vector2)position + direction,
-                .5f,
-                5f,
-                dropDuration
+                itemWorld.dropYInclination,
+                itemWorld.dropForce,
+                itemWorld.dropDuration
             ));
         }
-        itemWorld.StartCoroutine(Helpers.CallActionAfterSec(dropDuration, () =>
+        itemWorld.StartCoroutine(Helpers.CallActionAfterSec(itemWorld.cantBePickedForSec, () =>
         {
             itemWorld.GetComponent<Collider2D>().enabled = true;
         }));
@@ -50,20 +54,20 @@ public class ItemWorld : MonoBehaviour
         return itemWorld;
     }
 
-    public IEnumerator pushItemAway(Vector3 dropPosition, ItemWorld itemWorld)
-    {
-        float distance = Vector3.Distance(itemWorld.transform.position, dropPosition);
-        float speed = 3f;
-        while (distance > 0.5f)
-        {
+    //public IEnumerator pushItemAway(Vector3 dropPosition, ItemWorld itemWorld)
+    //{
+    //    float distance = Vector3.Distance(itemWorld.transform.position, dropPosition);
+    //    float speed = 3f;
+    //    while (distance > 0.5f)
+    //    {
 
-            itemWorld.transform.position = Vector2.Lerp(itemWorld.transform.position, dropPosition, speed * Time.deltaTime);
-            speed -= .01f;
-            speed = speed < .5f ? .5f : speed;
-            distance = Vector3.Distance(itemWorld.transform.position, dropPosition);
-            yield return null;
-        }
-    }
+    //        itemWorld.transform.position = Vector2.Lerp(itemWorld.transform.position, dropPosition, speed * Time.deltaTime);
+    //        speed -= .01f;
+    //        speed = speed < .5f ? .5f : speed;
+    //        distance = Vector3.Distance(itemWorld.transform.position, dropPosition);
+    //        yield return null;
+    //    }
+    //}
 
     public IEnumerator setPickableTrue(ItemWorld itemWorld, int waitSeconds)
     {

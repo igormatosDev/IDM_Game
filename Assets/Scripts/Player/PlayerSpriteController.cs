@@ -22,9 +22,6 @@ public class PlayerSpriteController : MonoBehaviour
         helmetAnimator = GameObject.Find("Helmet").GetComponent<Animator>();
         chestAnimator = GameObject.Find("Chest").GetComponent<Animator>();
         legsAnimator = GameObject.Find("Legs").GetComponent<Animator>();
-
-        
-
     }
 
     public void AnimationController(Vector2 lookDirection, Vector2 velocity, bool isAttacking)
@@ -64,5 +61,47 @@ public class PlayerSpriteController : MonoBehaviour
             chestAnimator.SetBool("isRunning", false);
             legsAnimator.SetBool("isRunning", false);
         }
+    }
+
+    public void FlashDamage()
+    {
+        Color minColor = new Color(255f / 255f, 240f / 255f, 240f / 255f);
+        Color maxColor = new Color(255f / 255f, 200f / 255f, 200f / 255f);
+        Color endColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+        float interval = .15f;
+        float duration = 2f;
+
+        StartCoroutine(CommonAnimations.FlashSprite(
+            faceAnimator.GetComponent<SpriteRenderer>(),
+            minColor,
+            maxColor,
+            endColor,
+            interval,
+            duration
+        ));
+        StartCoroutine(CommonAnimations.FlashSprite(
+            helmetAnimator.GetComponent<SpriteRenderer>(),
+            minColor,
+            maxColor,
+            endColor,
+            interval,
+            duration
+        ));
+        StartCoroutine(CommonAnimations.FlashSprite(
+            chestAnimator.GetComponent<SpriteRenderer>(),
+            minColor,
+            maxColor,
+            endColor,
+            interval,
+            duration
+        ));
+        StartCoroutine(CommonAnimations.FlashSprite(
+            legsAnimator.GetComponent<SpriteRenderer>(),
+            minColor,
+            maxColor,
+            endColor,
+            interval,
+            duration
+        ));
     }
 }

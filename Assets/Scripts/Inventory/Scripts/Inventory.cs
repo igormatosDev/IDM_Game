@@ -8,18 +8,18 @@ public class Inventory
 
     public event EventHandler OnItemListChanged;
 
-    private List<itemListSlot> itemList;
-    private Action<itemListSlot> useItemAction;
+    private List<ItemListSlot> itemListSlot;
+    private Action<ItemListSlot> useItemAction;
 
-    public class itemListSlot
+    public class ItemListSlot
     {
         public Item item;
         public int slot;
     }
-    public Inventory(Action<itemListSlot> useItemAction)
+    public Inventory(Action<ItemListSlot> useItemAction)
     {
         this.useItemAction = useItemAction;
-        itemList = new List<itemListSlot>();
+        itemListSlot = new List<ItemListSlot>();
     }
 
     public void AddItem(Item item)
@@ -27,9 +27,9 @@ public class Inventory
         if (item.IsStackable())
         {
             bool itemAlreadyInInventory = false;
-            foreach (itemListSlot itemListSlot in itemList)
+            foreach (ItemListSlot ItemListSlot in itemListSlot)
             {
-                Item inventoryItem = itemListSlot.item;
+                Item inventoryItem = ItemListSlot.item;
                 if (inventoryItem.itemType == item.itemType)
                 {
                     inventoryItem.amount += item.amount;
@@ -38,23 +38,23 @@ public class Inventory
             }
             if (!itemAlreadyInInventory)
             {
-                itemList.Add(new itemListSlot { item=item, slot=-1});
+                itemListSlot.Add(new ItemListSlot { item=item, slot=-1});
             }
         }
         else
         {
-            itemList.Add(new itemListSlot { item = item, slot = -1 });
+            itemListSlot.Add(new ItemListSlot { item = item, slot = -1 });
         }
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public void RemoveItem(itemListSlot itemSlot)
+    public void RemoveItem(ItemListSlot itemSlot)
     {
         Item item = itemSlot.item;
         if (item.IsStackable())
         {
             Item itemInInventory = null;
-            foreach (itemListSlot inventoryItemSlot in itemList)
+            foreach (ItemListSlot inventoryItemSlot in itemListSlot)
             {
                 Item inventoryItem = inventoryItemSlot.item;
                 if (inventoryItem.itemType == item.itemType)
@@ -65,24 +65,26 @@ public class Inventory
             }
             if (itemInInventory != null && itemInInventory.amount <= 0)
             {
-                itemList.Remove(itemSlot);
+                itemListSlot.Remove(itemSlot);
             }
         }
         else
         {
-            itemList.Remove(itemSlot);
+            itemListSlot.Remove(itemSlot);
         }
+        itemSlot.slot = -2;
+
         OnItemListChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public void UseItem(itemListSlot item)
+    public void UseItem(ItemListSlot item)
     {
         useItemAction(item);
     }
 
-    public List<itemListSlot> GetItemList()
+    public List<ItemListSlot> GetItemList()
     {
-        return itemList;
+        return itemListSlot;
     }
 
 }

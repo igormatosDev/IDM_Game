@@ -58,6 +58,8 @@ public class PauseMenuController : MonoBehaviour
         Time.timeScale = 0;
         AudioListener.pause = true;
         pauseMenuUI.SetActive(true);
+        
+        //Cursor.visible = true;
     }
 
     public void DeactivatePauseMenu()
@@ -66,6 +68,8 @@ public class PauseMenuController : MonoBehaviour
         AudioListener.pause = false;
         pauseMenuUI.SetActive(false);
         isPaused = false;
+        
+        //Cursor.visible = false;
     }
 
     public void RestartGame()

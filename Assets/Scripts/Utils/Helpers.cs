@@ -4,6 +4,23 @@ using System;
 
 public class Helpers
 {
+    public static PlayerController GetNearestPlayer(Transform transform)
+    {
+        PlayerController tMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
+        foreach (PlayerController t in UnityEngine.Object.FindObjectsOfType<PlayerController>())
+        {
+            float dist = Vector3.Distance(t.transform.position, currentPos);
+            if (dist < minDist)
+            {
+                tMin = t;
+                minDist = dist;
+            }
+        }
+        return tMin ? tMin : null;
+    }
+
     public static bool isPaused()
     {
         return Time.timeScale == 0;

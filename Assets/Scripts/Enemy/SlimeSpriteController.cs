@@ -12,7 +12,7 @@ public class SlimeSpriteController : MonoBehaviour
     private Animator animator;
 
     private bool isJumping = false;
-
+    
     // Animation Constants
     private string state = IDLE_ANIMATION;
     private const string IDLE_ANIMATION = "Idle";
@@ -50,14 +50,17 @@ public class SlimeSpriteController : MonoBehaviour
         slime.isImmune = false;
         isJumping = false;
         state = ATTACK03_ANIMATION;
+        
     }
 
     public void AttackEnd()
     {
+        slime.ShootProjectiles();
         slime.isAttacking = false;
         slime.isInAttackCooldown = true;
         StartCoroutine(Helpers.CallActionAfterSec(slime.attackCooldown, () => { slime.isInAttackCooldown = false; }));
         state = IDLE_ANIMATION;
+
     }
 
     public void AttackMovement()

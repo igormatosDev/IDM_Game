@@ -17,7 +17,7 @@ public class PlayerInventoryController : MonoBehaviour
         uiInventory.SetInventory(inventory);
     }
 
-    public void UseItem(itemListSlot itemSlot)
+    public void UseItem(ItemListSlot itemSlot)
     {
         inventory.RemoveItem(itemSlot);
     }

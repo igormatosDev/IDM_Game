@@ -140,7 +140,7 @@ public class PlayerController : MonoBehaviour
         return lookDirection;
     }
 
-    public void isHit(int damage, float knockback, Vector3 attackStartPointerPosition)
+    public bool isHit(int damage, float knockback, Vector3 attackStartPointerPosition)
     {
         // called once per hit
         if (!isPlayerHit && !isImmune)
@@ -156,30 +156,22 @@ public class PlayerController : MonoBehaviour
                 Color maxColor = new Color(255f / 255f, 200f / 255f, 200f / 255f);
                 Color endColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
 
+                spriteController.FlashDamage();
                 StartCoroutine(Helpers.CallActionAfterSec(2f, setImmuneFalse));
-
-                //StartCoroutine(CommonAnimations.FlashSprite(
-                //    spriteController.spriteRenderer,
-                //    Helpers.GetColorHex("#FFF0F0"),
-                //    Helpers.GetColorHex("#FFC8C8"),
-                //    Helpers.GetColorHex("#FFFFFF"),
-                //    .15f,
-                //    2f
-                //));
-
                 StartCoroutine(CommonAnimations.PerformKnockback(
                     this.transform,
                     (this.transform.position - attackStartPointerPosition).normalized,
                     knockback,
                     0.5f
                 ));
-
             }
             else
             {
                 Die();
             }
+            return true;
         }
+        return false;
     }
 
     private void Die()

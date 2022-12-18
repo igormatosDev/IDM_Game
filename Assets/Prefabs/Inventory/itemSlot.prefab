@@ -69,7 +69,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5351471620140785083}
-  - component: {fileID: 2799832489041426637}
   m_Layer: 0
   m_Name: itemSlot
   m_TagString: Untagged
@@ -99,18 +98,6 @@ RectTransform:
   m_AnchoredPosition: {x: -87, y: 32}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2799832489041426637
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6798949986537822803}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ac26d78a06a0944c9493842e75d5ce7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7328683202311454252
 GameObject:
   m_ObjectHideFlags: 0

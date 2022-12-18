@@ -320,3 +320,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPickable: 1
+  dropYInclination: 0.3
+  dropForce: 20
+  dropDuration: 0.3
+  cantBePickedForSec: 0.5

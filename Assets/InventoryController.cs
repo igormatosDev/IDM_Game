@@ -12,13 +12,12 @@ public class InventoryController : MonoBehaviour
     [SerializeField] private RectTransform inventoryMenuUI;
     [SerializeField] private GameObject inventoryMenuTab;
     [SerializeField] private bool isOpened;
-    private GameObject aim;
+    [SerializeField] private MouseCursorController mouseCursorController;
 
     void Awake()
     {
         // INVENTORY IN BOTTOM OF SCREEN (ANCHORED) -312PX Y
         newControls = new NewControls();
-        aim = GameObject.Find("Aim");
     }
 
     private void OnEnable()
@@ -59,19 +58,15 @@ public class InventoryController : MonoBehaviour
 
     void ActivateInventoryMenu()
     {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-        aim.SetActive(false);
-
+        mouseCursorController.SetCursor(mouseCursorController.cursorOverInventory);
         inventoryMenuUI.anchoredPosition = new Vector2(0, 0);
         inventoryMenuTab.SetActive(true);
     }
 
     public void DeactivateInventoryMenu()
     {
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Confined;
-        aim.SetActive(true);
+        print("DEACTIVATING INV");
+        mouseCursorController.SetCursor(mouseCursorController.defaultCursorTexture);
         inventoryMenuUI.anchoredPosition = new Vector2(0, -312);
         inventoryMenuTab.SetActive(false);
     }

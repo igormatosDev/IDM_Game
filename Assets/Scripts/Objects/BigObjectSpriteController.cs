@@ -14,7 +14,9 @@ public class BigObjectSpriteController : MonoBehaviour
     private void Start()
     {
         ObjectSpriteRenderer = GetComponent<SpriteRenderer>();
+        ObjectSpriteRenderer.sortingOrder = 1 - (int)(transform.position.y * 10);
     }
+
 
 
     private void OnTriggerEnter2D(Collider2D collision)
