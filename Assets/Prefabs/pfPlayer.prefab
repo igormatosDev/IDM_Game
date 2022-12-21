@@ -5180,7 +5180,7 @@ MonoBehaviour:
   acceleration: 2
   maxSpeed: 8
   deacceleration: 20
-  health: 100
+  health: 10
   defense: 0
   dashSpeed: 22
   dashTime: 0.15

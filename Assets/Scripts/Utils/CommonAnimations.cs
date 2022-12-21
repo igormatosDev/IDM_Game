@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 
@@ -56,6 +57,51 @@ public static class CommonAnimations
 
         renderer.color = endColor;
     }
+
+
+    public static IEnumerator BlinkSprite(SpriteRenderer renderer, Color blinkColor, float interval, float duration)
+    {
+        Shader shaderGUItext = Shader.Find("GUI/Text Shader");
+        Shader shaderDefault = renderer.material.shader;
+        Color defaultColor = renderer.color;
+
+        float currentInterval = 0;
+        float lastSplit = 0f;
+        bool split = true;
+
+        while (duration > 0)
+        {
+            currentInterval += Time.deltaTime;
+
+            if (split)
+            {
+                lastSplit = currentInterval;
+                split = false;
+                
+                if (renderer.material.shader == shaderDefault)
+                {
+                    renderer.material.shader = shaderGUItext;
+                    renderer.color = blinkColor;
+                }
+                else
+                {
+                    renderer.material.shader = shaderDefault;
+                    renderer.color = defaultColor;
+                }
+            }
+            if (currentInterval - lastSplit > interval)
+            {
+                // if the time that passes is bigger then split time
+                split = true;
+            }
+            duration -= Time.deltaTime;
+            yield return null;
+        }
+
+        renderer.color = defaultColor;
+        renderer.material.shader = shaderDefault;
+    }
+
 
     public static IEnumerator PerformKnockback(Transform objectTransform, Vector3 direction, float KnockbackForce, float duration)
     {

@@ -77,14 +77,13 @@ public class UI_Inventory : MonoBehaviour
         //    Destroy(child.gameObject);
         //}
 
-        print(inventory.GetItemList());
         // Instantiating itemSlots and InventoryList
         
         List <ItemListSlot> inventoryItemList = inventory.GetItemList();
 
 
-        print(itemSlots);
-        print(itemSlots.Length);
+        //print(itemSlots);
+        //print(itemSlots.Length);
         foreach (ItemListSlot itemSlot in inventoryItemList)
         {
             // -1  : Nothing in inventory.
@@ -132,13 +131,13 @@ public class UI_Inventory : MonoBehaviour
             }
         }
 
-        print("ITEMSLOTS");
-        print(itemSlots);
+        //print("ITEMSLOTS");
+        //print(itemSlots);
         
-        print("-------");
+        //print("-------");
 
-        print("INVENTORY");
-        print(inventory);
+        //print("INVENTORY");
+        //print(inventory);
     }
 
     private int GetFirstClearSlot(GameObject[] itemSlotContainers)
@@ -157,3 +156,4 @@ public class UI_Inventory : MonoBehaviour
         return -1;
     }
 }
+

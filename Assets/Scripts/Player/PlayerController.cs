@@ -7,6 +7,7 @@ using System;
 using UnityEngine.U2D;
 using Unity.VisualScripting;
 using System.Xml.Linq;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -177,6 +178,7 @@ public class PlayerController : MonoBehaviour
     private void Die()
     {
         // TODO: Die method
+        SceneManager.LoadScene(0);
     }
 
 

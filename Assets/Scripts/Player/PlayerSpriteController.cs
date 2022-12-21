@@ -14,10 +14,9 @@ public class PlayerSpriteController : MonoBehaviour
     private Animator chestAnimator;
     private Animator legsAnimator;
 
-
-
     private void Start()
     {
+
         faceAnimator = GameObject.Find("Face").GetComponent<Animator>();
         helmetAnimator = GameObject.Find("Helmet").GetComponent<Animator>();
         chestAnimator = GameObject.Find("Chest").GetComponent<Animator>();
@@ -65,43 +64,71 @@ public class PlayerSpriteController : MonoBehaviour
 
     public void FlashDamage()
     {
-        Color minColor = new Color(255f / 255f, 240f / 255f, 240f / 255f);
-        Color maxColor = new Color(255f / 255f, 200f / 255f, 200f / 255f);
-        Color endColor = new Color(255f / 255f, 255f / 255f, 255f / 255f);
+        //Color minColor = new Color(255f / 255f, 240f / 255f, 240f / 255f);
+        //Color maxColor = new Color(255f / 255f, 200f / 255f, 200f / 255f);
+        Color endColor = new Color(240f / 255f, 240f / 255f, 240f / 255f);
         float interval = .15f;
-        float duration = 2f;
+        float duration = 1f;
+        
 
-        StartCoroutine(CommonAnimations.FlashSprite(
+        //StartCoroutine(CommonAnimations.FlashSprite(
+        //    faceAnimator.GetComponent<SpriteRenderer>(),
+        //    minColor,
+        //    maxColor,
+        //    endColor,
+        //    interval,
+        //    duration
+        //));
+        //StartCoroutine(CommonAnimations.FlashSprite(
+        //    helmetAnimator.GetComponent<SpriteRenderer>(),
+        //    minColor,
+        //    maxColor,
+        //    endColor,
+        //    interval,
+        //    duration
+        //));
+        //StartCoroutine(CommonAnimations.FlashSprite(
+        //    chestAnimator.GetComponent<SpriteRenderer>(),
+        //    minColor,
+        //    maxColor,
+        //    endColor,
+        //    interval,
+        //    duration
+        //));
+        //StartCoroutine(CommonAnimations.FlashSprite(
+        //    legsAnimator.GetComponent<SpriteRenderer>(),
+        //    minColor,
+        //    maxColor,
+        //    endColor,
+        //    interval,
+        //    duration
+        //));
+
+
+
+        StartCoroutine(CommonAnimations.BlinkSprite(
             faceAnimator.GetComponent<SpriteRenderer>(),
-            minColor,
-            maxColor,
             endColor,
             interval,
             duration
         ));
-        StartCoroutine(CommonAnimations.FlashSprite(
+        StartCoroutine(CommonAnimations.BlinkSprite(
             helmetAnimator.GetComponent<SpriteRenderer>(),
-            minColor,
-            maxColor,
             endColor,
             interval,
             duration
         ));
-        StartCoroutine(CommonAnimations.FlashSprite(
+        StartCoroutine(CommonAnimations.BlinkSprite(
             chestAnimator.GetComponent<SpriteRenderer>(),
-            minColor,
-            maxColor,
             endColor,
             interval,
             duration
         ));
-        StartCoroutine(CommonAnimations.FlashSprite(
+        StartCoroutine(CommonAnimations.BlinkSprite(
             legsAnimator.GetComponent<SpriteRenderer>(),
-            minColor,
-            maxColor,
             endColor,
             interval,
             duration
-        ));
+        )); 
     }
 }
