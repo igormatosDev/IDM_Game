@@ -13,8 +13,17 @@ public class Item
         Wood,
         Slime,
     }
+    public enum ItemRarity
+    {
+        Common,
+        Rare,
+        Epic,
+        Legendary,
+        Unique
+    }
 
     public ItemType itemType;
+    public ItemRarity rarity = ItemRarity.Common;
     public int amount;
 
 

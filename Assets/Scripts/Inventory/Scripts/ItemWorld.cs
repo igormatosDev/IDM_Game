@@ -8,16 +8,25 @@ using TMPro;
 public class ItemWorld : MonoBehaviour
 {
 
+    
     private Item item;
     private SpriteRenderer spriteRenderer;
     //private Light2D light2D;
     private TextMeshPro textMeshPro;
     public bool isPickable = true;
-
+    
     [SerializeField] private float dropYInclination = .5f;
     [SerializeField] private float dropForce = 5f;
     [SerializeField] private float dropDuration = 0.8f;
     [SerializeField] private float cantBePickedForSec = 1f;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        //light2D = transform.Find("Light").GetComponent<Light2D>();
+        textMeshPro = transform.Find("ItemWorldAmount").GetComponent<TextMeshPro>();
+    }
+
 
     public static ItemWorld SpawnItemWorld(Vector3 position, Item item, Vector2 direction)
     {
@@ -73,13 +82,6 @@ public class ItemWorld : MonoBehaviour
     {
         yield return new WaitForSeconds(waitSeconds);
         itemWorld.isPickable = true;
-    }
-
-    private void Awake()
-    {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        //light2D = transform.Find("Light").GetComponent<Light2D>();
-        textMeshPro = transform.Find("ItemWorldAmount").GetComponent<TextMeshPro>();
     }
 
     public void SetItem(Item item)

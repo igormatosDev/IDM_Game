@@ -17,11 +17,7 @@ public class UI_Inventory : MonoBehaviour
     private Button itemSlotButton;
     private PlayerController player;
     public GameObject[] itemSlots;
-
-    private void Awake()
-    {
-        itemSlots = GameObject.FindGameObjectsWithTag("ItemSlotContainer");
-    }
+    public MouseCursorController mouseCursorController;
 
     public void SetPlayer(PlayerController player)
     {
@@ -36,20 +32,30 @@ public class UI_Inventory : MonoBehaviour
         RefreshInventoryItems();
     }
 
-    
+
 
     private void Inventory_OnItemListChanged(object sender, System.EventArgs e)
     {
         RefreshInventoryItems();
     }
 
-    private void SetInventorySlotClickFunctions(GameObject slotGameObject, ItemListSlot itemSlot)
+
+    public void DragItem(ItemListSlot item)
     {
+        GameObject itemSlotGameObject = inventory.GetSlotGameObject(item.slot);
+        mouseCursorController.DragItem(item, itemSlotGameObject);
+    }
+
+    private void SetInventorySlotClickFunctions(ItemListSlot itemSlot)
+    {
+        GameObject slotGameObject = inventory.GetSlotGameObject(itemSlot.slot);
 
         slotGameObject.GetComponent<Button_UI>().ClickFunc = () =>
         {
             // Use item
-            inventory.UseItem(itemSlot);
+            //inventory.UseItem(itemSlot);
+
+            DragItem(itemSlot);
         };
 
         slotGameObject.GetComponent<Button_UI>().MouseRightClickFunc = () =>
@@ -63,7 +69,6 @@ public class UI_Inventory : MonoBehaviour
             ItemWorld itemWorld = ItemWorld.DropItem(player.transform.position, duplicateItem, dropDirection);
 
             itemWorld.isPickable = false;
-            //StartCoroutine(itemWorld.pushItemAway(dropPosition, itemWorld));
             StartCoroutine(itemWorld.setPickableTrue(itemWorld, 5));
 
         };
@@ -71,89 +76,25 @@ public class UI_Inventory : MonoBehaviour
 
     private void RefreshInventoryItems()
     {
-        //foreach (Transform child in itemSlotContainer)
-        //{
-        //    if (child == itemSlotTemplate) continue;
-        //    Destroy(child.gameObject);
-        //}
-
-        // Instantiating itemSlots and InventoryList
-        
-        List <ItemListSlot> inventoryItemList = inventory.GetItemList();
-
-
-        //print(itemSlots);
-        //print(itemSlots.Length);
+        List<ItemListSlot> inventoryItemList = inventory.GetItemList();
         foreach (ItemListSlot itemSlot in inventoryItemList)
         {
             // -1  : Nothing in inventory.
-            // -2  : There was something there, but should be removed and set to -1.
             // >=0 : Item in inventory at the specified slot.
-
-            if (itemSlot.item == null) continue;
-            if(itemSlot.slot == -1)
-            {
-                itemSlot.slot = GetFirstClearSlot(itemSlots);
-            }
             
-            if(itemSlot.slot == -1) continue; // if it's still 1: inventory is Full, there is no slots left
-
-
-            GameObject slotGameObject = itemSlots[itemSlot.slot];
-            SetInventorySlotClickFunctions(slotGameObject, itemSlot);
-
-
-            Image image = slotGameObject.transform.Find("itemImage").GetComponent<Image>();
-            TextMeshProUGUI uiText = slotGameObject.transform.Find("itemAmount").GetComponent<TextMeshProUGUI>();
-
-            if(itemSlot.slot == -2)
+            // Treating to avoid null values
+            if (itemSlot.item == null) continue;
+            if (itemSlot.slot == -1)
             {
-                itemSlot.slot = -1;
-                itemSlot.item = null;
-                image.sprite = null;
-                image.enabled = false;
-                uiText.SetText("");
-                
+                itemSlot.slot = inventory.GetFirstClearSlot();
             }
-            else
-            {
-                image.enabled = true;
-                image.sprite = itemSlot.item.GetSprite();
+            if (itemSlot.slot == -1) continue; // if it's still -1: inventory is Full, there is no slots left
 
-                if (itemSlot.item.amount > 1)
-                {
-                    uiText.SetText(itemSlot.item.amount.ToString());
-                }
-                else
-                {
-                    uiText.SetText("");
-                }
-            }
-        }
-
-        //print("ITEMSLOTS");
-        //print(itemSlots);
-        
-        //print("-------");
-
-        //print("INVENTORY");
-        //print(inventory);
-    }
-
-    private int GetFirstClearSlot(GameObject[] itemSlotContainers)
-    {
-        for(int i=0; i<itemSlotContainers.Length; i++)
-        {
-            Transform itemImage = itemSlotContainers[i].transform.GetChild(0);
-            //Transform itemAmount = itemSlotContainers[i].transform.GetChild(1);
-            if (!itemImage.GetComponent<Image>().enabled)
-            {
-                print($"SLOT: {i}");
-                return i;
-            }
-        }
-
-        return -1;
+            print($"OK!!! SLOT: {itemSlot.slot}, ITEM: {itemSlot.item.itemType}");
+            SetInventorySlotClickFunctions(itemSlot);
+            inventory.SetItemSprite(itemSlot, false);
+        };
     }
 }
+
 

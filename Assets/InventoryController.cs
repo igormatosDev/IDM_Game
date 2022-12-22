@@ -58,14 +58,13 @@ public class InventoryController : MonoBehaviour
 
     void ActivateInventoryMenu()
     {
-        mouseCursorController.SetCursor(mouseCursorController.cursorOverInventory);
+        mouseCursorController.SetCursor(mouseCursorController.swordCursorTexture);
         inventoryMenuUI.anchoredPosition = new Vector2(0, 0);
         inventoryMenuTab.SetActive(true);
     }
 
     public void DeactivateInventoryMenu()
     {
-        print("DEACTIVATING INV");
         mouseCursorController.SetCursor(mouseCursorController.defaultCursorTexture);
         inventoryMenuUI.anchoredPosition = new Vector2(0, -312);
         inventoryMenuTab.SetActive(false);

@@ -1,16 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
     private NewControls newControls;
     private InputAction menu;
-
+    [SerializeField] private MouseCursorController mouseCursorController;
     [SerializeField] private GameObject pauseMenuUI;
-    [SerializeField] private bool isPaused;
 
     // Start is called before the first frame update
     void Awake()
@@ -40,9 +42,7 @@ public class PauseMenuController : MonoBehaviour
 
     void Pause(InputAction.CallbackContext context)
     {
-        isPaused = !isPaused;
-
-        if (isPaused)
+        if (Time.timeScale != 0)
         {
             ActivatePauseMenu();
         }
@@ -55,31 +55,39 @@ public class PauseMenuController : MonoBehaviour
 
     void ActivatePauseMenu()
     {
+        mouseCursorController.SetCursor(mouseCursorController.swordCursorTexture);
         Time.timeScale = 0;
         AudioListener.pause = true;
         pauseMenuUI.SetActive(true);
-        
-        //Cursor.visible = true;
     }
 
     public void DeactivatePauseMenu()
     {
+        // RESUME
+        mouseCursorController.SetCursor(mouseCursorController.defaultCursorTexture);
         Time.timeScale = 1;
         AudioListener.pause = false;
         pauseMenuUI.SetActive(false);
-        isPaused = false;
-        
-        //Cursor.visible = false;
+
+    }
+
+    public void ResumeGame()
+    {
+        DeactivatePauseMenu();
+        //Button btnResume = transform.Find("btnResume").GetComponent<Button>();
+
     }
 
     public void RestartGame()
     {
+        // RESTART
         DeactivatePauseMenu();
         SceneManager.LoadScene(0);
     }
 
     public void ExitGame()
     {
+        // QUIT
         UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
     }
