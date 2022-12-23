@@ -1,12 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
-using System;
-using UnityEngine.U2D;
-using Unity.VisualScripting;
-using System.Xml.Linq;
 using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour

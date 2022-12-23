@@ -1,15 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem.Processors;
-using UnityEngine.SceneManagement;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEditor.Progress;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class EnemyBase : MonoBehaviour
 {
@@ -49,9 +40,7 @@ public class EnemyBase : MonoBehaviour
     protected Rigidbody2D enemyRigidBody;
     protected GameObject Player;
 
-    public Vector3 defaultScale;
-    public Vector2 movementInput = Vector2.zero;
-    public Vector2 idleMovementInput = Vector2.zero;
+    private Vector2 movementInput = Vector2.zero;
 
     protected int maxHealth;
     protected Vector2 enemyAttackedPosition;
@@ -65,7 +54,6 @@ public class EnemyBase : MonoBehaviour
         enemyRigidBody = GetComponent<Rigidbody2D>();
         enemySpriteRenderer = GetComponent<SpriteRenderer>();
         enemyCollider = GetComponent<Collider2D>();
-        defaultScale = transform.localScale;
         StartCoroutine(SetPlayer(this));
     }
 
@@ -182,13 +170,16 @@ public class EnemyBase : MonoBehaviour
     public void Drop()
     {
         // Drop item
-        List<Item> items = lootTable.getLoot();
-        Vector2 currPosition = enemySpriteRenderer.transform.position;
-
-        for (int i = 0; i < items.Count; i++)
+        if(lootTable != null)
         {
-            Vector2 dropPosition = Helpers.GetRandomDirection(0.5f);
-            ItemWorld.DropItem(currPosition - dropPosition, items[i], Vector2.zero);
+            List<Item> items = lootTable.getLoot();
+            Vector2 currPosition = enemySpriteRenderer.transform.position;
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                Vector2 dropPosition = Helpers.GetRandomDirection(0.5f);
+                ItemWorld.DropItem(currPosition - dropPosition, items[i], Vector2.zero);
+            }
         }
 
     }
@@ -246,4 +237,12 @@ public class EnemyBase : MonoBehaviour
         }
         yield return RegenerateHealth(enemy);
     }
+
+    public Vector2 getMovementInput()
+    {
+        return movementInput;
+    }
+
+
+    
 }

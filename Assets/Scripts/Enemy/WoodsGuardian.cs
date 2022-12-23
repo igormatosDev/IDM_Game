@@ -1,19 +1,21 @@
 using UnityEngine;
 
-public class Slime : EnemyBase
+public class WoodsGuardian : EnemyBase
 {
+
     // Custom constants
-    [SerializeField] public float attackJumpSpeed;
-    [SerializeField] public float attackFallSpeed;
+    [SerializeField] public float attackDuration;
+    private float attackPassed = 0;
+    [SerializeField] public float enemySpeedInAttack;
 
     [SerializeField] private ProjectileBase pfProjectile;
 
-    private SlimeSpriteController slimeSpriteController;
+    private WoodsGuardianSpriteController wgSpriteController;
 
     protected override void Start()
     {
         base.Start();
-        slimeSpriteController = gameObject.GetComponentInChildren<SlimeSpriteController>();
+        wgSpriteController = gameObject.GetComponentInChildren<WoodsGuardianSpriteController>();
         enemySpriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
         enemyCollider = gameObject.GetComponentInChildren<CapsuleCollider2D>();
     }
@@ -23,19 +25,31 @@ public class Slime : EnemyBase
         base.Update();
         if (isDead)
         {
-            //transform.position = Vector2.MoveTowards(transform.position, enemyAttackedPosition, hitKnockback / 5 * Time.deltaTime);
             enemyRigidBody.velocity = Vector2.zero;
         }
         else if (isAttacking)
         {
-            slimeSpriteController.AttackMovement();
+            MovementInAttack();
+            attackPassed += Time.deltaTime;
+            if(attackPassed >= attackDuration)
+            {
+                attackPassed = 0;
+                wgSpriteController.Attack3();
+            }
         }
         else
         {
             Movement();
-            slimeSpriteController.ScaleController(enemyRigidBody.velocity);
+            wgSpriteController.ScaleController(enemyRigidBody.velocity);
         }
-        slimeSpriteController.AnimationController();
+        wgSpriteController.AnimationController();
+    }
+
+
+    public void MovementInAttack()
+    {
+        Vector2 mov = getMovementInput();
+        enemyRigidBody.velocity = mov != Vector2.zero ? mov * enemySpeedInAttack : Vector2.zero;
     }
 
 
@@ -44,7 +58,7 @@ public class Slime : EnemyBase
         base.Die();
         isAttacking = false;
         enemyCollider.enabled = false;
-        slimeSpriteController.PlayDeadAnimation();
+        wgSpriteController.PlayDeadAnimation();
     }
 
     public void Destroy()
@@ -52,10 +66,10 @@ public class Slime : EnemyBase
         DestroyEnemy();
     }
 
-    
+
     public override void AttackInput()
     {
-        slimeSpriteController.StartAttack((Player.transform.position - enemySpriteRenderer.transform.position).normalized);
+        wgSpriteController.StartAttack((Player.transform.position - enemySpriteRenderer.transform.position).normalized);
     }
 
     public void ShootProjectiles()
@@ -65,10 +79,10 @@ public class Slime : EnemyBase
         ShootProjectile(basePos, Vector2.up);
         ShootProjectile(basePos, Vector2.right);
         ShootProjectile(basePos, Vector2.down);
-        ShootProjectile(basePos, (Vector2.left + Vector2.up)/2);
-        ShootProjectile(basePos, (Vector2.up + Vector2.right)/2);
-        ShootProjectile(basePos, (Vector2.right + Vector2.down)/2);
-        ShootProjectile(basePos, (Vector2.down + Vector2.left)/2);
+        ShootProjectile(basePos, (Vector2.left + Vector2.up) / 2);
+        ShootProjectile(basePos, (Vector2.up + Vector2.right) / 2);
+        ShootProjectile(basePos, (Vector2.right + Vector2.down) / 2);
+        ShootProjectile(basePos, (Vector2.down + Vector2.left) / 2);
     }
 
     private void ShootProjectile(Vector2 basePos, Vector2 direction)

@@ -12,6 +12,7 @@ public class SlimeSpriteController : MonoBehaviour
     private Animator animator;
 
     private bool isJumping = false;
+    private Vector3 defaultScale;
     
     // Animation Constants
     private string state = IDLE_ANIMATION;
@@ -22,6 +23,7 @@ public class SlimeSpriteController : MonoBehaviour
     private const string ATTACK01_ANIMATION = "Attack01";
     private const string ATTACK02_ANIMATION = "Attack02";
     private const string ATTACK03_ANIMATION = "Attack03";
+
 
     private void Start()
     {
@@ -81,12 +83,12 @@ public class SlimeSpriteController : MonoBehaviour
         if (velocity.x > 0)
         {
             // Looking right
-            transform.localScale = new Vector2(-slime.defaultScale.x, slime.defaultScale.y);
+            transform.localScale = new Vector2(-defaultScale.x, defaultScale.y);
         }
         else if (velocity.x < 0)
         {
             // Looking left
-            transform.localScale = new Vector2(slime.defaultScale.x, slime.defaultScale.y);
+            transform.localScale = new Vector2(defaultScale.x, defaultScale.y);
         }
     }
 
@@ -98,7 +100,7 @@ public class SlimeSpriteController : MonoBehaviour
             {
                 state = HURT_ANIMATION;
             }
-            else if (slime.movementInput != Vector2.zero)
+            else if (slime.getMovementInput() != Vector2.zero)
             {
                 // Run
                 state = RUN_ANIMATION;

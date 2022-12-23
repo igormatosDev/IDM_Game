@@ -1,11 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
-using Unity.IO.LowLevel.Unsafe;
-using System.Data.SqlTypes;
-using UnityEngine.UIElements;
-using Unity.VisualScripting;
 
 public class WeaponBase : MonoBehaviour
 {

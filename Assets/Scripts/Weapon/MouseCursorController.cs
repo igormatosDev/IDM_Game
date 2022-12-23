@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using static Inventory;
-using UnityEngine.UI;
 
 public class MouseCursorController : MonoBehaviour
 {

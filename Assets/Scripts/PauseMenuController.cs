@@ -1,11 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -88,6 +83,7 @@ public class PauseMenuController : MonoBehaviour
     public void ExitGame()
     {
         // QUIT
+        // TO BUILD: COMMENT THIS UNITYEDITOR.EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
     }

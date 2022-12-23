@@ -30,15 +30,15 @@ public class WhiteMaskedMan : EnemyBase
         if (enemyRigidBody.velocity.x > 0)
         {
             // Looking right
-            transform.localScale = new Vector2(defaultScale.x, defaultScale.y);
+            transform.localScale = new Vector2(1, 1);
         }
         else
         {
             // Looking left
-            transform.localScale = new Vector2(-defaultScale.x, defaultScale.y);
+            transform.localScale = new Vector2(-1, 1);
         }
 
-        if (movementInput != Vector2.zero)
+        if (getMovementInput() != Vector2.zero)
         {
             // Run
             state = RUN_ANIMATION;
