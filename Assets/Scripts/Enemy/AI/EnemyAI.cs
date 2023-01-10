@@ -11,7 +11,7 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField] private AIData aiData;
 
-    [SerializeField] private float detectionDelay = 0.05f, aiUpdateDelay = 0.06f, attackDelay = 1f;
+    [SerializeField] private float detectionDelay = 0.05f, aiUpdateDelay = 0.06f; // , attackDelay = 1f;
     [SerializeField] private float attackDistance = 0.5f;
     
     [SerializeField] private float idleDelay = 5f;
@@ -100,21 +100,21 @@ public class EnemyAI : MonoBehaviour
         {
             float distance = Vector2.Distance(aiData.currentTarget.position, transform.position);
 
+            movementInput = movementDirectionSolver.GetDirectionToMove(steeringBehaviours, aiData);
             if (distance < attackDistance)
             {
-                //Attack logic
-                movementInput = Vector2.zero;
                 OnAttackPressed?.Invoke();
-                yield return new WaitForSeconds(attackDelay);
-                StartCoroutine(ChaseAndAttack());
+                //Attack logic
+                //yield return new WaitForSeconds(attackDelay);
+                //StartCoroutine(ChaseAndAttack());
             }
-            else
-            {
+            //else
+            //{
                 //Chase logic
-                movementInput = movementDirectionSolver.GetDirectionToMove(steeringBehaviours, aiData);
+                //movementInput = movementDirectionSolver.GetDirectionToMove(steeringBehaviours, aiData);
                 yield return new WaitForSeconds(aiUpdateDelay);
                 StartCoroutine(ChaseAndAttack());
-            }
+            //}
 
         }
     }

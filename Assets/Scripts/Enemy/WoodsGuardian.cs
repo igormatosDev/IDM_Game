@@ -17,7 +17,7 @@ public class WoodsGuardian : EnemyBase
         base.Start();
         wgSpriteController = gameObject.GetComponentInChildren<WoodsGuardianSpriteController>();
         enemySpriteRenderer = gameObject.GetComponentInChildren<SpriteRenderer>();
-        enemyCollider = gameObject.GetComponentInChildren<CapsuleCollider2D>();
+        enemyCollider = enemySpriteRenderer.GetComponent<Collider2D>();
     }
 
     protected override void Update()
@@ -30,6 +30,7 @@ public class WoodsGuardian : EnemyBase
         else if (isAttacking)
         {
             MovementInAttack();
+            wgSpriteController.ScaleController(enemyRigidBody.velocity);
             attackPassed += Time.deltaTime;
             if(attackPassed >= attackDuration)
             {
@@ -69,7 +70,10 @@ public class WoodsGuardian : EnemyBase
 
     public override void AttackInput()
     {
-        wgSpriteController.StartAttack((Player.transform.position - enemySpriteRenderer.transform.position).normalized);
+        if (!isAttacking && !isInAttackCooldown)
+        {
+            wgSpriteController.StartAttack();
+        }
     }
 
     public void ShootProjectiles()

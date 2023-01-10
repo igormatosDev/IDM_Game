@@ -116,7 +116,91 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WoodsEnemy_0
+      name: WoodsGuardian_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 192
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12d2d88a9b48b22408965b28a3442732
+      internalID: -831926770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WoodsGuardian_1
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 192
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3735ce5767e619542ae46b608ff227b0
+      internalID: -1416416709
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WoodsGuardian_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 192
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aace190dbd374044499eb3985db4d622
+      internalID: -2034258392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WoodsGuardian_3
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 192
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9821d3a3e9ebc7b41993b37009b82a73
+      internalID: 260886902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WoodsGuardian_4
       rect:
         serializedVersion: 2
         x: 0
@@ -130,14 +214,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 33273300bf1b5194a84d53c760dad8f6
-      internalID: 860835576
+      spriteID: 1c8371f6fa409904ca0f3e56fd0f8538
+      internalID: -1735725055
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodsEnemy_1
+      name: WoodsGuardian_5
       rect:
         serializedVersion: 2
         x: 32
@@ -151,14 +235,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bb5179c381d0e0e43a7f8fe942528c80
-      internalID: -459103076
+      spriteID: b55a1ebb244714343b835970a4a38872
+      internalID: 621269576
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodsEnemy_2
+      name: WoodsGuardian_6
       rect:
         serializedVersion: 2
         x: 64
@@ -172,14 +256,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 55ea4fa5714b7fb46a5d50e0518d9d87
-      internalID: -1239547491
+      spriteID: f97ccd94e0793ff4da2b1bfb5133629c
+      internalID: -824365871
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodsEnemy_3
+      name: WoodsGuardian_7
       rect:
         serializedVersion: 2
         x: 96
@@ -193,14 +277,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3a19931503824a8449af0a3ff8c6d37a
-      internalID: 1542219804
+      spriteID: cdf06cf087b109642946e5262a7145a1
+      internalID: -948034692
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodsEnemy_4
+      name: WoodsGuardian_8
       rect:
         serializedVersion: 2
         x: 0
@@ -214,14 +298,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7297d7d1dc9260044aa1f1240af24e24
-      internalID: 1170950514
+      spriteID: 24ddd43e61b46544392ee93141122569
+      internalID: 1885452439
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodsEnemy_5
+      name: WoodsGuardian_9
       rect:
         serializedVersion: 2
         x: 32
@@ -235,18 +319,60 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0b86e1b28798c6d45a97410fa7a74a7f
-      internalID: 520187667
+      spriteID: ea44079bf9c921a449416725167131e7
+      internalID: -1177007924
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodsEnemy_6
+      name: WoodsGuardian_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd4447989731071408da2b0bda7e14ca
+      internalID: 1523052013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WoodsGuardian_11
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1d6d0da5a24e6fe4184062983ef6073f
+      internalID: 753179553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WoodsGuardian_12
       rect:
         serializedVersion: 2
         x: 64
-        y: 64
+        y: 0
         width: 32
         height: 64
       alignment: 0
@@ -256,38 +382,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f6e8afff8609ce54a93d29429cb0ed7c
-      internalID: -536094568
+      spriteID: 92d28bcfcd254ba49a7273cbbd038b9d
+      internalID: -926550729
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodsEnemy_7
+      name: WoodsGuardian_13
       rect:
         serializedVersion: 2
         x: 96
-        y: 64
-        width: 32
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 49f74c45fbb3e7d4dbfa64dd24d15904
-      internalID: 30214296
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: WoodsEnemy_8
-      rect:
-        serializedVersion: 2
-        x: 0
         y: 0
         width: 32
         height: 64
@@ -298,17 +403,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bda77b56e76f0a34f857fe2f18eb2379
-      internalID: 1595677563
+      spriteID: 10f3a5d3abd22d149a79b5c98871ced5
+      internalID: -1005678350
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: WoodsEnemy_9
+      name: WoodsGuardian_14
       rect:
         serializedVersion: 2
-        x: 32
+        x: 128
         y: 0
         width: 32
         height: 64
@@ -319,8 +424,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f2ae8fda6703dd04d84808aaf707652b
-      internalID: 1855945363
+      spriteID: 2f3df0398067bd746bc67e295386d669
+      internalID: 2127273929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: WoodsGuardian_15
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a612f2e2cd45eb348baf5657ac1084e2
+      internalID: -332028340
       vertices: []
       indices: 
       edges: []
@@ -336,16 +462,22 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      WoodsEnemy_2: -1239547491
-      WoodsEnemy_9: 1855945363
-      WoodsEnemy_3: 1542219804
-      WoodsEnemy_0: 860835576
-      WoodsEnemy_7: 30214296
-      WoodsEnemy_8: 1595677563
-      WoodsEnemy_5: 520187667
-      WoodsEnemy_4: 1170950514
-      WoodsEnemy_6: -536094568
-      WoodsEnemy_1: -459103076
+      WoodsGuardian_11: 753179553
+      WoodsGuardian_0: -831926770
+      WoodsGuardian_1: -1416416709
+      WoodsGuardian_12: -926550729
+      WoodsGuardian_10: 1523052013
+      WoodsGuardian_13: -1005678350
+      WoodsGuardian_3: 260886902
+      WoodsGuardian_4: -1735725055
+      WoodsGuardian_14: 2127273929
+      WoodsGuardian_9: -1177007924
+      WoodsGuardian_2: -2034258392
+      WoodsGuardian_8: 1885452439
+      WoodsGuardian_5: 621269576
+      WoodsGuardian_6: -824365871
+      WoodsGuardian_7: -948034692
+      WoodsGuardian_15: -332028340
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

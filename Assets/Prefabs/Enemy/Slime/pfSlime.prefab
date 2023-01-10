@@ -616,9 +616,6 @@ MonoBehaviour:
   isInAttackCooldown: 0
   isIdleing: 0
   isRegeneratingHealth: 0
-  defaultScale: {x: 0, y: 0, z: 0}
-  movementInput: {x: 0, y: 0}
-  idleMovementInput: {x: 0, y: 0}
   attackJumpSpeed: 6
   attackFallSpeed: 3
   pfProjectile: {fileID: 1807843878566209543, guid: e0b4066e8c19c634292f200fc03a30e4, type: 3}
@@ -658,7 +655,6 @@ MonoBehaviour:
   aiData: {fileID: 6093737489410248565}
   detectionDelay: 0.05
   aiUpdateDelay: 0.06
-  attackDelay: 0
   attackDistance: 3
   idleDelay: 5
   idleMovementDuration: 0.75

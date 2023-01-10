@@ -23,21 +23,31 @@ public class SlashAnimation : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy" && weapon.isAttacking)
+        print(collision.name);
+        if (weapon.isAttacking)
         {
-            EnemyBase enemy = collision.GetComponentInParent<EnemyBase>();
+            if (collision.gameObject.tag == "Enemy")
+            {
+                EnemyBase enemy = collision.GetComponentInParent<EnemyBase>();
             
-            if (!enemy)
-                enemy = collision.GetComponent<EnemyBase>();
+                if (!enemy)
+                    enemy = collision.GetComponent<EnemyBase>();
 
-            enemy.isHit(weapon.getDamage(), weapon.knockbackForce, weapon.attackStartPointerPosition);
-        }
+                enemy.isHit(weapon.getDamage(), weapon.knockbackForce, weapon.attackStartPointerPosition);
+            }
     
-        if (collision.gameObject.tag == "DestroyableObject" && weapon.isAttacking)
-        {
-            ObjectController destroyableObject = collision.GetComponent<ObjectController>();
-            destroyableObject.isHit(weapon.getDamage());
+            if (collision.gameObject.tag == "DestroyableObject")
+            {
+                ObjectController destroyableObject = collision.GetComponent<ObjectController>();
+                destroyableObject.isHit(weapon.getDamage());
+            }
+
+            if (collision.gameObject.tag == "Obstacle")
+            {
+                DestroySelf();
+            }
         }
+
 
     }
 

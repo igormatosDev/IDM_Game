@@ -83,12 +83,12 @@ public class SlimeSpriteController : MonoBehaviour
         if (velocity.x > 0)
         {
             // Looking right
-            transform.localScale = new Vector2(-defaultScale.x, defaultScale.y);
+            transform.localScale = new Vector2(-1, 1);
         }
         else if (velocity.x < 0)
         {
             // Looking left
-            transform.localScale = new Vector2(defaultScale.x, defaultScale.y);
+            transform.localScale = new Vector2(1, 1);
         }
     }
 
@@ -121,6 +121,6 @@ public class SlimeSpriteController : MonoBehaviour
     {
         state = DEAD_ANIMATION;
         animator.Play(DEAD_ANIMATION);
-        StartCoroutine(CommonAnimations.FadeOut(enemySpriteRenderer, 1.5f, 1.5f, slime.Destroy));
+        StartCoroutine(CommonAnimations.FadeOut(enemySpriteRenderer, 3f, 1.5f, slime.Destroy));
     }
 }
