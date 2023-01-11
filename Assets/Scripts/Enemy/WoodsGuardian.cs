@@ -12,6 +12,12 @@ public class WoodsGuardian : EnemyBase
 
     private WoodsGuardianSpriteController wgSpriteController;
 
+    private float lastShoot = 0f;
+    private float shootInterval = 0.1f;
+    private float rotDirectionAgg = 0f;
+    private float rotDirection = 150f;
+    public float projRotation = 0.5f;
+
     protected override void Start()
     {
         base.Start();
@@ -32,7 +38,16 @@ public class WoodsGuardian : EnemyBase
             MovementInAttack();
             wgSpriteController.ScaleController(enemyRigidBody.velocity);
             attackPassed += Time.deltaTime;
-            if(attackPassed >= attackDuration)
+            lastShoot += Time.deltaTime;
+
+            if(lastShoot >= shootInterval)
+            {
+                lastShoot = 0f;
+                rotDirectionAgg += rotDirection;
+                ShootProjectiles();
+            }
+
+            if (attackPassed >= attackDuration)
             {
                 attackPassed = 0;
                 wgSpriteController.Attack3();
@@ -79,10 +94,13 @@ public class WoodsGuardian : EnemyBase
     public void ShootProjectiles()
     {
         Vector2 basePos = gameObject.transform.position;
-        ShootProjectile(basePos, Vector2.left);
-        ShootProjectile(basePos, Vector2.up);
-        ShootProjectile(basePos, Vector2.right);
-        ShootProjectile(basePos, Vector2.down);
+
+        //ShootProjectile(basePos, Vector2.left);
+        //ShootProjectile(basePos, Vector2.up);
+        //ShootProjectile(basePos, Vector2.right);
+        //ShootProjectile(basePos, Vector2.down);
+        
+
         ShootProjectile(basePos, (Vector2.left + Vector2.up) / 2);
         ShootProjectile(basePos, (Vector2.up + Vector2.right) / 2);
         ShootProjectile(basePos, (Vector2.right + Vector2.down) / 2);
@@ -91,7 +109,13 @@ public class WoodsGuardian : EnemyBase
 
     private void ShootProjectile(Vector2 basePos, Vector2 direction)
     {
-        ProjectileBase projectile = Instantiate(pfProjectile, basePos + direction, Quaternion.identity);
-        projectile.setDirection(direction);
+        Vector2 nDir = Helpers.Rotate(direction, rotDirectionAgg);
+        Vector2 pos = basePos + nDir;
+        
+        ProjectileBase projectile = Instantiate(pfProjectile, pos, Quaternion.identity);
+        
+        ProjectileWoodsGuardian proj = projectile.GetComponent<ProjectileWoodsGuardian>();
+        proj.SetRotation(projRotation);
+        proj.setDirection(nDir);
     }
 }

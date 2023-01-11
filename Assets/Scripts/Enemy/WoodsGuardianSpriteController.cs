@@ -44,6 +44,7 @@ public class WoodsGuardianSpriteController : MonoBehaviour
     {
         enemy.isAttacking = false;
         enemy.isInAttackCooldown = true;
+        enemy.projRotation *= -1;
         StartCoroutine(Helpers.CallActionAfterSec(enemy.attackCooldown, () => { enemy.isInAttackCooldown = false; }));
         state = IDLE_ANIMATION;
     }
