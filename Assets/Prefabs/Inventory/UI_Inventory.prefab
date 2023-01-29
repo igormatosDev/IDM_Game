@@ -510,6 +510,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSlots: []
+  mouseCursorController: {fileID: 0}
 --- !u!1 &4630366910613680131
 GameObject:
   m_ObjectHideFlags: 0
@@ -4583,32 +4584,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 2799832489041426637, guid: 90be4b09d71112e43aa811fa713df562, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 90be4b09d71112e43aa811fa713df562, type: 3}
---- !u!1 &1231303292277740847 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5277583411196380911, guid: 90be4b09d71112e43aa811fa713df562, type: 3}
-  m_PrefabInstance: {fileID: 6353393751328625600}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1744693562
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1231303292277740847}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f9a4fe2c9da6e24c9c25bceef2c4efd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hoverBehaviourType: 0
-  hoverBehaviour_Color_Enter: {r: 0, g: 0, b: 0, a: 0}
-  hoverBehaviour_Color_Exit: {r: 0, g: 0, b: 0, a: 0}
-  hoverBehaviour_Image: {fileID: 0}
-  hoverBehaviour_Sprite_Exit: {fileID: 0}
-  hoverBehaviour_Sprite_Enter: {fileID: 0}
-  hoverBehaviour_Move: 0
-  hoverBehaviour_Move_Amount: {x: 0, y: 0}
-  triggerMouseOutFuncOnClick: 0
 --- !u!224 &1328551862704688763 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5351471620140785083, guid: 90be4b09d71112e43aa811fa713df562, type: 3}

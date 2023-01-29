@@ -37,18 +37,18 @@ public class MouseCursorController : MonoBehaviour
 
     public void DragItem(ItemListSlot draggedItem, GameObject draggedGameObject)
     {
-        print("DRAG CALLED");
+        //print("DRAG CALLED");
         
-        if (draggedItem != null && draggedGameObject != null)
-        {
-            print(draggedItem);
-            print(draggedGameObject);
+        //if (draggedItem != null && draggedGameObject != null)
+        //{
+        //    print(draggedItem);
+        //    print(draggedGameObject);
 
-            itemDragControllerGameObject.SetActive(true);
-            itemDragSpriteRenderer.sprite = draggedItem.item.GetSprite();
-            this.draggedItem = draggedItem;
-            //this.draggedGameObject = draggedGameObject;
-        }
+        //    itemDragControllerGameObject.SetActive(true);
+        //    itemDragSpriteRenderer.sprite = draggedItem.item.GetSprite();
+        //    this.draggedItem = draggedItem;
+        //    //this.draggedGameObject = draggedGameObject;
+        //}
     }
 
     //private void OnMouseEnter()

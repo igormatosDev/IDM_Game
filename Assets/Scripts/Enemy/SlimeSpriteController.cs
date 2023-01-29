@@ -12,7 +12,6 @@ public class SlimeSpriteController : MonoBehaviour
     private Animator animator;
 
     private bool isJumping = false;
-    private Vector3 defaultScale;
     
     // Animation Constants
     private string state = IDLE_ANIMATION;
@@ -57,7 +56,7 @@ public class SlimeSpriteController : MonoBehaviour
 
     public void AttackEnd()
     {
-        slime.ShootProjectiles();
+        slime.ShootProjectiles(attackDirection);
         slime.isAttacking = false;
         slime.isInAttackCooldown = true;
         StartCoroutine(Helpers.CallActionAfterSec(slime.attackCooldown, () => { slime.isInAttackCooldown = false; }));

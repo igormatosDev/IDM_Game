@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d9743b8354ea234daa7bafe8d32ee4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetRechedThreshold: 1
+  targetRechedThreshold: 0
   showGizmo: 0
 --- !u!1 &6093737487989426455
 GameObject:
@@ -601,7 +601,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lootTable: {fileID: 11400000, guid: 2aac985a2856c104198dca5bcf3f80b3, type: 2}
   attackPower: 5
-  attackCooldown: 0.2
+  attackCooldown: 0.8
   attackKnockbackForce: 6
   enemySpeed: 6
   fullname: Slime
@@ -655,7 +655,7 @@ MonoBehaviour:
   aiData: {fileID: 6093737489410248565}
   detectionDelay: 0.05
   aiUpdateDelay: 0.06
-  attackDistance: 3
+  attackDistance: 10
   idleDelay: 5
   idleMovementDuration: 0.75
   idleVariationPercent: 10

@@ -1,13 +1,14 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Slime : EnemyBase
 {
     // Custom constants
     [SerializeField] public float attackJumpSpeed;
     [SerializeField] public float attackFallSpeed;
-
     [SerializeField] private ProjectileBase pfProjectile;
 
+    private Vector3 attackDirection;
     private SlimeSpriteController slimeSpriteController;
 
     protected override void Start()
@@ -52,28 +53,58 @@ public class Slime : EnemyBase
         DestroyEnemy();
     }
 
-    
     public override void AttackInput()
     {
         slimeSpriteController.StartAttack((Player.transform.position - enemySpriteRenderer.transform.position).normalized);
     }
 
-    public void ShootProjectiles()
+    public void ShootProjectiles(Vector3 attackDirection)
     {
         Vector2 basePos = gameObject.transform.position;
-        ShootProjectile(basePos, Vector2.left);
-        ShootProjectile(basePos, Vector2.up);
-        ShootProjectile(basePos, Vector2.right);
-        ShootProjectile(basePos, Vector2.down);
-        ShootProjectile(basePos, (Vector2.left + Vector2.up)/2);
-        ShootProjectile(basePos, (Vector2.up + Vector2.right)/2);
-        ShootProjectile(basePos, (Vector2.right + Vector2.down)/2);
-        ShootProjectile(basePos, (Vector2.down + Vector2.left)/2);
+
+        ProjectileBase prefab = pfProjectile;
+        Vector3 direction = attackDirection;
+
+
+
+        // Set the rotation of the first projectile towards the desired direction
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        // Calculate the offset positions of the second and third projectiles based on the rotation of the first projectile
+        Vector3 offset1 = Quaternion.Euler(0f, 0f, 120f) * attackDirection;
+        Vector3 offset2 = Quaternion.Euler(0f, 0f, 240f) * attackDirection;
+
+        // Instantiate the first projectile
+        // Instantiate the second and third projectiles at the offset positions
+        ProjectileBase projectile1 = Instantiate(prefab, transform.position + attackDirection, Quaternion.identity);
+        ProjectileBase projectile2 = Instantiate(prefab, transform.position + attackDirection + offset1, Quaternion.identity);
+        ProjectileBase projectile3 = Instantiate(prefab, transform.position + attackDirection + offset2, Quaternion.identity);
+
+        // Set the rotation of the second and third projectiles to match the rotation of the first projectile
+        projectile1.transform.rotation = rotation;
+        projectile2.transform.rotation = rotation;
+        projectile3.transform.rotation = rotation;
+
+        projectile1.setDirection(direction);
+        projectile2.setDirection(direction);
+        projectile3.setDirection(direction);
+
     }
 
-    private void ShootProjectile(Vector2 basePos, Vector2 direction)
-    {
-        ProjectileBase projectile = Instantiate(pfProjectile, basePos + direction, Quaternion.identity);
-        projectile.setDirection(direction);
-    }
+    //private void ShootProjectile(Vector2 basePos, Vector2 direction)
+    //{
+    //    Vector2 pos = basePos;
+        
+
+    //    float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+    //    Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    //    ProjectileBase projectile = Instantiate(pfProjectile, pos, rotation);
+        
+    //    projectile.transform.rotation = rotation;
+        
+    //    projectile.setDirection(direction);
+    //}
 }
+
+
