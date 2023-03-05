@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -31,7 +30,8 @@ public class MapGenerator : MonoBehaviour
         print("Map generated");
         lastBuilt = 0f;
         float[,] noiseMap = PerlinNoiseGenerator.GenerateNoiseMap(width, height, scale, octaves, persistence, lacunarity, offset);
-        tilemapDisplay.DrawNoiseMap(noiseMap);
+        tilemapDisplay.DrawMap(noiseMap);
+        tilemapDisplay.SpawnObjects();
     }
 
     public void Update()
@@ -70,5 +70,10 @@ public class MapGenerator : MonoBehaviour
             this.offset.x -= moveForce;
             GenerateMap();
         }
+
     }
+
+
 }
+
+
