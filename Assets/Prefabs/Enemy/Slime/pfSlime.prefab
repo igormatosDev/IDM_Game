@@ -520,7 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5384dc7d47d09014e99bf898475061eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetDetectionRange: 15
+  targetDetectionRange: 10
   obstaclesLayerMask:
     serializedVersion: 2
     m_Bits: 72
@@ -618,7 +618,7 @@ MonoBehaviour:
   isRegeneratingHealth: 0
   attackJumpSpeed: 6
   attackFallSpeed: 3
-  pfProjectile: {fileID: 1807843878566209543, guid: e0b4066e8c19c634292f200fc03a30e4, type: 3}
+  pfProjectile: {fileID: 1807843878566209543, guid: aec8f14b84b4c4544aa56e96b2295e97, type: 3}
 --- !u!114 &6093737489410248565
 MonoBehaviour:
   m_ObjectHideFlags: 0

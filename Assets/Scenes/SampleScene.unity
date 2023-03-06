@@ -1133,12 +1133,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
-      propertyPath: gameObjectTypes.Array.size
+      propertyPath: distanceFromEdge
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
+      propertyPath: gameObjectTypes.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
       propertyPath: gameObjectTypes.Array.data[0].offset
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
       propertyPath: gameObjectTypes.Array.data[0].prefab
@@ -1146,7 +1150,7 @@ PrefabInstance:
       objectReference: {fileID: 5129307662581093984, guid: aeb115c4594d089429e7fe9e9f8f8ee9, type: 3}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
       propertyPath: gameObjectTypes.Array.data[1].offset
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
       propertyPath: gameObjectTypes.Array.data[1].prefab
@@ -1154,22 +1158,30 @@ PrefabInstance:
       objectReference: {fileID: 5879979690635581923, guid: 7c1d81e78da75aa4fbb9c3c866bb14f5, type: 3}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
       propertyPath: gameObjectTypes.Array.data[2].offset
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
       propertyPath: gameObjectTypes.Array.data[2].prefab
       value: 
       objectReference: {fileID: 8854891419306124477, guid: b16d325431419d443bb6b962b8256346, type: 3}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
-      propertyPath: gameObjectTypes.Array.data[0].spacing
-      value: 20
-      objectReference: {fileID: 0}
+      propertyPath: gameObjectTypes.Array.data[3].prefab
+      value: 
+      objectReference: {fileID: 6093737489410248575, guid: e81974a37d8f478459ec2a35ae90eb2c, type: 3}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
-      propertyPath: gameObjectTypes.Array.data[1].spacing
+      propertyPath: gameObjectTypes.Array.data[0].spacing
       value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
+      propertyPath: gameObjectTypes.Array.data[1].spacing
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
       propertyPath: gameObjectTypes.Array.data[2].spacing
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
+      propertyPath: gameObjectTypes.Array.data[3].spacing
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
@@ -1185,6 +1197,10 @@ PrefabInstance:
       value: 120
       objectReference: {fileID: 0}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
+      propertyPath: gameObjectTypes.Array.data[3].noiseScale
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
       propertyPath: gameObjectTypes.Array.data[0].noiseThreshold
       value: 0.85
       objectReference: {fileID: 0}
@@ -1194,6 +1210,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
       propertyPath: gameObjectTypes.Array.data[2].noiseThreshold
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352217318175915295, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
+      propertyPath: gameObjectTypes.Array.data[3].noiseThreshold
       value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 1352217318837682348, guid: 24156df7c2887fe49bd07bfbc6ac8c6c, type: 3}
@@ -1512,6 +1532,10 @@ PrefabInstance:
     - target: {fileID: 249233552637886946, guid: b3c1735f2319c214d994def33611d243, type: 3}
       propertyPath: pfProjectileGroup
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 249233552637886954, guid: b3c1735f2319c214d994def33611d243, type: 3}
+      propertyPath: m_Name
+      value: pfSlime
       objectReference: {fileID: 0}
     - target: {fileID: 4541415289757627761, guid: b3c1735f2319c214d994def33611d243, type: 3}
       propertyPath: m_Name

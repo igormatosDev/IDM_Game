@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
+using static UnityEngine.ParticleSystem;
 
 public class TilemapDisplay : MonoBehaviour
 {
@@ -10,7 +13,7 @@ public class TilemapDisplay : MonoBehaviour
     [SerializeField] private List<GameObjectType> gameObjectTypes;
 
     public int tileSize = 1;
-    public float distanceFromEdge = 1f;
+    public int distanceFromEdge = 1;
 
     //public GameObject prefabTree;
     //public float treeSpacing;
@@ -104,6 +107,7 @@ public class TilemapDisplay : MonoBehaviour
             {
 
                 Vector3Int tilePos = new Vector3Int(x, y, 0);
+
                 if (tilemap.GetTile(tilePos) == tile)
                 {
                     landTilePositions.Add(tilePos);
@@ -115,7 +119,7 @@ public class TilemapDisplay : MonoBehaviour
         objectFolder.transform.parent = objectsParentFolder;
         // Then, use Perlin noise to determine which land tiles to spawn objects on
 
-        foreach (Vector3Int tilePos in landTilePositions)
+         foreach (Vector3Int tilePos in landTilePositions)
         {
             float xOffset = Random.Range(0f, 0.1f); // Random offset for x coordinate
             float yOffset = Random.Range(0f, 0.1f); // Random offset for y coordinate
@@ -126,9 +130,8 @@ public class TilemapDisplay : MonoBehaviour
                 Vector3 posInt = tileCenter + new Vector3(Random.Range(-offset, offset), Random.Range(-offset, offset), 0f);
                 Vector3Int spawnPos = Vector3Int.RoundToInt(posInt);
 
-                if (IsNearLandEdge(spawnPos, landTilePositions, distanceFromEdge))
+                if (HasAdjacentSameTile(spawnPos, distanceFromEdge))
                 {
-
                     Instantiate(objectToSpawn, spawnPos, Quaternion.identity, objectFolder.transform);
 
                     if (spacing > 0)
@@ -162,23 +165,45 @@ public class TilemapDisplay : MonoBehaviour
         }
     }
 
-    public bool IsNearLandEdge(Vector3Int tilePos, List<Vector3Int> landTilePositions, float maxDistanceFromEdge)
+    public bool HasAdjacentSameTile(Vector3Int tilePos, int maxDistanceFromEdge)
     {
-        foreach (Vector3Int landTilePos in landTilePositions)
-        {
-            float xDist = Mathf.Abs(landTilePos.x - tilePos.x);
-            float yDist = Mathf.Abs(landTilePos.y - tilePos.y);
 
-            if (xDist <= maxDistanceFromEdge && xDist < yDist)
-            {
-                return true;
-            }
-            else if (yDist <= maxDistanceFromEdge && yDist < xDist)
-            {
-                return true;
-            }
+        Vector3Int positionInt = tilemap.WorldToCell(tilePos);
+        TileBase tile = tilemap.GetTile(positionInt);
+        
+
+        Vector3Int rightPos = tilemap.WorldToCell(tilePos + (Vector3Int.right * maxDistanceFromEdge));
+        TileBase rightTile = tilemap.GetTile(rightPos);
+        if (rightTile != tile || rightTile == null)
+        {
+            return false;
         }
 
-        return false;
+        // Check left tile
+        Vector3Int leftPos = tilemap.WorldToCell(tilePos + (Vector3Int.left * maxDistanceFromEdge));
+        TileBase leftTile = tilemap.GetTile(leftPos);
+        if (leftTile != tile || leftTile == null)
+        {
+            return false;
+        }
+
+        // Check up tile
+        Vector3Int upPos = tilemap.WorldToCell(tilePos + (Vector3Int.up * maxDistanceFromEdge));
+        TileBase upTile = tilemap.GetTile(upPos);
+        if (upTile != tile || upTile == null)
+        {
+            return false;
+        }
+
+        // Check down tile
+        Vector3Int downPos = tilemap.WorldToCell(tilePos + (Vector3Int.down * maxDistanceFromEdge));
+        TileBase downTile = tilemap.GetTile(downPos);
+        if (downTile != tile || downTile == null)
+        {
+            return false;
+        }
+
+        return true;
     }
+
 }
