@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Tilemaps;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -18,11 +19,10 @@ public class MapGenerator : MonoBehaviour
     public float actionDelay = .1f;
 
 
-
-    //private void Start()
-    //{
-    //    GenerateMap();
-    //}
+    private void Start()
+    {
+        GenerateMap();
+    }
 
     private void GenerateMap()
     {
@@ -32,7 +32,9 @@ public class MapGenerator : MonoBehaviour
         float[,] noiseMap = PerlinNoiseGenerator.GenerateNoiseMap(width, height, scale, octaves, persistence, lacunarity, offset);
         tilemapDisplay.DrawMap(noiseMap);
         tilemapDisplay.SpawnObjects();
+
     }
+
 
     public void Update()
     {
@@ -43,7 +45,7 @@ public class MapGenerator : MonoBehaviour
     public void MapControllers()
     {
         // randomize offset
-        if (Keyboard.current.spaceKey.isPressed && lastBuilt >= actionDelay)
+        if (Keyboard.current.mKey.isPressed && lastBuilt >= actionDelay)
         {
             this.offset = new Vector2(Helpers.GetRandomInt(0, 100000), Helpers.GetRandomInt(0, 100000));
             GenerateMap();

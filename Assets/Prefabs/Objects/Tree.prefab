@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5129307662581093986}
   - component: {fileID: 5129307662581093983}
   - component: {fileID: 5129307662581093982}
+  - component: {fileID: -8022006819025295047}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Untagged
@@ -122,8 +123,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.028400421, y: 2.96}
-  m_Size: {x: 2.8827934, y: 3.3788023}
+  m_Offset: {x: -0.048845053, y: 2.4666595}
+  m_Size: {x: 2.8419042, y: 3.0054607}
   m_Direction: 0
 --- !u!114 &5129307662581093982
 MonoBehaviour:
@@ -140,6 +141,20 @@ MonoBehaviour:
   animationDuration: 0.25
   startColor: {r: 1, g: 1, b: 1, a: 1}
   endColor: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 0.5372549}
+--- !u!114 &-8022006819025295047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5129307662581093984}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd2676dc7c27494587fb5395ed546bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  extraOrderInLayer: 0
+  update: 0
 --- !u!1 &5129307662591476998
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,7 +200,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.014227867, y: 0.45894408}
+  m_Offset: {x: 0.009116888, y: 0.25960946}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.49888936, y: 0.020239903}
@@ -196,5 +211,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5071621, y: 0.39390552}
+  m_Size: {x: 1.4169459, y: 0.5676837}
   m_EdgeRadius: 0

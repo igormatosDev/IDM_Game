@@ -14,14 +14,14 @@ public class BigObjectSpriteController : MonoBehaviour
     private void Start()
     {
         ObjectSpriteRenderer = GetComponent<SpriteRenderer>();
-        ObjectSpriteRenderer.sortingOrder = 1 - (int)(transform.position.y * 10);
     }
 
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!isFaded && collision.gameObject.name == "SpriteController" || collision.gameObject.tag == "Enemy") 
+        // name of the object that has been collided
+        if (!isFaded && collision.gameObject.name == "SpriteController" || collision.gameObject.tag == "Enemy")
         {
             isFaded=true;
             StartCoroutine(ToggleSprite(ObjectSpriteRenderer, startColor, endColor, animationDuration));

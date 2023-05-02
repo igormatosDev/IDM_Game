@@ -96,57 +96,60 @@ public class TilemapDisplay : MonoBehaviour
         return tiles[0];
     }
 
-    public void SpawnObjectsOnTiles(TileBase tile, GameObject objectToSpawn, float spacing, float offset, float noiseScale, float noiseThreshold)
+public void SpawnObjectsOnTiles(TileBase tile, GameObject objectToSpawn, float spacing, float offset, float noiseScale, float noiseThreshold)
+{
+    BoundsInt bounds = tilemap.cellBounds;
+    List<Vector3Int> landTilePositions = new List<Vector3Int>();
+    List<Vector3> spawnedObjectPositions = new List<Vector3>(); // Keep track of spawned object positions
+
+    for (int x = bounds.min.x; x < bounds.max.x; x++)
     {
-        // First, get the bounds of the land tiles
-        BoundsInt bounds = tilemap.cellBounds;
-        List<Vector3Int> landTilePositions = new List<Vector3Int>();
-        for (int x = bounds.min.x; x < bounds.max.x; x++)
+        for (int y = bounds.min.y; y < bounds.max.y; y++)
         {
-            for (int y = bounds.min.y; y < bounds.max.y; y++)
+            Vector3Int tilePos = new Vector3Int(x, y, 0);
+
+            if (tilemap.GetTile(tilePos) == tile)
             {
-
-                Vector3Int tilePos = new Vector3Int(x, y, 0);
-
-                if (tilemap.GetTile(tilePos) == tile)
-                {
-                    landTilePositions.Add(tilePos);
-                }
-            }
-        }
-
-        GameObject objectFolder = new GameObject(objectToSpawn.name);
-        objectFolder.transform.parent = objectsParentFolder;
-        // Then, use Perlin noise to determine which land tiles to spawn objects on
-
-         foreach (Vector3Int tilePos in landTilePositions)
-        {
-            float xOffset = Random.Range(0f, 0.1f); // Random offset for x coordinate
-            float yOffset = Random.Range(0f, 0.1f); // Random offset for y coordinate
-            float noiseValue = Mathf.PerlinNoise((tilePos.x + xOffset) * noiseScale, (tilePos.y + yOffset) * noiseScale);
-            if (noiseValue >= noiseThreshold)
-            {
-                Vector3 tileCenter = tilemap.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0f);
-                Vector3 posInt = tileCenter + new Vector3(Random.Range(-offset, offset), Random.Range(-offset, offset), 0f);
-                Vector3Int spawnPos = Vector3Int.RoundToInt(posInt);
-
-                if (HasAdjacentSameTile(spawnPos, distanceFromEdge))
-                {
-                    Instantiate(objectToSpawn, spawnPos, Quaternion.identity, objectFolder.transform);
-
-                    if (spacing > 0)
-                    {
-                        for (float i = spacing; i < offset; i += spacing)
-                        {
-                            Vector3 additionalPos = spawnPos + new Vector3(Random.Range(-i, i), Random.Range(-i, i), 0f);
-                            Instantiate(objectToSpawn, additionalPos, Quaternion.identity, objectFolder.transform);
-                        }
-                    }
-                }
-
+                landTilePositions.Add(tilePos);
             }
         }
     }
+
+    GameObject objectFolder = new GameObject(objectToSpawn.name);
+    objectFolder.transform.parent = objectsParentFolder;
+
+    foreach (Vector3Int tilePos in landTilePositions)
+    {
+        float xOffset = Random.Range(0f, 0.1f);
+        float yOffset = Random.Range(0f, 0.1f);
+        float noiseValue = Mathf.PerlinNoise((tilePos.x + xOffset) * noiseScale, (tilePos.y + yOffset) * noiseScale);
+        if (noiseValue >= noiseThreshold)
+        {
+            Vector3 tileCenter = tilemap.CellToWorld(tilePos) + new Vector3(0.5f, 0.5f, 0f);
+            Vector3 posInt = tileCenter + new Vector3(Random.Range(-offset, offset), Random.Range(-offset, offset), 0f);
+            Vector3Int spawnPos = Vector3Int.RoundToInt(posInt);
+
+            if (HasAdjacentSameTile(spawnPos, distanceFromEdge) && !IsSpawnPositionTooClose(spawnPos, spawnedObjectPositions, spacing))
+            {
+                GameObject spawnedObject = Instantiate(objectToSpawn, spawnPos, Quaternion.identity, objectFolder.transform);
+                spawnedObjectPositions.Add(spawnedObject.transform.position); // Add the spawned object's position to the list
+            }
+        }
+    }
+}
+
+private bool IsSpawnPositionTooClose(Vector3 spawnPos, List<Vector3> spawnedObjectPositions, float minDistance)
+{
+    foreach (Vector3 objPos in spawnedObjectPositions)
+    {
+        if (Vector3.Distance(spawnPos, objPos) < minDistance)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 
     private void ClearMap()
     {
@@ -170,7 +173,7 @@ public class TilemapDisplay : MonoBehaviour
 
         Vector3Int positionInt = tilemap.WorldToCell(tilePos);
         TileBase tile = tilemap.GetTile(positionInt);
-        
+
 
         Vector3Int rightPos = tilemap.WorldToCell(tilePos + (Vector3Int.right * maxDistanceFromEdge));
         TileBase rightTile = tilemap.GetTile(rightPos);

@@ -361,7 +361,7 @@ MonoBehaviour:
   detectionRadius: 2
   layerMask:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 136
   showGizmos: 0
 --- !u!1 &6093737488483112149
 GameObject:
@@ -547,7 +547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6093737489410248574
 Transform:
   m_ObjectHideFlags: 0

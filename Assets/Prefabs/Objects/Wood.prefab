@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8854891419306124416}
   - component: {fileID: 8854891419306124417}
   - component: {fileID: 8854891419306124419}
+  - component: {fileID: 7168423926235111838}
   - component: {fileID: 8854891419306124423}
   - component: {fileID: 8854891419306124422}
   - component: {fileID: 8854891419306124420}
@@ -104,6 +105,18 @@ MonoBehaviour:
   lootTable: {fileID: 11400000, guid: 9b4f7781a88b23d439415a2a530b22a5, type: 2}
   defense: 1
   health: 50
+--- !u!114 &7168423926235111838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8854891419306124477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd2676dc7c27494587fb5395ed546bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!58 &8854891419306124423
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -158,7 +171,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.32, y: 0.32}
+    oldSize: {x: 2, y: 2}
     newSize: {x: 0.9375, y: 0.9375}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

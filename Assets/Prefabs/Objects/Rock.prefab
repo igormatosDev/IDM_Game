@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5879979690635581918}
   - component: {fileID: 5879979690635581919}
   - component: {fileID: 5879979690635581917}
+  - component: {fileID: 1114015389225001522}
   - component: {fileID: 4014618108827895157}
   - component: {fileID: 5879979690635581913}
   - component: {fileID: 5879979690635581912}
@@ -104,6 +105,18 @@ MonoBehaviour:
   lootTable: {fileID: 11400000, guid: 6e499a1a289f0594f87bcf35ecb3f2ab, type: 2}
   defense: 1
   health: 50
+--- !u!114 &1114015389225001522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5879979690635581923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: edd2676dc7c27494587fb5395ed546bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!58 &4014618108827895157
 CircleCollider2D:
   m_ObjectHideFlags: 0

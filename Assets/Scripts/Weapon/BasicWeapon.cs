@@ -31,7 +31,7 @@ public class BasicWeapon : WeaponBase
             var currZ = weapon.transform.rotation.z;
             weapon.transform.Rotate(-attackAxis * attackphase, attackRotationSpeedIn);
             weaponAttackZtraveled += Mathf.Abs(currZ - weapon.transform.rotation.z);
-           
+
             if (weaponAttackZtraveled >= (attackAngle/180))
             {
                 attackphase *= -1;
@@ -53,7 +53,7 @@ public class BasicWeapon : WeaponBase
             else
             {
                 scale.y = -1;
-                attackAxis = Vector3.back; 
+                attackAxis = Vector3.back;
 
             }
 
@@ -69,15 +69,8 @@ public class BasicWeapon : WeaponBase
                 weapon.transform.rotation = Quaternion.Euler(0f, 0f, (rot_z));
                 scale.x = -1;
             }
-            
-            weapon.transform.localScale = scale;
 
-            //print("attackphase");
-            //print(attackphase);
-            //print("scale x");
-            //print(scale.x);
-            //print("scale y");
-            //print(scale.y);
+            weapon.transform.localScale = scale;
 
         }
 

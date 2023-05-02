@@ -16,12 +16,21 @@ public class PlayerSpriteController : MonoBehaviour
 
     private void Start()
     {
-
-        faceAnimator = GameObject.Find("Face").GetComponent<Animator>();
         helmetAnimator = GameObject.Find("Helmet").GetComponent<Animator>();
+        faceAnimator = GameObject.Find("Face").GetComponent<Animator>();
         chestAnimator = GameObject.Find("Chest").GetComponent<Animator>();
         legsAnimator = GameObject.Find("Legs").GetComponent<Animator>();
     }
+
+    // private void Update(){
+        // set sortingLayer for player
+        // int playerSortingOrderDefault = 1 - (int)(transform.position.y * 100);
+
+        // helmetAnimator.GetComponent<SpriteRenderer>().sortingOrder = playerSortingOrderDefault + 8;
+        // faceAnimator.GetComponent<SpriteRenderer>().sortingOrder = playerSortingOrderDefault + 7;
+        // chestAnimator.GetComponent<SpriteRenderer>().sortingOrder = playerSortingOrderDefault + 6;
+        // legsAnimator.GetComponent<SpriteRenderer>().sortingOrder = playerSortingOrderDefault + 5;
+    // }
 
     public void AnimationController(Vector2 lookDirection, Vector2 velocity, bool isAttacking)
     {
@@ -64,47 +73,9 @@ public class PlayerSpriteController : MonoBehaviour
 
     public void FlashDamage()
     {
-        //Color minColor = new Color(255f / 255f, 240f / 255f, 240f / 255f);
-        //Color maxColor = new Color(255f / 255f, 200f / 255f, 200f / 255f);
         Color endColor = new Color(240f / 255f, 240f / 255f, 240f / 255f);
         float interval = .15f;
         float duration = 1f;
-        
-
-        //StartCoroutine(CommonAnimations.FlashSprite(
-        //    faceAnimator.GetComponent<SpriteRenderer>(),
-        //    minColor,
-        //    maxColor,
-        //    endColor,
-        //    interval,
-        //    duration
-        //));
-        //StartCoroutine(CommonAnimations.FlashSprite(
-        //    helmetAnimator.GetComponent<SpriteRenderer>(),
-        //    minColor,
-        //    maxColor,
-        //    endColor,
-        //    interval,
-        //    duration
-        //));
-        //StartCoroutine(CommonAnimations.FlashSprite(
-        //    chestAnimator.GetComponent<SpriteRenderer>(),
-        //    minColor,
-        //    maxColor,
-        //    endColor,
-        //    interval,
-        //    duration
-        //));
-        //StartCoroutine(CommonAnimations.FlashSprite(
-        //    legsAnimator.GetComponent<SpriteRenderer>(),
-        //    minColor,
-        //    maxColor,
-        //    endColor,
-        //    interval,
-        //    duration
-        //));
-
-
 
         StartCoroutine(CommonAnimations.BlinkSprite(
             faceAnimator.GetComponent<SpriteRenderer>(),
@@ -129,6 +100,6 @@ public class PlayerSpriteController : MonoBehaviour
             endColor,
             interval,
             duration
-        )); 
+        ));
     }
 }
