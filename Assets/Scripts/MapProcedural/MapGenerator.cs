@@ -1,6 +1,6 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.Tilemaps;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -13,69 +13,98 @@ public class MapGenerator : MonoBehaviour
     public Vector2 offset = Vector2.zero;
     public TilemapDisplay tilemapDisplay;
 
-    private float lastBuilt = 0f;
+    // try to generate chunks
+    public int chunksAroundPlayer = 1;
+    public int chunkSize = 32;
+    private Dictionary<Vector2Int, GameObject> chunkMap = new Dictionary<Vector2Int, GameObject>();
+    public Transform player;
+    private bool isGeneratingChunks = false;
 
-    public int moveForce = 3;
-    public float actionDelay = .1f;
 
-
-    private void Start()
+    private Vector2Int GetPlayerChunkCoordinate()
     {
-        GenerateMap();
+        int x = Mathf.FloorToInt(player.position.x / chunkSize);
+        int y = Mathf.FloorToInt(player.position.y / chunkSize);
+        return new Vector2Int(x, y);
     }
 
-    private void GenerateMap()
+    private async void UpdateChunksAroundPlayer()
     {
+        if (isGeneratingChunks)
+        {
+            return;
+        }
 
-        print("Map generated");
-        lastBuilt = 0f;
-        float[,] noiseMap = PerlinNoiseGenerator.GenerateNoiseMap(width, height, scale, octaves, persistence, lacunarity, offset);
-        tilemapDisplay.DrawMap(noiseMap);
-        tilemapDisplay.SpawnObjects();
+        Vector2Int playerChunkCoord = GetPlayerChunkCoordinate();
 
+        bool shouldGenerateChunks = false;
+
+        for (int x = -chunksAroundPlayer; x <= chunksAroundPlayer; x++)
+        {
+            for (int y = -chunksAroundPlayer; y <= chunksAroundPlayer; y++)
+            {
+                Vector2Int chunkCoord = playerChunkCoord + new Vector2Int(x, y);
+
+                if (!chunkMap.ContainsKey(chunkCoord))
+                {
+                    shouldGenerateChunks = true;
+                    break;
+                }
+            }
+
+            if (shouldGenerateChunks)
+            {
+                break;
+            }
+        }
+
+        if (shouldGenerateChunks)
+        {
+            isGeneratingChunks = true;
+            await Task.Run(() => GenerateChunksAroundPlayerAsync(playerChunkCoord));
+            isGeneratingChunks = false;
+        }
+    }
+
+    private async void GenerateChunksAroundPlayerAsync(Vector2Int playerChunkCoord)
+    {
+        for (int x = -chunksAroundPlayer; x <= chunksAroundPlayer; x++)
+        {
+            for (int y = -chunksAroundPlayer; y <= chunksAroundPlayer; y++)
+            {
+                Vector2Int chunkCoord = playerChunkCoord + new Vector2Int(x, y);
+
+                if (!chunkMap.ContainsKey(chunkCoord))
+                {
+                    await Task.Run(() =>
+                    {
+                        MainThreadDispatcher.Instance.EnqueueAction(() =>
+                        {
+                            Vector2 chunkOffset = new Vector2(chunkCoord.x * chunkSize, chunkCoord.y * chunkSize);
+                            float[,] noiseMap = GenerateMap(chunkCoord, chunkOffset);
+
+                            Vector3Int tilemapPosition = new Vector3Int(chunkCoord.x * chunkSize, chunkCoord.y * chunkSize, 0);
+                            tilemapDisplay.DrawMap(noiseMap, tilemapPosition);
+                            // tilemapDisplay.SpawnObjects(tilemapPosition);
+                            GameObject chunkObject = new GameObject($"Chunk_{chunkCoord.x}_{chunkCoord.y}");
+                            print(chunkObject.name + $" - {chunkCoord.x}, {chunkCoord.y} - {tilemapPosition} - {chunkOffset}");
+                            chunkMap.Add(chunkCoord, chunkObject);
+                        });
+                    });
+                }
+            }
+        }
+    }
+
+    private float[,] GenerateMap(Vector2Int chunkCoord, Vector2 chunkOffset)
+    {
+        float[,] noiseMap = PerlinNoiseGenerator.GenerateNoiseMap(width, height, scale, octaves, persistence, lacunarity, offset + chunkOffset);
+        return noiseMap;
     }
 
 
     public void Update()
     {
-        lastBuilt += Time.deltaTime;
-        MapControllers();
+        UpdateChunksAroundPlayer();
     }
-
-    public void MapControllers()
-    {
-        // randomize offset
-        if (Keyboard.current.mKey.isPressed && lastBuilt >= actionDelay)
-        {
-            this.offset = new Vector2(Helpers.GetRandomInt(0, 100000), Helpers.GetRandomInt(0, 100000));
-            GenerateMap();
-        }
-
-        // moving
-        if (Keyboard.current.upArrowKey.isPressed && lastBuilt >= actionDelay)
-        {
-            this.offset.y += moveForce;
-            GenerateMap();
-        }
-        else if (Keyboard.current.downArrowKey.isPressed && lastBuilt >= actionDelay)
-        {
-            this.offset.y -= moveForce;
-            GenerateMap();
-        }
-        else if (Keyboard.current.rightArrowKey.isPressed && lastBuilt >= actionDelay)
-        {
-            this.offset.x += moveForce;
-            GenerateMap();
-        }
-        else if (Keyboard.current.leftArrowKey.isPressed && lastBuilt >= actionDelay)
-        {
-            this.offset.x -= moveForce;
-            GenerateMap();
-        }
-
-    }
-
-
 }
-
-
