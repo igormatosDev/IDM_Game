@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     private PlayerSpriteController spriteController;
     [SerializeField] InputActionReference movement, attack, dash, pointerPosition;
     public ParticleSystem dustDashParticles;
-    
+
 
     void Start()
     {
